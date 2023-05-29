@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  RxMoneyManager
+
+  Created by 杜千煜 on 2022/10/26.
+  
+*/
+"delete"="Delete";
+"confirmDelete"="Sure to delete %@?";
+"cancel"="Cancel";
+"userList"="User List";
+"name"="Name";
+"add"="Add";
+"addUser"="Add User";
+"addNew"="Add New...";
+"account"="Account";
+"chart"="Chart";
+"setting"="Setting";
+"save"="Save";
+"enterName"="Enter Name";
+"chooseType"="Choose Type";
+"account"="Account";
+"type_title"="Type:";
+"account_title"="Account:";
+"memo_title"="Memo:";
+"from_title"="From:";
+"to_title"="To:";
+"handlingfee_title"="Handling Fee:";
+"memo"="Memo";
+"compelete"="Compelete";
+"chartTotal"="Total - $%@";
+"spend"="Spend";
+"income"="Income";
+"transfer"="Transfer";
+"joinTotal"="Join Total";
+"accountType"="Account Type";
+"addAccount"="Add Account";
+"cash"="Cash";
+"creditCard"="Credit Card";
+"bank"="Bank";
+"accountName"="Account Name";
+"initialAmount"="Initial Amount";
+"notJoinTotal"="Not Join Total";
+"theBalance"="The balance";
+"totalAssets"="Total Assets";
+"totalLiability"="Total Liability";
+"transferFee"="Transfer Fee";
+"yes"="Yes";
+"no"="No";
+"week"="Week";
+"month"="Month";
+"year"="Year";
+"spend_details"="Spend Details";
