@@ -22,7 +22,7 @@ class RealmManager {
     func openRealm() {
         do {
             // Setting the schema version
-            var config = Realm.Configuration(schemaVersion: 1) { migration, oldSchemaVersion in
+            var config = Realm.Configuration(schemaVersion: 2) { migration, oldSchemaVersion in
 //                練習範例
 //                if oldSchemaVersion < 8 {
 //                    migration.enumerateObjects(ofType: "RLM_Account") { oldObject, newObject in
@@ -242,101 +242,6 @@ extension RealmManager {
             
         }
         
-        return []
-    }
-    
-    func getExpensesGroup(_ groupId: String = "") -> [ExpensesGroupModel] {
-        if let realm = realm {
-            
-            if groupId.isEmpty {
-                return Array(realm.objects(ExpensesGroupModel.self))
-            } else if let id = try? ObjectId(string: groupId) {
-                //                return Array(realm.objects(ExpensesGroupModel.self).filter("id == %@", id))
-                return Array(realm.objects(ExpensesGroupModel.self)).filter {
-                    $0.id == id
-                }
-            }
-            
-        }
-        return []
-    }
-    
-    func getExpensesType(_ groupId: String = "") -> [ExpensesTypeModel] {
-        if let realm = realm {
-            
-            if groupId.isEmpty {
-                return Array(realm.objects(ExpensesTypeModel.self))
-            } else {
-                //                return Array(realm.objects(ExpensesTypeModel.self).filter("expensesGroup == %@", groupId))
-                return Array(realm.objects(ExpensesTypeModel.self)).filter {
-                   $0.expensesGroup == groupId
-                }
-            }
-            
-        }
-        return []
-    }
-    
-    func getIncomeGroup(_ groupId: String = "") -> [IncomeGroupModel] {
-        if let realm = realm {
-            
-            if groupId.isEmpty {
-                return Array(realm.objects(IncomeGroupModel.self))
-            } else if let id = try? ObjectId(string: groupId) {
-                //                return Array(realm.objects(IncomeGroupModel.self).filter("id == %@", id))
-                return Array(realm.objects(IncomeGroupModel.self)).filter {
-                    $0.id == id
-                }
-            }
-            
-        }
-        return []
-    }
-    
-    func getIncomeType(_ groupId: String = "") -> [IncomeTypeModel] {
-        if let realm = realm {
-            
-            if groupId.isEmpty {
-                return Array(realm.objects(IncomeTypeModel.self))
-            } else {
-                //                return Array(realm.objects(IncomeTypeModel.self).filter("incomeGroup == %@", groupId))
-                return Array(realm.objects(IncomeTypeModel.self)).filter {
-                    $0.incomeGroup == groupId
-                }
-            }
-            
-        }
-        return []
-    }
-    
-    func getTransferGroup(_ groupId: String = "") -> [TransferGroupModel] {
-        if let realm = realm {
-            
-            if groupId.isEmpty {
-                return Array(realm.objects(TransferGroupModel.self))
-            } else if let id = try? ObjectId(string: groupId) {
-                //                return Array(realm.objects(TransferGroupModel.self).filter("id == %@", id))
-                return Array(realm.objects(TransferGroupModel.self)).filter {
-                    $0.id == id
-                }
-            }
-            
-        }
-        return []
-    }
-    
-    func getTransferType(_ groupId: String = "") -> [TransferTypeModel] {
-        if let realm = realm {
-            
-            if groupId.isEmpty {
-                return Array(realm.objects(TransferTypeModel.self))
-            } else {
-                return Array(realm.objects(TransferTypeModel.self)).filter {
-                    $0.transferGroup == groupId
-                }
-            }
-            
-        }
         return []
     }
 }

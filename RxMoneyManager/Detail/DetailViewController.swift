@@ -30,7 +30,6 @@ class DetailViewController: BaseViewViewController {
     
     private func initView() {
         self.setBackButton(title: R.string.localizable.spend_details())
-        self.view.backgroundColor = .white
         
         self.setUpHeaderView()
         self.setUpTableView()
@@ -95,11 +94,16 @@ class DetailViewController: BaseViewViewController {
         
         // 選取項目
         detailTableView.rx.modelSelected(DetailModel.self).subscribe(onNext: { detail in
+            let addDetail = AddDetailViewController()
+
             if detail.billingType < 3 {
-                print("編輯")
+                addDetail.addType = .edit
+                addDetail.detailModel = detail
             } else {
-                print("新增")
+                addDetail.addType = .add
             }
+            
+            self.push(vc: addDetail)
         })
         .disposed(by: disposeBag)
                 
