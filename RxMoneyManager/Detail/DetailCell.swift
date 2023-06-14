@@ -31,7 +31,7 @@ class DetailCell: UITableViewCell {
     private func setUpCellView() {
         
         func setUpVerticalStackView() {
-            addSubview(verticalStackView)
+            contentView.addSubview(verticalStackView)
             verticalStackView.axis = .vertical
             verticalStackView.distribution = .fill
             verticalStackView.spacing = 5

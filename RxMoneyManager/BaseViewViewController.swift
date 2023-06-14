@@ -17,6 +17,7 @@ class BaseViewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.backgroundColor = .white
         self.safeAreaLayoutGuide = self.view.safeAreaLayoutGuide
     }
 
