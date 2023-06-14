@@ -30,6 +30,12 @@ class HeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        #if DEBUG
+        print("HeaderView deinit")
+        #endif
+    }
+    
     private func setUpHeaderView() {
         
         // 設定橫向 StackView

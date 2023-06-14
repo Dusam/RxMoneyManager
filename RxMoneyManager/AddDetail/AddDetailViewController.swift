@@ -23,6 +23,7 @@ class AddDetailViewController: BaseViewViewController {
     
     private var amountView: UIView!
     private var amountTextField: UITextField!
+    private var headerView: HeaderView!
     
     var addType: AddDetailType = .add
     var detailModel: DetailModel = DetailModel()
@@ -34,18 +35,20 @@ class AddDetailViewController: BaseViewViewController {
     }
     
     deinit {
-#if DEBUG
+        #if DEBUG
         print("AddDetailViewController deinit")
-#endif
+        #endif
     }
     
     private func initView() {
         
         amountView = self.setUpAmountView()
         self.setUpSegment()
+        self.setUpHeaderView()
+        self.setUpAddDetailView()
+        
         self.createCalcutorView()
         self.bindCalcutorView()
-        self.setUpHeaderView()
         
         if addType == .edit {
             addDetailVM.setEditData(detailModel)
@@ -70,9 +73,15 @@ extension AddDetailViewController {
             make.width.equalTo(self.view.bounds.width * 0.6)
         }
         
+        // 編輯時也需要依照選擇的項目同步選擇的項目
+        addDetailVM.selectedSegmentRelay
+            .bind(to: segment.rx.selectedSegmentIndex)
+            .disposed(by: disposeBag)
+        
         addDetailVM.selectedSegmentRelay
             .subscribe(onNext: { [weak self] selectedIndex in
                 guard let billType = BillingType(rawValue: selectedIndex) else { return }
+                self?.addDetailVM.setBillingType(billType)
                 self?.amountTextField.textColor = billType.forgroundColor
             })
             .disposed(by: disposeBag)
@@ -95,7 +104,7 @@ extension AddDetailViewController {
         amountTextField.borderStyle = .none
         amountTextField.font = .systemFont(ofSize: 32)
         amountTextField.textAlignment = .right
-        amountTextField.addBoard(.bottom, color: .blue, thickness: 1)
+        amountTextField.addBoard(.bottom, color: .lightGray, thickness: 1)
         
         stackView.addArrangedSubviews([moneyTitleLabel, amountTextField])
         
@@ -129,6 +138,7 @@ extension AddDetailViewController {
             .subscribe(onNext: { [weak self] in
                 self?.amountTextField.resignFirstResponder()
                 self?.addDetailVM.setShowCalcutor(true)
+                self?.calcutor.setEditType(isEditAmount: true)
             })
             .disposed(by: disposeBag)
         
@@ -144,7 +154,7 @@ extension AddDetailViewController {
 // MARK: Header
 extension AddDetailViewController {
     private func setUpHeaderView() {
-        let headerView = HeaderView(headerType: .addDetail)
+        headerView = HeaderView(headerType: .addDetail)
         self.view.addSubview(headerView)
         
         headerView.snp.makeConstraints { make in
@@ -189,9 +199,103 @@ extension AddDetailViewController {
 }
 
 
-// MARK: Spend
+// MARK: AddDetailView
 extension AddDetailViewController {
-    private func setUpSpendView() {
+    private func setUpAddDetailView() {
+        let tableView = UITableView()
+        view.addSubview(tableView)
+        
+        tableView.register(cellWithClass: AddDetailCell.self)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom)
+            make.left.right.equalTo(safeAreaLayoutGuide)
+            make.bottom.equalTo(safeAreaLayoutGuide)
+        }
+        
+        addDetailVM.addDetailCellModels
+            .asDriver()
+            .drive(tableView.rx.items(cellIdentifier: "AddDetailCell", cellType: AddDetailCell.self)) { [weak self] row, value, cell in
+                
+                cell.addTitleLabel.text = value
+                cell.accessoryType = .disclosureIndicator
+                
+                switch self?.addDetailVM.selectedSegmentRelay.value {
+                case 0:
+                    self?.setUpSpendCell(row, cell)
+                case 1:
+                    self?.setUpIncomeCell(row, cell)
+                case 2:
+                    self?.setUpTransferCell(row, cell)
+                default:
+                    break
+                }
+                
+            }
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            if self?.addDetailVM.selectedSegmentRelay.value == 2 {
+                if indexPath.row == 2 {
+                    self?.addDetailVM.setShowCalcutor(true)
+                    self?.calcutor.setEditType(isEditAmount: false)
+                }
+            }
+        }).disposed(by: disposeBag)
+    }
+    
+    private func setUpSpendCell(_ row: Int, _ cell: AddDetailCell) {
+        cell.typeLabel.textColor = R.color.spendColor()
+        
+        if row == 0 {
+            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        }
+        
+        if row == 1 {
+            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        }
+        
+        if row == 2 {
+            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        }
+    }
+    
+    private func setUpIncomeCell(_ row: Int, _ cell: AddDetailCell) {
+        cell.typeLabel.textColor = R.color.incomeColor()
+        
+        if row == 0 {
+            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        }
+        
+        if row == 1 {
+            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        }
+        
+        if row == 2 {
+            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        }
+    }
+    
+    private func setUpTransferCell(_ row: Int, _ cell: AddDetailCell) {
+        cell.typeLabel.textColor = R.color.transferColor()
+        
+        switch row {
+        case 0:
+            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        case 1:
+            self.addDetailVM.toAccountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        case 2:
+            cell.accessoryType = .none
+            cell.selectionStyle = .none
+            self.addDetailVM.transferFee.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        case 3:
+            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        case 4:
+            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+        default:
+            break
+        }
         
     }
 }

@@ -59,7 +59,9 @@ class RealmManager {
     
     func saveData(_ data: Object, update: Bool = false) {
         if let realm = realm {
-            realm.beginWrite()
+            if !realm.isInWriteTransaction {
+                realm.beginWrite()
+            }
             
             if update, let memoModel = data as? MemoModel {
                 memoModel.count += 1

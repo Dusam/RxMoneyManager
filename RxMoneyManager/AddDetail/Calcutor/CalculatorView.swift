@@ -30,6 +30,7 @@ class CalculatorView: UIView {
         super.init(frame: .zero)
 
         self.calcutorVM.amount = addDetailVM.amount
+        self.calcutorVM.transferFee = addDetailVM.transferFee
         self.calcutorVM.isShowCalcutor = addDetailVM.isShowCalcutor
         self.setUpCalcutor()
     }
@@ -139,11 +140,14 @@ class CalculatorView: UIView {
         .disposed(by: disposeBag)
     }
 
-    
     private func buttonCornerRadius(item: CalcButton) -> CGFloat {
         if item == .zero {
             return ((UIScreen.main.bounds.width - (4 * 12)) / 4) / 2.5
         }
         return ((UIScreen.main.bounds.width - ((3 * 12) + (2 * 5))) / 4) / 2.5
+    }
+    
+    func setEditType(isEditAmount: Bool) {
+        calcutorVM.setEditType(isEditAmount: isEditAmount)
     }
 }

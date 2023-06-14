@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 enum BillingType: Int, CaseIterable {
-    case expenses = 0
+    case spend = 0
     case income
     case transfer
     
     var name: String {
         switch self {
-        case .expenses:
+        case .spend:
             return R.string.localizable.spend()
         case .income:
             return R.string.localizable.income()
@@ -26,8 +26,8 @@ enum BillingType: Int, CaseIterable {
     
     var forgroundColor: UIColor {
         switch self {
-        case .expenses:
-            return R.color.expensesColor()!
+        case .spend:
+            return R.color.spendColor()!
         case .income:
             return R.color.incomeColor()!
         case .transfer:
