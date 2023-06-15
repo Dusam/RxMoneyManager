@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-class DetailViewController: BaseViewViewController {
+class DetailViewController: BaseViewController {
     
     private var detailTableView: UITableView!
     private let headerView = HeaderView(headerType: .detail)
@@ -19,7 +19,6 @@ class DetailViewController: BaseViewViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.initView()
     }
                   
     deinit {
@@ -28,12 +27,17 @@ class DetailViewController: BaseViewViewController {
         #endif
     }
     
-    private func initView() {
+    override func initView() {
         self.setBackButton(title: R.string.localizable.spend_details())
         
         self.setUpHeaderView()
         self.setUpTableView()
 //        self.setUpSearchBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DetailViewModel.shared.getDetail()
     }
     
     // 設定標題列
@@ -55,9 +59,8 @@ class DetailViewController: BaseViewViewController {
         
         detailTableView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom)
-            make.left.equalTo(safeAreaLayoutGuide).offset(10)
+            make.left.right.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(safeAreaLayoutGuide)
-            make.right.equalTo(safeAreaLayoutGuide).offset(-10)
         }
         
         bindTableView()
@@ -106,10 +109,9 @@ class DetailViewController: BaseViewViewController {
             self.push(vc: addDetail)
         })
         .disposed(by: disposeBag)
-                
-        // 刪除項目
-        detailTableView.rx.modelDeleted(DetailModel.self).subscribe(onNext: { detail in
-            
+        
+        detailTableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            self?.detailTableView.deselectRow(at: indexPath, animated: true)
         })
         .disposed(by: disposeBag)
     }

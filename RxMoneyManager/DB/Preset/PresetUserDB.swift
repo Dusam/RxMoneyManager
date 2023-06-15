@@ -27,6 +27,8 @@ extension RealmManager {
         accountModel.money = 0
         accountModel.includTotal = true
         
+        UserInfo.share.accountId = accountModel.id.stringValue
+        UserInfo.share.transferToAccountId = accountModel.id.stringValue
         realm.add(accountModel)
     }
 }
@@ -255,12 +257,14 @@ extension RealmManager {
     
     private func presetFeeType(_ realm: Realm, _ groupId: ObjectId) {
         let fees = ExpensesFee.allCases
+        UserInfo.share.transferFeeGroupId = groupId.stringValue
         
         for fee in fees {
 //            let model = ExpensesTypeModel()
             let model = DetailTypeModel()
             model.groupId = groupId.stringValue
             model.name = fee.name
+            UserInfo.share.transferFeeTypeId = model.id.stringValue
             
             realm.add(model)
         }

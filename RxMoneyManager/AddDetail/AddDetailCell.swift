@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class AddDetailCell: UITableViewCell {
     
+    var disposeBag: DisposeBag!
     var addTitleLabel = UILabel()
     var typeLabel = UILabel()
 

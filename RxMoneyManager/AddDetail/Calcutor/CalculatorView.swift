@@ -29,6 +29,7 @@ class CalculatorView: UIView {
     required init(addDetailVM: AddDetailViewModel) {
         super.init(frame: .zero)
 
+        backgroundColor = .white
         self.calcutorVM.amount = addDetailVM.amount
         self.calcutorVM.transferFee = addDetailVM.transferFee
         self.calcutorVM.isShowCalcutor = addDetailVM.isShowCalcutor

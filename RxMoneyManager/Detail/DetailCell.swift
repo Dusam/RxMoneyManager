@@ -20,7 +20,6 @@ class DetailCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        selectionStyle = .none
         setUpCellView()
     }
     
@@ -39,8 +38,8 @@ class DetailCell: UITableViewCell {
             verticalStackView.snp.makeConstraints { make in
                 make.top.equalToSuperview().offset(10)
                 make.bottom.equalToSuperview().offset(-10)
-                make.left.equalToSuperview().offset(5)
-                make.right.equalToSuperview().offset(-5)
+                make.left.equalToSuperview().offset(15)
+                make.right.equalToSuperview().offset(-15)
             }
         }
         

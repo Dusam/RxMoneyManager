@@ -12,7 +12,7 @@ import RxGesture
 import SamUtils
 import SnapKit
 
-class AddDetailViewController: BaseViewViewController {
+class AddDetailViewController: BaseViewController {
     
     enum AddDetailType {
         case add, edit
@@ -30,8 +30,6 @@ class AddDetailViewController: BaseViewViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.initView()
     }
     
     deinit {
@@ -40,13 +38,12 @@ class AddDetailViewController: BaseViewViewController {
         #endif
     }
     
-    private func initView() {
-        
+    override func initView() {
         amountView = self.setUpAmountView()
         self.setUpSegment()
         self.setUpHeaderView()
         self.setUpAddDetailView()
-        
+        self.setUpButton()
         self.createCalcutorView()
         self.bindCalcutorView()
         
@@ -217,6 +214,7 @@ extension AddDetailViewController {
         addDetailVM.addDetailCellModels
             .asDriver()
             .drive(tableView.rx.items(cellIdentifier: "AddDetailCell", cellType: AddDetailCell.self)) { [weak self] row, value, cell in
+                cell.disposeBag = DisposeBag()
                 
                 cell.addTitleLabel.text = value
                 cell.accessoryType = .disclosureIndicator
@@ -236,12 +234,47 @@ extension AddDetailViewController {
             .disposed(by: disposeBag)
         
         tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            
             if self?.addDetailVM.selectedSegmentRelay.value == 2 {
-                if indexPath.row == 2 {
+                
+                switch indexPath.row {
+                case 0:
+                    // 選擇帳戶
+                    break
+                case 1:
+                    // 選擇帳戶
+                    break
+                case 2:
+                    // 轉帳手續費
                     self?.addDetailVM.setShowCalcutor(true)
                     self?.calcutor.setEditType(isEditAmount: false)
+                case 3:
+                    let vc = ChooseTypeViewController(addDetailVM: self?.addDetailVM)
+                    self?.push(vc: vc)
+                default:
+                    break
                 }
+                
+            } else {
+                
+                switch indexPath.row {
+                case 0:
+                    let vc = ChooseTypeViewController(addDetailVM: self?.addDetailVM)
+                    self?.push(vc: vc)
+                case 1:
+                    // 選擇帳戶
+                    break
+                case 2:
+                    // 填寫備註
+                    break
+                default:
+                    break
+                }
+                
             }
+            
+            tableView.deselectRow(at: indexPath, animated: true)
+
         }).disposed(by: disposeBag)
     }
     
@@ -249,15 +282,15 @@ extension AddDetailViewController {
         cell.typeLabel.textColor = R.color.spendColor()
         
         if row == 0 {
-            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
         
         if row == 1 {
-            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
         
         if row == 2 {
-            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
     }
     
@@ -265,15 +298,15 @@ extension AddDetailViewController {
         cell.typeLabel.textColor = R.color.incomeColor()
         
         if row == 0 {
-            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
         
         if row == 1 {
-            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
         
         if row == 2 {
-            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
     }
     
@@ -282,20 +315,57 @@ extension AddDetailViewController {
         
         switch row {
         case 0:
-            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.accountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         case 1:
-            self.addDetailVM.toAccountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.toAccountName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         case 2:
             cell.accessoryType = .none
-            cell.selectionStyle = .none
-            self.addDetailVM.transferFee.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.transferFee.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         case 3:
-            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         case 4:
-            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: disposeBag)
+            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         default:
             break
         }
         
+    }
+    
+    private func setUpButton() {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        view.addSubview(stackView)
+        
+        stackView.snp.makeConstraints { make in
+            make.left.right.bottom.equalTo(safeAreaLayoutGuide)
+            make.height.equalTo(safeAreaLayoutGuide).multipliedBy(0.08)
+        }
+        
+        let saveButton = UIButton()
+        saveButton.setTitle(R.string.localizable.save(), for: .normal)
+        saveButton.setTitleColor(R.color.transferColor(), for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 20)
+        saveButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.addDetailVM.saveDetail()
+            self?.pop()
+        })
+        .disposed(by: disposeBag)
+        
+        let delButton = UIButton()
+        delButton.setTitle(R.string.localizable.delete(), for: .normal)
+        delButton.setTitleColor(R.color.spendColor(), for: .normal)
+        delButton.titleLabel?.font = .systemFont(ofSize: 20)
+        delButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.addDetailVM.delDetail()
+            self?.pop()
+        })
+        .disposed(by: disposeBag)
+        
+        stackView.addArrangedSubviews([delButton, saveButton])
+        
+        if addType == .add {
+            delButton.isHidden = true
+        }
     }
 }

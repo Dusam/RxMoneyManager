@@ -27,11 +27,11 @@ class AddDetailViewModel: BaseViewModel {
     private let detailGroupId = BehaviorRelay<String>(value: UserInfo.share.expensesGroupId)
     private let detailTypeId = BehaviorRelay<String>(value: UserInfo.share.expensesTypeId)
     
-    private var accountId = ""
-    var accountName = BehaviorRelay<String>(value: "")
+    private var accountId = UserInfo.share.accountId
+    let accountName = BehaviorRelay<String>(value: "")
     
-    private var toAccountId = ""
-    var toAccountName = BehaviorRelay<String>(value: "")
+    private var toAccountId = UserInfo.share.transferToAccountId
+    let toAccountName = BehaviorRelay<String>(value: "")
     
     let memo = BehaviorRelay<String>(value: "")
     
@@ -43,6 +43,7 @@ class AddDetailViewModel: BaseViewModel {
         
         detailGroupModels.accept(RealmManager.share.getDetailGroup(billType: billingType))
         setSelectValue()
+        getAccountName()
     }
 }
 
@@ -68,6 +69,7 @@ extension AddDetailViewModel {
         
         setAccountId(data.accountId.stringValue)
         setToAccountId(data.toAccountId.stringValue)
+        setSelectValue()
         
         isEdit = true
     }
@@ -89,24 +91,41 @@ extension AddDetailViewModel {
         detail.date           = UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd")
         detail.modifyDateTime = Date().string(withFormat: "yyyy-MM-dd")
         
+        UserInfo.share.accountId = accountId.stringValue
+        
         if billingType == .transfer, let toAccountId = try? ObjectId(string: toAccountId) {
             detail.toAccountId    = toAccountId
             detail.toAccountName  = toAccountName.value
+            
+            UserInfo.share.transferToAccountId = toAccountId.stringValue
         }
         
         if isEdit {
             try! RealmManager.share.realm.commitWrite()
         } else {
+            
+            switch billingType {
+            case .spend:
+                UserInfo.share.expensesGroupId = detailGroupId.value
+                UserInfo.share.expensesTypeId = detailTypeId.value
+            case .income:
+                UserInfo.share.incomeGroupId = detailGroupId.value
+                UserInfo.share.incomeTypeId = detailTypeId.value
+            case .transfer:
+                UserInfo.share.transferGroupId = detailGroupId.value
+                UserInfo.share.trnasferTypeId = detailTypeId.value
+            }
+            
             RealmManager.share.saveData(detail)
         }
         
         if let transferFee = transferFee.value.int, transferFee > 0 {
             let transferFeeModel = DetailModel()
-            transferFeeModel.billingType    = billingType.rawValue
+            transferFeeModel.billingType    = 0
             transferFeeModel.accountId      = accountId
             transferFeeModel.accountName    = accountName.value
-            transferFeeModel.detailGroup    = detailGroupId.value
-            transferFeeModel.detailType     = detailTypeId.value
+            transferFeeModel.detailGroup    = UserInfo.share.transferFeeGroupId
+            transferFeeModel.detailType     = UserInfo.share.transferFeeTypeId
             transferFeeModel.amount         = transferFee
             transferFeeModel.memo           = "轉帳手續費"
             transferFeeModel.date           = UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd")
@@ -115,6 +134,10 @@ extension AddDetailViewModel {
             RealmManager.share.saveData(transferFeeModel)
         }
         
+    }
+    
+    func delDetail() {
+        RealmManager.share.deleteDetail(detail.id)
     }
     
     func setBillingType(_ billingType: BillingType) {
@@ -164,35 +187,16 @@ extension AddDetailViewModel {
 // MARK: Selected Group
 extension AddDetailViewModel {
     func setSelectGroup(_ groupId: String) {
-        switch billingType {
-        case .spend:
-            UserInfo.share.expensesGroupId = groupId
-        case .income:
-            UserInfo.share.incomeGroupId = groupId
-        case .transfer:
-            UserInfo.share.transferGroupId = groupId
-        }
-        
         detailGroupId.accept(groupId)
-        setSelectValue()
+        detailTypeModels.accept(RealmManager.share.getDetailType(detailGroupId.value))
     }
     
     func setSelectType(_ typeId: String) {
-        switch billingType {
-        case .spend:
-            UserInfo.share.expensesTypeId = typeId
-        case .income:
-            UserInfo.share.incomeTypeId = typeId
-        case .transfer:
-            UserInfo.share.trnasferTypeId = typeId
-        }
-        
         detailTypeId.accept(typeId)
         setSelectValue()
     }
     
     private func setSelectValue() {
         typeName.accept(DBTools.detailTypeToString(billingType: billingType, detailGroupId: detailGroupId.value, detailTypeId: detailTypeId.value))
-        detailTypeModels.accept(RealmManager.share.getDetailType(detailGroupId.value))
     }
 }

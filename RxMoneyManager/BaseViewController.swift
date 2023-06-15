@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import SamUtils
 import RxSwift
 import RxCocoa
+import SnapKit
+import RxGesture
 
-class BaseViewViewController: UIViewController {
+class BaseViewController: UIViewController {
 
     var safeAreaLayoutGuide: UILayoutGuide!
     let disposeBag = DisposeBag()
@@ -19,6 +22,12 @@ class BaseViewViewController: UIViewController {
 
         self.view.backgroundColor = .white
         self.safeAreaLayoutGuide = self.view.safeAreaLayoutGuide
+        
+        self.initView()
+    }
+    
+    func initView() {
+        
     }
 
 }
