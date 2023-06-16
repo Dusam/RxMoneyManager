@@ -29,6 +29,7 @@ class AddDetailViewModel: BaseViewModel {
     
     private var accountId = UserInfo.share.accountId
     let accountName = BehaviorRelay<String>(value: "")
+    let accountModels = BehaviorRelay<[AccountModel]>(value: [])
     
     private var toAccountId = UserInfo.share.transferToAccountId
     let toAccountName = BehaviorRelay<String>(value: "")
@@ -172,7 +173,7 @@ extension AddDetailViewModel {
         getAccountName()
     }
     
-    func getAccountName() {
+    private func getAccountName() {
         if !accountId.isEmpty {
             accountName.accept(RealmManager.share.getAccount(accountId).first?.name ?? "")
         }
@@ -180,6 +181,10 @@ extension AddDetailViewModel {
         if !toAccountId.isEmpty {
             toAccountName.accept(RealmManager.share.getAccount(toAccountId).first?.name ?? "")
         }
+    }
+    
+    func getAccounts() {
+        accountModels.accept(RealmManager.share.getAccount())
     }
 }
 

@@ -240,17 +240,23 @@ extension AddDetailViewController {
                 switch indexPath.row {
                 case 0:
                     // 選擇帳戶
-                    break
+                    let vc = ChooseAccountViewController(.normal, addDetailVM: self?.addDetailVM)
+                    self?.push(vc: vc)
+                    
                 case 1:
                     // 選擇帳戶
-                    break
+                    let vc = ChooseAccountViewController(.transfer, addDetailVM: self?.addDetailVM)
+                    self?.push(vc: vc)
+                    
                 case 2:
                     // 轉帳手續費
                     self?.addDetailVM.setShowCalcutor(true)
                     self?.calcutor.setEditType(isEditAmount: false)
+                    
                 case 3:
                     let vc = ChooseTypeViewController(addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
+                    
                 default:
                     break
                 }
@@ -261,9 +267,12 @@ extension AddDetailViewController {
                 case 0:
                     let vc = ChooseTypeViewController(addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
+                    
                 case 1:
                     // 選擇帳戶
-                    break
+                    let vc = ChooseAccountViewController(.normal, addDetailVM: self?.addDetailVM)
+                    self?.push(vc: vc)
+                    
                 case 2:
                     // 填寫備註
                     break

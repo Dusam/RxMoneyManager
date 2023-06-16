@@ -37,7 +37,7 @@ class DetailViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        DetailViewModel.shared.getDetail()
+//        DetailViewModel.shared.getDetail()
     }
     
     // 設定標題列
@@ -76,7 +76,7 @@ class DetailViewController: BaseViewController {
                     cell.titleLabel.textColor = .black
                     cell.amountLabel.text = "$\(data.amount.string)"
                     cell.amountLabel.textColor = billingType?.forgroundColor
-                    cell.memoLabel.text = data.memo.replacing("\n", with: " ")
+                    cell.memoLabel.text = data.memo.replacingOccurrences(of: "\n", with: " ")
                     cell.accountLabel.text = billingType == .transfer ? "\(data.accountName) -> \(data.toAccountName)" : data.accountName
                     
                     cell.memoLabel.isHidden = false

@@ -15,7 +15,7 @@ enum HeaderType {
 
 class HeaderViewModel {
     var currentDate = BehaviorRelay<String>(value: UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
-    var currentTime = BehaviorRelay<String>(value: UserInfo.share.selectedDate.string(withFormat: "HH:mm"))
+//    var currentTime = BehaviorRelay<String>(value: UserInfo.share.selectedDate.string(withFormat: "HH:mm"))
     
     private var headerType: HeaderType = .detail
     
