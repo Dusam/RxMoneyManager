@@ -37,7 +37,8 @@ class DetailViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        DetailViewModel.shared.getDetail()
+        // 與新增時選擇的日期同步
+        headerView.toSelectedDate()
     }
     
     // 設定標題列

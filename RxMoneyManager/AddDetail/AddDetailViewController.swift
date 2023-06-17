@@ -28,16 +28,6 @@ class AddDetailViewController: BaseViewController {
     var addType: AddDetailType = .add
     var detailModel: DetailModel = DetailModel()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    deinit {
-        #if DEBUG
-        print("AddDetailViewController deinit")
-        #endif
-    }
-    
     override func initView() {
         amountView = self.setUpAmountView()
         self.setUpSegment()
@@ -50,6 +40,12 @@ class AddDetailViewController: BaseViewController {
         if addType == .edit {
             addDetailVM.setEditData(detailModel)
         }
+    }
+
+    deinit {
+        #if DEBUG
+        print("AddDetailViewController deinit")
+        #endif
     }
 }
 
@@ -134,7 +130,7 @@ extension AddDetailViewController {
             .controlEvent(.editingDidBegin)
             .subscribe(onNext: { [weak self] in
                 self?.amountTextField.resignFirstResponder()
-                self?.addDetailVM.setShowCalcutor(true)
+                self?.setShowCalcutor(true)
                 self?.calcutor.setEditType(isEditAmount: true)
             })
             .disposed(by: disposeBag)
@@ -193,6 +189,14 @@ extension AddDetailViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    private func setShowCalcutor(_ show: Bool) {
+        if !show {
+            amountTextField.resignFirstResponder()
+        }
+        self.addDetailVM.setShowCalcutor(show)
+        
+    }
 }
 
 
@@ -240,20 +244,23 @@ extension AddDetailViewController {
                 switch indexPath.row {
                 case 0:
                     // 選擇帳戶
+                    self?.setShowCalcutor(false)
                     let vc = ChooseAccountViewController(.normal, addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
                 case 1:
                     // 選擇帳戶
+                    self?.setShowCalcutor(false)
                     let vc = ChooseAccountViewController(.transfer, addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
                 case 2:
                     // 轉帳手續費
-                    self?.addDetailVM.setShowCalcutor(true)
+                    self?.setShowCalcutor(true)
                     self?.calcutor.setEditType(isEditAmount: false)
                     
                 case 3:
+                    self?.setShowCalcutor(false)
                     let vc = ChooseTypeViewController(addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
@@ -265,11 +272,13 @@ extension AddDetailViewController {
                 
                 switch indexPath.row {
                 case 0:
+                    self?.setShowCalcutor(false)
                     let vc = ChooseTypeViewController(addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
                 case 1:
                     // 選擇帳戶
+                    self?.setShowCalcutor(false)
                     let vc = ChooseAccountViewController(.normal, addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     

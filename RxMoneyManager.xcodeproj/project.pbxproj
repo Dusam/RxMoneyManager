@@ -56,6 +56,7 @@
 		687F0D182A3C34EB009A81AE /* ChooseAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687F0D172A3C34EB009A81AE /* ChooseAccountViewController.swift */; };
 		687F0D1A2A3C3A2A009A81AE /* ChooseAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687F0D192A3C3A2A009A81AE /* ChooseAccountCell.swift */; };
 		687F0D1D2A3C4660009A81AE /* AddAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687F0D1C2A3C4660009A81AE /* AddAccountViewController.swift */; };
+		687F0D202A3D9160009A81AE /* AddAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687F0D1F2A3D9160009A81AE /* AddAccountViewModel.swift */; };
 		68935E2B2A2586DB004849A8 /* CalcutorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68935E2A2A2586DB004849A8 /* CalcutorButton.swift */; };
 		68935E2D2A2587EA004849A8 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68935E2C2A2587EA004849A8 /* CalculatorView.swift */; };
 		68935E2F2A258891004849A8 /* CalculatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68935E2E2A258891004849A8 /* CalculatorViewModel.swift */; };
@@ -122,6 +123,7 @@
 		687F0D172A3C34EB009A81AE /* ChooseAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseAccountViewController.swift; sourceTree = "<group>"; };
 		687F0D192A3C3A2A009A81AE /* ChooseAccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseAccountCell.swift; sourceTree = "<group>"; };
 		687F0D1C2A3C4660009A81AE /* AddAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewController.swift; sourceTree = "<group>"; };
+		687F0D1F2A3D9160009A81AE /* AddAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewModel.swift; sourceTree = "<group>"; };
 		68935E2A2A2586DB004849A8 /* CalcutorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcutorButton.swift; sourceTree = "<group>"; };
 		68935E2C2A2587EA004849A8 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
 		68935E2E2A258891004849A8 /* CalculatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewModel.swift; sourceTree = "<group>"; };
@@ -320,9 +322,18 @@
 		687F0D1B2A3C4575009A81AE /* AddAccount */ = {
 			isa = PBXGroup;
 			children = (
+				687F0D1E2A3D914E009A81AE /* ViewModel */,
 				687F0D1C2A3C4660009A81AE /* AddAccountViewController.swift */,
 			);
 			path = AddAccount;
+			sourceTree = "<group>";
+		};
+		687F0D1E2A3D914E009A81AE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				687F0D1F2A3D9160009A81AE /* AddAccountViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		68935E282A2586BF004849A8 /* Calcutor */ = {
@@ -599,6 +610,7 @@
 				680E6E2B2A20805000874D22 /* ExpensesClothing.swift in Sources */,
 				6896C4C52A20B12100F18E6D /* HeaderViewModel.swift in Sources */,
 				68935E2F2A258891004849A8 /* CalculatorViewModel.swift in Sources */,
+				687F0D202A3D9160009A81AE /* AddAccountViewModel.swift in Sources */,
 				680E6E292A20805000874D22 /* AccountType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

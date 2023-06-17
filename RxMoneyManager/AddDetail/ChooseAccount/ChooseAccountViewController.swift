@@ -74,11 +74,11 @@ extension ChooseAccountViewController {
             cell.accessoryType = .none
             
             if self.chooseAccountType == .normal {
-                if data.id.stringValue == UserInfo.share.accountId {
+                if data.id.stringValue == self.addDetailVM.getAccountId() {
                     cell.accessoryType = .checkmark
                 }
             } else {
-                if data.id.stringValue == UserInfo.share.transferToAccountId {
+                if data.id.stringValue == self.addDetailVM.getToAccountId() {
                     cell.accessoryType = .checkmark
                 }
             }

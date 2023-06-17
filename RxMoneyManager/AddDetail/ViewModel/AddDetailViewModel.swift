@@ -168,9 +168,17 @@ extension AddDetailViewModel {
         getAccountName()
     }
     
+    func getAccountId() -> String{
+        return self.accountId
+    }
+    
     func setToAccountId(_ toAccountId: String) {
         self.toAccountId = toAccountId
         getAccountName()
+    }
+    
+    func getToAccountId() -> String{
+        return self.toAccountId
     }
     
     private func getAccountName() {

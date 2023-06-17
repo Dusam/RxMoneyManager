@@ -36,6 +36,10 @@ class HeaderView: UIView {
         #endif
     }
     
+    func toSelectedDate() {
+        headerVM.toSelectedDate()
+    }
+    
     private func setUpHeaderView() {
         
         // 設定橫向 StackView

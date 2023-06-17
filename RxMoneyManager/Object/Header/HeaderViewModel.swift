@@ -44,6 +44,11 @@ class HeaderViewModel {
         getDetail()
     }
     
+    func toSelectedDate() {
+        currentDate.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
+        getDetail()
+    }
+    
     private func getDetail() {
         if headerType == .detail {
             DetailViewModel.shared.getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))

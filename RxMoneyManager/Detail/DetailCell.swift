@@ -74,7 +74,7 @@ class DetailCell: UITableViewCell {
             memoLabel.font = .systemFont(ofSize: 16)
             
             memoLabel.snp.makeConstraints { make in
-                make.width.equalToSuperview().multipliedBy(0.65)
+                make.width.equalToSuperview().multipliedBy(0.5)
             }
         }
         
