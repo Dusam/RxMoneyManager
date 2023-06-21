@@ -21,27 +21,38 @@ class AddDetailViewController: BaseViewController {
     private let addDetailVM = AddDetailViewModel()
     private var calcutor: CalculatorView!
     
+    private var typeSegment: UISegmentedControl!
     private var amountView: UIView!
     private var amountTextField: UITextField!
     private var headerView: HeaderView!
+    private var detailTableView: UITableView!
+    private var saveButton: UIButton!
+    private var delButton: UIButton!
     
     var addType: AddDetailType = .add
     var detailModel: DetailModel = DetailModel()
     
-    override func initView() {
+    override func setUpView() {
         amountView = self.setUpAmountView()
-        self.setUpSegment()
-        self.setUpHeaderView()
-        self.setUpAddDetailView()
-        self.setUpButton()
-        self.createCalcutorView()
-        self.bindCalcutorView()
+        setUpSegment()
+        setUpHeaderView()
+        setUpAddDetailView()
+        setUpButton()
+        createCalcutorView()
         
         if addType == .edit {
             addDetailVM.setEditData(detailModel)
         }
     }
-
+    
+    override func bindUI() {
+        bindCalcutorView()
+        bindTypeSegment()
+        bindAmountTextField()
+        bindDetailTableView()
+        bindButtons()
+    }
+    
     deinit {
         #if DEBUG
         print("AddDetailViewController deinit")
@@ -49,36 +60,26 @@ class AddDetailViewController: BaseViewController {
     }
 }
 
-// MARK: Amount
+// MARK: SetUpAmount
 extension AddDetailViewController {
     private func setUpSegment() {
-        let segment = UISegmentedControl()
-        segment.segmentTitles = BillingType.allCases.map{ $0.name }
-        segment.selectedSegmentIndex = 0
+        typeSegment = UISegmentedControl()
+        typeSegment.segmentTitles = BillingType.allCases.map{ $0.name }
+        typeSegment.selectedSegmentIndex = 0
+        typeSegment.backgroundColor = UserInfo.share.themeColor.isLight ? .white : UserInfo.share.themeColor
+        typeSegment.selectedSegmentTintColor = UserInfo.share.themeColor.isLight ? UserInfo.share.themeColor : .white
+        typeSegment.setTitleTextAttributes([.foregroundColor: UserInfo.share.themeColor.isLight ? UIColor.white : UIColor.black], for: .selected)
+        typeSegment.setTitleTextAttributes([.foregroundColor: UserInfo.share.themeColor.isLight ? UIColor.black : UIColor.white], for: .normal)
         
-        segment.rx.selectedSegmentIndex
+        typeSegment.rx.selectedSegmentIndex
             .bind(to: addDetailVM.selectedSegmentRelay)
             .disposed(by: disposeBag)
         
-        navigationItem.titleView = segment
+        navigationItem.titleView = typeSegment
         
-        segment.snp.makeConstraints { make in
+        typeSegment.snp.makeConstraints { make in
             make.width.equalTo(self.view.bounds.width * 0.6)
         }
-        
-        // 編輯時也需要依照選擇的項目同步選擇的項目
-        addDetailVM.selectedSegmentRelay
-            .bind(to: segment.rx.selectedSegmentIndex)
-            .disposed(by: disposeBag)
-        
-        addDetailVM.selectedSegmentRelay
-            .subscribe(onNext: { [weak self] selectedIndex in
-                guard let billType = BillingType(rawValue: selectedIndex) else { return }
-                self?.addDetailVM.setBillingType(billType)
-                self?.amountTextField.textColor = billType.forgroundColor
-            })
-            .disposed(by: disposeBag)
-        
     }
     
     private func setUpAmountView() -> UIView {
@@ -120,6 +121,30 @@ extension AddDetailViewController {
             make.width.equalToSuperview().multipliedBy(0.3)
         }
         
+        
+        
+        return containerView
+    }
+}
+
+// MARK: BindAmount
+extension AddDetailViewController {
+    private func bindTypeSegment() {
+        // 編輯時也需要依照選擇的項目同步選擇的項目
+        addDetailVM.selectedSegmentRelay
+            .bind(to: typeSegment.rx.selectedSegmentIndex)
+            .disposed(by: disposeBag)
+        
+        addDetailVM.selectedSegmentRelay
+            .subscribe(onNext: { [weak self] selectedIndex in
+                guard let billType = BillingType(rawValue: selectedIndex) else { return }
+                self?.addDetailVM.setBillingType(billType)
+                self?.amountTextField.textColor = billType.forgroundColor
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAmountTextField() {
         // 綁定數字
         addDetailVM.amount
             .asDriver(onErrorJustReturn: "0")
@@ -138,8 +163,6 @@ extension AddDetailViewController {
         if addType == .add {
             amountTextField.becomeFirstResponder()
         }
-        
-        return containerView
     }
 }
 
@@ -203,21 +226,23 @@ extension AddDetailViewController {
 // MARK: AddDetailView
 extension AddDetailViewController {
     private func setUpAddDetailView() {
-        let tableView = UITableView()
-        view.addSubview(tableView)
+        detailTableView = UITableView()
+        view.addSubview(detailTableView)
         
-        tableView.register(cellWithClass: AddDetailCell.self)
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        detailTableView.register(cellWithClass: AddDetailCell.self)
+        detailTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
-        tableView.snp.makeConstraints { make in
+        detailTableView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom)
             make.left.right.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
-        
+    }
+    
+    private func bindDetailTableView() {
         addDetailVM.addDetailCellModels
             .asDriver()
-            .drive(tableView.rx.items(cellIdentifier: "AddDetailCell", cellType: AddDetailCell.self)) { [weak self] row, value, cell in
+            .drive(detailTableView.rx.items(cellIdentifier: "AddDetailCell", cellType: AddDetailCell.self)) { [weak self] row, value, cell in
                 cell.disposeBag = DisposeBag()
                 
                 cell.addTitleLabel.text = value
@@ -237,20 +262,19 @@ extension AddDetailViewController {
             }
             .disposed(by: disposeBag)
         
-        tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+        detailTableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            self?.setShowCalcutor(false)
             
             if self?.addDetailVM.selectedSegmentRelay.value == 2 {
                 
                 switch indexPath.row {
                 case 0:
                     // 選擇帳戶
-                    self?.setShowCalcutor(false)
                     let vc = ChooseAccountViewController(.normal, addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
                 case 1:
                     // 選擇帳戶
-                    self?.setShowCalcutor(false)
                     let vc = ChooseAccountViewController(.transfer, addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
@@ -260,8 +284,11 @@ extension AddDetailViewController {
                     self?.calcutor.setEditType(isEditAmount: false)
                     
                 case 3:
-                    self?.setShowCalcutor(false)
                     let vc = ChooseTypeViewController(addDetailVM: self?.addDetailVM)
+                    self?.push(vc: vc)
+                    
+                case 4:
+                    let vc = MemoViewController(addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
                 default:
@@ -272,27 +299,26 @@ extension AddDetailViewController {
                 
                 switch indexPath.row {
                 case 0:
-                    self?.setShowCalcutor(false)
                     let vc = ChooseTypeViewController(addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
                 case 1:
                     // 選擇帳戶
-                    self?.setShowCalcutor(false)
                     let vc = ChooseAccountViewController(.normal, addDetailVM: self?.addDetailVM)
                     self?.push(vc: vc)
                     
                 case 2:
                     // 填寫備註
-                    break
+                    let vc = MemoViewController(addDetailVM: self?.addDetailVM)
+                    self?.push(vc: vc)
                 default:
                     break
                 }
                 
             }
             
-            tableView.deselectRow(at: indexPath, animated: true)
-
+            self?.detailTableView.deselectRow(at: indexPath, animated: true)
+            
         }).disposed(by: disposeBag)
     }
     
@@ -308,7 +334,10 @@ extension AddDetailViewController {
         }
         
         if row == 2 {
-            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
+            self.addDetailVM.memo
+                .map{ $0.replacingOccurrences(of: "\n", with: " ")}
+                .asDriver(onErrorJustReturn: "")
+                .drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
     }
     
@@ -324,7 +353,10 @@ extension AddDetailViewController {
         }
         
         if row == 2 {
-            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
+            self.addDetailVM.memo
+                .map{ $0.replacingOccurrences(of: "\n", with: " ")}
+                .asDriver(onErrorJustReturn: "")
+                .drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
     }
     
@@ -342,7 +374,10 @@ extension AddDetailViewController {
         case 3:
             self.addDetailVM.typeName.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         case 4:
-            self.addDetailVM.memo.asDriver().drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
+            self.addDetailVM.memo
+                .map{ $0.replacingOccurrences(of: "\n", with: " ")}
+                .asDriver(onErrorJustReturn: "")
+                .drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         default:
             break
         }
@@ -360,30 +395,35 @@ extension AddDetailViewController {
             make.height.equalTo(safeAreaLayoutGuide).multipliedBy(0.08)
         }
         
-        let saveButton = UIButton()
+        saveButton = UIButton()
         saveButton.setTitle(R.string.localizable.save(), for: .normal)
         saveButton.setTitleColor(R.color.transferColor(), for: .normal)
         saveButton.titleLabel?.font = .systemFont(ofSize: 20)
-        saveButton.rx.tap.subscribe(onNext: { [weak self] in
-            self?.addDetailVM.saveDetail()
-            self?.pop()
-        })
-        .disposed(by: disposeBag)
         
-        let delButton = UIButton()
+        
+        delButton = UIButton()
         delButton.setTitle(R.string.localizable.delete(), for: .normal)
         delButton.setTitleColor(R.color.spendColor(), for: .normal)
         delButton.titleLabel?.font = .systemFont(ofSize: 20)
-        delButton.rx.tap.subscribe(onNext: { [weak self] in
-            self?.addDetailVM.delDetail()
-            self?.pop()
-        })
-        .disposed(by: disposeBag)
         
         stackView.addArrangedSubviews([delButton, saveButton])
         
         if addType == .add {
             delButton.isHidden = true
         }
+    }
+    
+    private func bindButtons() {
+        saveButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.addDetailVM.saveDetail()
+            self?.pop()
+        })
+        .disposed(by: disposeBag)
+        
+        delButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.addDetailVM.delDetail()
+            self?.pop()
+        })
+        .disposed(by: disposeBag)
     }
 }

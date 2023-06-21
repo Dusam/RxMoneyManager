@@ -22,6 +22,7 @@ class ChooseAccountViewController: BaseViewController {
     private var addDetailVM: AddDetailViewModel!
     private var chooseAccountType: ChooseAccountType = .normal
     
+    private var accountTableView: UITableView!
     private var addButton: UIButton!
     
     init(_ chooseAccountType: ChooseAccountType, addDetailVM: AddDetailViewModel!) {
@@ -40,10 +41,15 @@ class ChooseAccountViewController: BaseViewController {
         #endif
     }
     
-    override func initView() {
+    override func setUpView() {
         self.setBackButton(title: R.string.localizable.account())
         setUpAccountTableView()
         setUpAddButton()
+    }
+    
+    override func bindUI() {
+        bindAccountTableView()
+        bindAddButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,18 +63,40 @@ class ChooseAccountViewController: BaseViewController {
 
 }
 
+// MARK: SetUpView
 extension ChooseAccountViewController {
     private func setUpAccountTableView() {
-        let tableView = UITableView()
-        tableView.register(cellWithClass: ChooseAccountCell.self)
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        view.addSubview(tableView)
+        accountTableView = UITableView()
+        accountTableView.register(cellWithClass: ChooseAccountCell.self)
+        accountTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        view.addSubview(accountTableView)
         
-        tableView.snp.makeConstraints { make in
+        accountTableView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
         }
+    }
+    
+    private func setUpAddButton() {
+        addButton = UIButton()
+        addButton.tintColor = .white
+        addButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30)), for: .normal)
+        addButton.backgroundColor = .blue
         
-        addDetailVM.accountModels.bind(to: tableView.rx.items(cellIdentifier: "ChooseAccountCell", cellType: ChooseAccountCell.self)) { row, data, cell in
+        view.addSubview(addButton)
+        
+        addButton.snp.makeConstraints { make in
+            make.bottom.right.equalTo(safeAreaLayoutGuide).offset(-20)
+            make.width.equalTo(addButton.snp.height)
+            make.width.equalTo(safeAreaLayoutGuide).multipliedBy(0.15)
+        }
+    }
+}
+
+
+// MARK: BindUI
+extension ChooseAccountViewController {
+    private func bindAccountTableView() {
+        addDetailVM.accountModels.bind(to: accountTableView.rx.items(cellIdentifier: "ChooseAccountCell", cellType: ChooseAccountCell.self)) { row, data, cell in
             cell.titleLabel.text = data.name
             cell.titleLabel.paddingLeft = 10
             cell.accessoryType = .none
@@ -85,7 +113,7 @@ extension ChooseAccountViewController {
         }
         .disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(AccountModel.self).subscribe(onNext: { [weak self] data in
+        accountTableView.rx.modelSelected(AccountModel.self).subscribe(onNext: { [weak self] data in
             if self?.chooseAccountType == .normal {
                 self?.addDetailVM.setAccountId(data.id.stringValue)
             } else {
@@ -97,26 +125,11 @@ extension ChooseAccountViewController {
         .disposed(by: disposeBag)
     }
     
-    private func setUpAddButton() {
-        addButton = UIButton()
-        addButton.tintColor = .white
-        addButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30)), for: .normal)
-        addButton.backgroundColor = .blue
-        
-        view.addSubview(addButton)
-        
-        addButton.snp.makeConstraints { make in
-            make.bottom.right.equalTo(safeAreaLayoutGuide).offset(-20)
-            make.width.equalTo(addButton.snp.height)
-            make.width.equalTo(safeAreaLayoutGuide).multipliedBy(0.15)
-        }
-        
-        
+    private func bindAddButton() {
         addButton.rx.tap.subscribe(onNext: {
             let vc = AddAccountViewController()
             self.push(vc: vc)
         })
         .disposed(by: disposeBag)
-
     }
 }

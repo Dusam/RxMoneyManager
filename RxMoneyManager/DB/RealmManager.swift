@@ -127,7 +127,7 @@ extension RealmManager {
 //        try! realm.commitWrite()
 //    }
     
-    func getCommonMemos(_ userId: ObjectId, billingType: Int, groupId: String, memo: String) -> [MemoModel] {
+    func getCommonMemos(billingType: Int, groupId: String, memo: String) -> [MemoModel] {
         if memo.isEmpty {
             return Array(realm.objects(MemoModel.self)).filter {
                 $0.billingType == billingType && $0.detailGroup == groupId

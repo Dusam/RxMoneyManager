@@ -8,6 +8,18 @@
 import UIKit
 
 class MainNavigationController: UINavigationController {
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        UserInfo.share.themeColor.getWhite(&brightness, alpha: &alpha)
+        
+        if brightness > 0.5 {
+            return .darkContent
+        } else {
+            return .lightContent
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

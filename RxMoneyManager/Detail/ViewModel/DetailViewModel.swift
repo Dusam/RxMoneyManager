@@ -15,9 +15,9 @@ class DetailViewModel {
     static let shared = DetailViewModel()
 
     private var detailDatas: [DetailModel] = []
-    var details = BehaviorRelay<[DetailModel]>(value: [])
-    
-    var totalAmount = BehaviorRelay<Int>(value: 0)
+    let details = BehaviorRelay<[DetailModel]>(value: [])
+    let totalAmount = BehaviorRelay<Int>(value: 0)
+    let themeColor = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
     
     init() {
         getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))

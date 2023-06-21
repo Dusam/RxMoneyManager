@@ -16,7 +16,9 @@ class AddDetailViewModel: BaseViewModel {
     let transferFee = BehaviorRelay<String>(value: "0")
     let isShowCalcutor = BehaviorRelay<Bool>(value: false)
     let selectedSegmentRelay = BehaviorRelay<Int>(value: 0)
-    let addDetailCellModels = BehaviorRelay<[String]>(value: ["類別:", "帳戶", "備註:"])
+    let addDetailCellModels = BehaviorRelay<[String]>(value: [R.string.localizable.type_title(),
+                                                              R.string.localizable.account_title(),
+                                                              R.string.localizable.memo_title()])
     
     private var detail = DetailModel()
     let detailGroupModels = BehaviorRelay<[DetailGroupModel]>(value: [])
@@ -35,6 +37,7 @@ class AddDetailViewModel: BaseViewModel {
     let toAccountName = BehaviorRelay<String>(value: "")
     
     let memo = BehaviorRelay<String>(value: "")
+    let memoModels = BehaviorRelay<[MemoModel]>(value: [])
     
     
     private var isEdit = false
@@ -43,6 +46,7 @@ class AddDetailViewModel: BaseViewModel {
         super.init()
         
         detailGroupModels.accept(RealmManager.share.getDetailGroup(billType: billingType))
+        memoModels.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue, groupId: detailGroupId.value, memo: memo.value))
         setSelectValue()
         getAccountName()
     }
@@ -120,6 +124,7 @@ extension AddDetailViewModel {
             RealmManager.share.saveData(detail)
         }
         
+        // 新增手續費
         if let transferFee = transferFee.value.int, transferFee > 0 {
             let transferFeeModel = DetailModel()
             transferFeeModel.billingType    = 0
@@ -135,6 +140,22 @@ extension AddDetailViewModel {
             RealmManager.share.saveData(transferFeeModel)
         }
         
+        // 儲存備註
+        if !memo.value.isEmpty {
+            getMemos()
+            if memoModels.value.count > 0, let model = memoModels.value.first {
+                // 更新次數
+                RealmManager.share.saveData(model, update: true)
+            } else {
+                let memoModel = MemoModel()
+                memoModel.billingType = billingType.rawValue
+                memoModel.detailGroup = detailGroupId.value
+                memoModel.memo = memo.value
+                memoModel.count = 1
+                RealmManager.share.saveData(memoModel)
+            }
+        }
+        
     }
     
     func delDetail() {
@@ -147,15 +168,23 @@ extension AddDetailViewModel {
         
         switch billingType {
         case .spend:
-            addDetailCellModels.accept(["類別:", "帳戶", "備註:"])
+            addDetailCellModels.accept([R.string.localizable.type_title(),
+                                        R.string.localizable.account_title(),
+                                        R.string.localizable.memo_title()])
             detailGroupId.accept(UserInfo.share.expensesGroupId)
             detailTypeId.accept(UserInfo.share.expensesTypeId)
         case .income:
-            addDetailCellModels.accept(["類別:", "帳戶", "備註:"])
+            addDetailCellModels.accept([R.string.localizable.type_title(),
+                                        R.string.localizable.account_title(),
+                                        R.string.localizable.memo_title()])
             detailGroupId.accept(UserInfo.share.incomeGroupId)
             detailTypeId.accept(UserInfo.share.incomeTypeId)
         case .transfer:
-            addDetailCellModels.accept(["從:", "到", "手續費:", "類別:", "備註:"])
+            addDetailCellModels.accept([R.string.localizable.from_title(),
+                                        R.string.localizable.to_title(),
+                                        R.string.localizable.handlingfee_title(),
+                                        R.string.localizable.type_title(),
+                                        R.string.localizable.memo_title()])
             detailGroupId.accept(UserInfo.share.transferGroupId)
             detailTypeId.accept(UserInfo.share.trnasferTypeId)
         }
@@ -211,5 +240,13 @@ extension AddDetailViewModel {
     
     private func setSelectValue() {
         typeName.accept(DBTools.detailTypeToString(billingType: billingType, detailGroupId: detailGroupId.value, detailTypeId: detailTypeId.value))
+    }
+}
+
+
+// MARK: Memo
+extension AddDetailViewModel {
+    func getMemos() {
+        memoModels.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue, groupId: detailGroupId.value, memo: memo.value))
     }
 }

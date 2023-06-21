@@ -16,6 +16,10 @@ import RxGesture
 class ChooseTypeViewController: BaseViewController {
     
     private var addDetailVM: AddDetailViewModel!
+    
+    private var boardView: UIView!
+    private var groupTableView: UITableView!
+    private var typeTableView: UITableView!
 
     init(addDetailVM: AddDetailViewModel!) {
         self.addDetailVM = addDetailVM
@@ -32,21 +36,25 @@ class ChooseTypeViewController: BaseViewController {
         #endif
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    override func setUpView() {
         setBackButton(title: "選擇類型")
+        
+        setUpBoardView()
+        setUpGroupTableView()
+        setUpTypeTableView()
     }
     
-    override func initView() {
-        setUpView()
+    override func bindUI() {
+        bindGroupTableView()
+        bindTypeTableView()
     }
     
 }
 
+// MARK: SetUpView
 extension ChooseTypeViewController {
-    private func setUpView() {
-        let boardView = UIView()
+    private func setUpBoardView() {
+        boardView = UIView()
         boardView.backgroundColor = .darkGray
         view.addSubview(boardView)
         
@@ -55,8 +63,10 @@ extension ChooseTypeViewController {
             make.top.bottom.equalTo(safeAreaLayoutGuide)
             make.width.equalTo(safeAreaLayoutGuide).multipliedBy(0.002)
         }
-        
-        let groupTableView = UITableView()
+    }
+    
+    private func setUpGroupTableView() {
+        groupTableView = UITableView()
         view.addSubview(groupTableView)
         groupTableView.register(cellWithClass: ChooseTypeCell.self)
         groupTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -65,7 +75,25 @@ extension ChooseTypeViewController {
             make.top.left.bottom.equalTo(safeAreaLayoutGuide)
             make.right.equalTo(boardView.snp.left)
         }
-        
+    }
+    
+    private func setUpTypeTableView() {
+        typeTableView = UITableView()
+        view.addSubview(typeTableView)
+        typeTableView.register(cellWithClass: ChooseTypeCell.self)
+        typeTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        typeTableView.showsVerticalScrollIndicator = false
+        typeTableView.snp.makeConstraints { make in
+            make.top.right.bottom.equalTo(safeAreaLayoutGuide)
+            make.left.equalTo(boardView.snp.right)
+        }
+    }
+}
+
+
+// MARK: BindUI
+extension ChooseTypeViewController {
+    private func bindGroupTableView() {
         addDetailVM.detailGroupModels
             .bind(to: groupTableView.rx.items(cellIdentifier: "ChooseTypeCell", cellType: ChooseTypeCell.self)) { [weak self] row, data, cell in
                 cell.titleLabel.text = data.name
@@ -74,7 +102,7 @@ extension ChooseTypeViewController {
                 if data.id.stringValue == UserInfo.share.expensesGroupId
                     || data.id.stringValue == UserInfo.share.incomeGroupId
                     || data.id.stringValue == UserInfo.share.transferGroupId {
-                    groupTableView.selectRow(at: IndexPath(row: row, section: 0), animated: true, scrollPosition: .none)
+                    self?.groupTableView.selectRow(at: IndexPath(row: row, section: 0), animated: true, scrollPosition: .none)
                     self?.addDetailVM.setSelectGroup(data.id.stringValue)
                 }
             }
@@ -84,18 +112,9 @@ extension ChooseTypeViewController {
             self?.addDetailVM.setSelectGroup(data.id.stringValue)
         })
         .disposed(by: disposeBag)
-        
-        
-        let typeTableView = UITableView()
-        view.addSubview(typeTableView)
-        typeTableView.register(cellWithClass: ChooseTypeCell.self)
-        typeTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        typeTableView.showsVerticalScrollIndicator = false
-        typeTableView.snp.makeConstraints { make in
-            make.top.right.bottom.equalTo(safeAreaLayoutGuide)
-            make.left.equalTo(boardView.snp.right)
-        }
-        
+    }
+    
+    private func bindTypeTableView() {
         addDetailVM.detailTypeModels
             .bind(to: typeTableView.rx.items(cellIdentifier: "ChooseTypeCell", cellType: ChooseTypeCell.self)) { row, data, cell in
                 cell.titleLabel.text = data.name
@@ -109,7 +128,5 @@ extension ChooseTypeViewController {
                 self?.pop()
             })
             .disposed(by: disposeBag)
-        
     }
-
 }

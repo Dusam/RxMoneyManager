@@ -16,22 +16,22 @@ PODS:
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
-  - SamUtils (0.0.5):
+  - SamUtils (1.0.0):
     - Alamofire
     - IQKeyboardManagerSwift
-    - SamUtils/CommonTools (= 0.0.5)
+    - SamUtils/CommonTools (= 1.0.0)
     - SwifterSwift
-  - SamUtils/CommonTools (0.0.5):
+  - SamUtils/CommonTools (1.0.0):
     - Alamofire
     - IQKeyboardManagerSwift
-    - SamUtils/CommonTools/API (= 0.0.5)
-    - SamUtils/CommonTools/Extensions (= 0.0.5)
+    - SamUtils/CommonTools/API (= 1.0.0)
+    - SamUtils/CommonTools/Extensions (= 1.0.0)
     - SwifterSwift
-  - SamUtils/CommonTools/API (0.0.5):
+  - SamUtils/CommonTools/API (1.0.0):
     - Alamofire
     - IQKeyboardManagerSwift
     - SwifterSwift
-  - SamUtils/CommonTools/Extensions (0.0.5):
+  - SamUtils/CommonTools/Extensions (1.0.0):
     - Alamofire
     - IQKeyboardManagerSwift
     - SwifterSwift
@@ -68,7 +68,7 @@ DEPENDENCIES:
   - RxCocoa
   - RxGesture
   - RxSwift
-  - SamUtils
+  - SamUtils (from `/Users/si1302/Desktop/iOS/SamUtils/`)
   - SnapKit
 
 SPEC REPOS:
@@ -82,9 +82,12 @@ SPEC REPOS:
     - RxGesture
     - RxRelay
     - RxSwift
-    - SamUtils
     - SnapKit
     - SwifterSwift
+
+EXTERNAL SOURCES:
+  SamUtils:
+    :path: "/Users/si1302/Desktop/iOS/SamUtils/"
 
 SPEC CHECKSUMS:
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
@@ -96,10 +99,10 @@ SPEC CHECKSUMS:
   RxGesture: f3efb47ed2d26a8082f7b660d4a59970e275a7f8
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
-  SamUtils: 5313431e2bb1e46b749e1697fc8906074153041b
+  SamUtils: 4ecf93b4d83ed7e111fdc14c8567011d19897e26
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwifterSwift: 334181863c416882d97b7a60c05054d9e4d799e2
 
-PODFILE CHECKSUM: f2326157a931fa3e2f97af95851927aec67c54e9
+PODFILE CHECKSUM: f15b4cb1cf2ad21035c041b7e3fd2711b84481b5
 
 COCOAPODS: 1.12.1

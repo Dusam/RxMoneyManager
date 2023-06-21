@@ -26,7 +26,16 @@ class BaseViewController: UIViewController {
         self.initView()
     }
     
-    func initView() {
+    private func initView() {
+        setUpView()
+        bindUI()
+    }
+    
+    func setUpView() {
+        
+    }
+    
+    func bindUI() {
         
     }
 
