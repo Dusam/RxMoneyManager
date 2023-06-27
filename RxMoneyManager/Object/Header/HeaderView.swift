@@ -40,6 +40,14 @@ class HeaderView: UIView {
         headerVM.toSelectedDate()
     }
     
+    func toPerviousDate() {
+        headerVM.toPerviousDate()
+    }
+    
+    func toNextDate() {
+        headerVM.toNextDate()
+    }
+    
     private func setUpHeaderView() {
         
         // 設定橫向 StackView

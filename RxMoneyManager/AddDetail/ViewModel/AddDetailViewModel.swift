@@ -83,6 +83,7 @@ extension AddDetailViewModel {
         guard let amount = amount.value.int, amount > 0, let accountId = try? ObjectId(string: accountId) else { return }
         
         if isEdit {
+            resetDetailStatus()
             RealmManager.share.realm.beginWrite()
         }
         
@@ -124,6 +125,12 @@ extension AddDetailViewModel {
             RealmManager.share.saveData(detail)
         }
         
+        if billingType == .transfer, let toAccountId = try? ObjectId(string: toAccountId) {
+            RealmManager.share.updateAccountMoney(billingType: self.billingType, amount: amount, accountId: accountId, toAccountId: toAccountId)
+        } else {
+            RealmManager.share.updateAccountMoney(billingType: self.billingType, amount: amount, accountId: accountId)
+        }
+        
         // 新增手續費
         if let transferFee = transferFee.value.int, transferFee > 0 {
             let transferFeeModel = DetailModel()
@@ -138,6 +145,7 @@ extension AddDetailViewModel {
             transferFeeModel.modifyDateTime = Date().string(withFormat: "yyyy-MM-dd")
             
             RealmManager.share.saveData(transferFeeModel)
+            RealmManager.share.updateAccountMoney(billingType: .spend, amount: transferFee, accountId: accountId)
         }
         
         // 儲存備註
@@ -159,6 +167,7 @@ extension AddDetailViewModel {
     }
     
     func delDetail() {
+        resetDetailStatus()
         RealmManager.share.deleteDetail(detail.id)
     }
     
@@ -222,6 +231,25 @@ extension AddDetailViewModel {
     
     func getAccounts() {
         accountModels.accept(RealmManager.share.getAccount())
+    }
+    
+    private func resetDetailStatus() {
+        if let billingType = BillingType(rawValue: detail.billingType) {
+            // expenses -> other
+            if billingType == .spend {
+                RealmManager.share.updateAccountMoney(billingType: .income, amount: detail.amount, accountId: self.detail.accountId)
+            }
+            
+            // income -> other
+            if billingType == .income {
+                RealmManager.share.updateAccountMoney(billingType: .spend, amount: detail.amount, accountId: detail.accountId)
+            }
+            
+            // transfer -> other
+            if billingType == .transfer {
+                RealmManager.share.updateAccountMoney(billingType: .transfer, amount: detail.amount, accountId: detail.toAccountId, toAccountId: self.detail.accountId)
+            }
+        }
     }
 }
 

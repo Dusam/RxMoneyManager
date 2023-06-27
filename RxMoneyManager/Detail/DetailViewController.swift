@@ -10,6 +10,7 @@ import SamUtils
 import RxSwift
 import RxCocoa
 import SnapKit
+import RxGesture
 
 class DetailViewController: BaseViewController {
     
@@ -44,6 +45,7 @@ class DetailViewController: BaseViewController {
         bindThemeColor()
         bindTableView()
         bindButtons()
+        listenSwipe()
     }
 }
 
@@ -141,7 +143,7 @@ extension DetailViewController {
             .disposed(by: disposeBag)
         
         // 選取項目
-        detailTableView.rx.modelSelected(DetailModel.self).subscribe(onNext: { detail in
+        detailTableView.rx.modelSelected(DetailModel.self).subscribe(onNext: { [weak self] detail in
             let addDetail = AddDetailViewController()
 
             if detail.billingType < 3 {
@@ -151,7 +153,7 @@ extension DetailViewController {
                 addDetail.addType = .add
             }
             
-            self.push(vc: addDetail)
+            self?.push(vc: addDetail)
         })
         .disposed(by: disposeBag)
         
@@ -178,13 +180,33 @@ extension DetailViewController {
     private func bindButtons() {
         accountButton.rx.tap
             .subscribe(onNext: {
-                
+                self.push(vc: AccountViewController())
             })
             .disposed(by: disposeBag)
         
         settingButton.rx.tap
             .subscribe(onNext: {
                 self.push(vc: SettingViewController())
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+
+// MARK: GestureSwipe
+extension DetailViewController {
+    private func listenSwipe() {
+        view.rx
+            .swipeGesture(.left, .right)
+            .when(.recognized)
+            .subscribe(onNext: { gesture in
+                if gesture.direction == .left {
+                    // 左滑
+                    self.headerView.toNextDate()
+                } else if gesture.direction == .right {
+                    // 右滑
+                    self.headerView.toPerviousDate()
+                }
             })
             .disposed(by: disposeBag)
     }

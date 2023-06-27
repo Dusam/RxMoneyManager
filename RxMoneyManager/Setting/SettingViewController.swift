@@ -35,6 +35,7 @@ class SettingViewController: BaseViewController {
 extension SettingViewController {
     private func setUpThemeColorView() {
         let themeColorTitle = UILabel()
+        themeColorTitle.font = .systemFont(ofSize: 20)
         themeColorTitle.text = "主題顏色"
         view.addSubview(themeColorTitle)
                 

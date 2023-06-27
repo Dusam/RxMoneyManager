@@ -154,43 +154,51 @@ extension RealmManager {
 //        }
 //    }
     
-//    func updateAccountMoney(billingType: BillingType, amount: Int, accountId: ObjectId, toAccountId: ObjectId = ObjectId()) {
-//
-//        switch billingType {
-//        case .expenses:
-//            let account = realm.objects(AccountModel.self).where {
-//                $0.id == accountId
-//            }.first
-//
-//            try! realm.write {
-//                account?.money -= amount
-//            }
-//
-//
-//        case .income:
-//            let account = realm.objects(AccountModel.self).where {
-//                $0.id == accountId
-//            }.first
-//
-//            try! realm.write {
-//                account?.money += amount
-//            }
-//
-//        case .transfer:
-//            let account = realm.objects(AccountModel.self).where {
-//                $0.id == accountId
-//            }.first
-//
-//            let toAccount = realm.objects(AccountModel.self).where {
-//                $0.id == toAccountId
-//            }.first
-//
-//            try! realm.write {
-//                account?.money -= amount
-//                toAccount?.money += amount
-//            }
-//        }
-//    }
+    func deleteAccount(_ accountlModel: AccountModel) {
+        if let realm = realm {
+            realm.beginWrite()
+            realm.delete(accountlModel)
+            try! realm.commitWrite()
+        }
+    }
+    
+    func updateAccountMoney(billingType: BillingType, amount: Int, accountId: ObjectId, toAccountId: ObjectId = ObjectId()) {
+
+        switch billingType {
+        case .spend:
+            let account = realm.objects(AccountModel.self).where {
+                $0.id == accountId
+            }.first
+
+            try! realm.write {
+                account?.money -= amount
+            }
+
+
+        case .income:
+            let account = realm.objects(AccountModel.self).where {
+                $0.id == accountId
+            }.first
+
+            try! realm.write {
+                account?.money += amount
+            }
+
+        case .transfer:
+            let account = realm.objects(AccountModel.self).where {
+                $0.id == accountId
+            }.first
+
+            let toAccount = realm.objects(AccountModel.self).where {
+                $0.id == toAccountId
+            }.first
+
+            try! realm.write {
+                account?.money -= amount
+                toAccount?.money += amount
+            }
+        }
+    }
 }
 
 // MARK: 使用者自訂的帳戶、群組及類型

@@ -46,6 +46,12 @@ class AddAccountViewController: BaseViewController {
         saveButton.cornerRadius = saveButton.width / 2
     }
     
+    deinit {
+        #if DEBUG
+        print("AddAccountViewController deinit")
+        #endif
+    }
+    
 }
 
 // MARK: SetUpView
@@ -188,7 +194,7 @@ extension AddAccountViewController {
 // MARK: BindUI
 extension AddAccountViewController {
     private func bindButton() {
-        typeButton.rx.tap.subscribe(onNext: {
+        typeButton.rx.tap.subscribe(onNext: { [weak self] in
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
             for type in AccountType.allCases {
@@ -200,13 +206,13 @@ extension AddAccountViewController {
             
             actionSheet.addAction(UIAlertAction(title: "取消", style: .cancel))
             
-            self.present(actionSheet, animated: true)
+            self?.present(actionSheet, animated: true)
         })
         .disposed(by: disposeBag)
         
-        saveButton.rx.tap.subscribe(onNext: {
-            self.addAccountVM.saveAccount()
-            self.pop()
+        saveButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.addAccountVM.saveAccount()
+            self?.pop()
         })
         .disposed(by: disposeBag)
     }
@@ -233,6 +239,10 @@ extension AddAccountViewController {
     private func bindSwitch() {
         addAccountVM.joinTotal
             .bind(to: joinTotalSwitch.rx.isOn)
+            .disposed(by: disposeBag)
+        
+        joinTotalSwitch.rx.isOn
+            .bind(to: addAccountVM.joinTotal)
             .disposed(by: disposeBag)
     }
 }

@@ -52,7 +52,9 @@ class DetailCell: UITableViewCell {
             stackView.addArrangedSubviews([titleLabel, amountLabel])
             
             titleLabel.textAlignment = .left
+            titleLabel.font = .systemFont(ofSize: 18)
             amountLabel.textAlignment = .right
+            amountLabel.font = .systemFont(ofSize: 18)
             
             titleLabel.snp.makeConstraints { make in
                 make.width.equalToSuperview().multipliedBy(0.65)
@@ -71,6 +73,7 @@ class DetailCell: UITableViewCell {
             memoLabel.textColor = .lightGray
             memoLabel.font = .systemFont(ofSize: 16)
             accountLabel.textAlignment = .right
+            accountLabel.adjustsFontSizeToFitWidth = true
             memoLabel.font = .systemFont(ofSize: 16)
             
             memoLabel.snp.makeConstraints { make in
