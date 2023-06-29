@@ -26,7 +26,7 @@ class AddDetailViewModel: BaseViewModel {
     
     private var billingType: BillingType = .spend
     let typeName = BehaviorRelay<String>(value: "")
-    private let detailGroupId = BehaviorRelay<String>(value: UserInfo.share.expensesGroupId)
+    let detailGroupId = BehaviorRelay<String>(value: UserInfo.share.expensesGroupId)
     private let detailTypeId = BehaviorRelay<String>(value: UserInfo.share.expensesTypeId)
     
     private var accountId = UserInfo.share.accountId
@@ -168,7 +168,7 @@ extension AddDetailViewModel {
     
     func delDetail() {
         resetDetailStatus()
-        RealmManager.share.deleteDetail(detail.id)
+        RealmManager.share.delete(detail)
     }
     
     func setBillingType(_ billingType: BillingType) {
@@ -276,5 +276,49 @@ extension AddDetailViewModel {
 extension AddDetailViewModel {
     func getMemos() {
         memoModels.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue, groupId: detailGroupId.value, memo: memo.value))
+    }
+}
+
+
+// MARK: Group
+extension AddDetailViewModel {
+    func addGroup(_ groupName: String) {
+        let group = DetailGroupModel()
+        group.billType = billingType.rawValue
+        group.name = groupName
+        RealmManager.share.saveData(group)
+        
+        setSelectGroup(group.id.stringValue)
+        setSelectType(group.id.stringValue)
+        detailGroupModels.accept(RealmManager.share.getDetailGroup(billType: billingType))
+    }
+    
+    func deleteGroup(_ model: DetailGroupModel) {
+        var models = detailGroupModels.value
+        detailGroupModels.accept(models.removeAll(model))
+        RealmManager.share.delete(model)
+        
+        detailTypeModels.value.forEach { typeModel in
+            RealmManager.share.delete(typeModel)
+        }
+        
+        if let groupId = detailGroupModels.value.first?.id.stringValue {
+            setBillingType(billingType)
+        }
+    }
+    
+    func addType(_ typeName: String) {
+        let type = DetailTypeModel()
+        type.groupId = detailGroupId.value
+        type.name = typeName
+        RealmManager.share.saveData(type)
+        
+        setSelectGroup(detailGroupId.value)
+    }
+    
+    func deleteType(_ model: DetailTypeModel) {
+        var models = detailTypeModels.value
+        detailTypeModels.accept(models.removeAll(model))
+        RealmManager.share.delete(model)
     }
 }

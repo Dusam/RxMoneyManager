@@ -71,10 +71,10 @@ class DetailCell: UITableViewCell {
             
             memoLabel.textAlignment = .left
             memoLabel.textColor = .lightGray
-            memoLabel.font = .systemFont(ofSize: 16)
+            memoLabel.font = .systemFont(ofSize: 18)
             accountLabel.textAlignment = .right
             accountLabel.adjustsFontSizeToFitWidth = true
-            memoLabel.font = .systemFont(ofSize: 16)
+            accountLabel.font = .systemFont(ofSize: 18)
             
             memoLabel.snp.makeConstraints { make in
                 make.width.equalToSuperview().multipliedBy(0.5)

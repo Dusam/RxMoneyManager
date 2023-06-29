@@ -169,6 +169,10 @@ extension DetailViewController {
                 UserInfo.share.themeColor = color
                 self?.setNavigationColor(navigationColor: color)
                 self?.setNeedsStatusBarAppearanceUpdate()
+                self?.accountButton.tintColor = color.isLight ? .black : .white
+                self?.accountButton.setTitleColor(color.isLight ? .black : .white, for: .normal)
+                self?.settingButton.tintColor = color.isLight ? .black : .white
+                self?.settingButton.setTitleColor(color.isLight ? .black : .white, for: .normal)
             })
             .disposed(by: disposeBag)
         
@@ -199,13 +203,13 @@ extension DetailViewController {
         view.rx
             .swipeGesture(.left, .right)
             .when(.recognized)
-            .subscribe(onNext: { gesture in
+            .subscribe(onNext: { [weak self] gesture in
                 if gesture.direction == .left {
                     // 左滑
-                    self.headerView.toNextDate()
+                    self?.headerView.toNextDate()
                 } else if gesture.direction == .right {
                     // 右滑
-                    self.headerView.toPerviousDate()
+                    self?.headerView.toPerviousDate()
                 }
             })
             .disposed(by: disposeBag)

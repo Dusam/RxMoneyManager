@@ -33,6 +33,7 @@ class AddDetailViewController: BaseViewController {
     var detailModel: DetailModel = DetailModel()
     
     override func setUpView() {
+        setBackButton(title: "新增明細")
         amountView = self.setUpAmountView()
         setUpSegment()
         setUpHeaderView()

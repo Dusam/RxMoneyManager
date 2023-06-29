@@ -20,6 +20,9 @@ class ChooseTypeViewController: BaseViewController {
     private var boardView: UIView!
     private var groupTableView: UITableView!
     private var typeTableView: UITableView!
+    private var tabView: UIView!
+    private var addGroupButton: UIButton!
+    private var addTypeButton: UIButton!
 
     init(addDetailVM: AddDetailViewModel!) {
         self.addDetailVM = addDetailVM
@@ -39,6 +42,7 @@ class ChooseTypeViewController: BaseViewController {
     override func setUpView() {
         setBackButton(title: "選擇類型")
         
+        setUpAddButtons()
         setUpBoardView()
         setUpGroupTableView()
         setUpTypeTableView()
@@ -47,6 +51,7 @@ class ChooseTypeViewController: BaseViewController {
     override func bindUI() {
         bindGroupTableView()
         bindTypeTableView()
+        bindAddButtons()
     }
     
 }
@@ -60,7 +65,8 @@ extension ChooseTypeViewController {
         
         boardView.snp.makeConstraints { make in
             make.center.equalTo(safeAreaLayoutGuide)
-            make.top.bottom.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.bottom.equalTo(tabView.snp.top)
             make.width.equalTo(safeAreaLayoutGuide).multipliedBy(0.002)
         }
     }
@@ -72,7 +78,8 @@ extension ChooseTypeViewController {
         groupTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         groupTableView.showsVerticalScrollIndicator = false
         groupTableView.snp.makeConstraints { make in
-            make.top.left.bottom.equalTo(safeAreaLayoutGuide)
+            make.top.left.equalTo(safeAreaLayoutGuide)
+            make.bottom.equalTo(tabView.snp.top)
             make.right.equalTo(boardView.snp.left)
         }
     }
@@ -84,8 +91,41 @@ extension ChooseTypeViewController {
         typeTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         typeTableView.showsVerticalScrollIndicator = false
         typeTableView.snp.makeConstraints { make in
-            make.top.right.bottom.equalTo(safeAreaLayoutGuide)
+            make.top.right.equalTo(safeAreaLayoutGuide)
+            make.bottom.equalTo(tabView.snp.top)
             make.left.equalTo(boardView.snp.right)
+        }
+    }
+    
+    private func setUpAddButtons() {
+        tabView = UIView()
+        tabView.backgroundColor = .white
+        view.addSubview(tabView)
+        tabView.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.08)
+        }
+        
+        addGroupButton = UIButton()
+        addGroupButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20)), for: .normal)
+        tabView.addSubview(addGroupButton)
+        
+        addGroupButton.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(5)
+            make.top.equalToSuperview()
+            make.bottom.equalTo(safeAreaLayoutGuide)
+            make.width.equalTo(safeAreaLayoutGuide).multipliedBy(0.1)
+        }
+        
+        addTypeButton = UIButton()
+        addTypeButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20)), for: .normal)
+        tabView.addSubview(addTypeButton)
+        
+        addTypeButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-5)
+            make.top.equalToSuperview()
+            make.bottom.equalTo(safeAreaLayoutGuide)
+            make.width.equalTo(safeAreaLayoutGuide).multipliedBy(0.1)
         }
     }
 }
@@ -99,19 +139,24 @@ extension ChooseTypeViewController {
                 cell.titleLabel.text = data.name
                 cell.titleLabel.paddingLeft = 15
                 
-                if data.id.stringValue == UserInfo.share.expensesGroupId
-                    || data.id.stringValue == UserInfo.share.incomeGroupId
-                    || data.id.stringValue == UserInfo.share.transferGroupId {
+                if self?.addDetailVM.detailGroupId.value == data.id.stringValue {
                     self?.groupTableView.selectRow(at: IndexPath(row: row, section: 0), animated: true, scrollPosition: .none)
                     self?.addDetailVM.setSelectGroup(data.id.stringValue)
                 }
             }
             .disposed(by: disposeBag)
         
-        groupTableView.rx.modelSelected(DetailGroupModel.self).subscribe(onNext: { [weak self] data in
-            self?.addDetailVM.setSelectGroup(data.id.stringValue)
-        })
-        .disposed(by: disposeBag)
+        groupTableView.rx.modelSelected(DetailGroupModel.self)
+            .subscribe(onNext: { [weak self] data in
+                self?.addDetailVM.setSelectGroup(data.id.stringValue)
+            })
+            .disposed(by: disposeBag)
+        
+        groupTableView.rx.modelDeleted(DetailGroupModel.self)
+            .subscribe(onNext: { [weak self] data in
+                self?.addDetailVM.deleteGroup(data)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindTypeTableView() {
@@ -126,6 +171,54 @@ extension ChooseTypeViewController {
             .subscribe(onNext: { [weak self] data in
                 self?.addDetailVM.setSelectType(data.id.stringValue)
                 self?.pop()
+            })
+            .disposed(by: disposeBag)
+        
+        typeTableView.rx.modelDeleted(DetailTypeModel.self)
+            .subscribe(onNext: { [weak self] data in
+                self?.addDetailVM.deleteType(data)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAddButtons() {
+        addGroupButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                let alert = UIAlertController(title: "新增群組", message: "例: 餐飲食品", preferredStyle: .alert)
+                alert.addTextField { textField in
+                    textField.placeholder = "群組名稱"
+                }
+                
+                let submitAction = UIAlertAction(title: R.string.localizable.add(), style: .default) { [weak self] _ in
+                    guard let groupName = alert.textFields?.first?.text else { return }
+                    self?.addDetailVM.addGroup(groupName)
+                }
+                
+                alert.addAction(submitAction)
+                alert.addAction(UIAlertAction(title: R.string.localizable.cancel(), style: .cancel))
+                
+                self?.present(alert, animated: true)
+                
+            })
+            .disposed(by: disposeBag)
+        
+        addTypeButton.rx.tap
+            .subscribe(onNext: {[weak self] in
+                let alert = UIAlertController(title: "新增類別", message: "例: 午餐", preferredStyle: .alert)
+                alert.addTextField { textField in
+                    textField.placeholder = "類別名稱"
+                }
+                
+                let submitAction = UIAlertAction(title: R.string.localizable.add(), style: .default) { [weak self] _ in
+                    guard let typeName = alert.textFields?.first?.text else { return }
+                    self?.addDetailVM.addType(typeName)
+                }
+                
+                alert.addAction(submitAction)
+                alert.addAction(UIAlertAction(title: R.string.localizable.cancel(), style: .cancel))
+                
+                self?.present(alert, animated: true)
+                
             })
             .disposed(by: disposeBag)
     }

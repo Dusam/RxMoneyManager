@@ -72,6 +72,14 @@ class RealmManager {
         }
     }
     
+    func delete(_ model: Object) {
+        if let realm = realm {
+            realm.beginWrite()
+            realm.delete(model)
+            try! realm.commitWrite()
+        }
+    }
+    
 }
 
 // MARK: Detail Method
@@ -93,15 +101,15 @@ extension RealmManager {
         return []
     }
     
-    func deleteDetail(_ id: ObjectId) {
-        if let realm = realm {
-            let delete = realm.objects(DetailModel.self).filter("id == %@", id)
-            
-            realm.beginWrite()
-            realm.delete(delete)
-            try! realm.commitWrite()
-        }
-    }
+//    func deleteDetail(_ id: ObjectId) {
+//        if let realm = realm {
+//            let delete = realm.objects(DetailModel.self).filter("id == %@", id)
+//
+//            realm.beginWrite()
+//            realm.delete(delete)
+//            try! realm.commitWrite()
+//        }
+//    }
     
     func searchDeatilWithDateRange(_ startDate: Date, _ endDate: Date) -> [DetailModel] {
         if let realm = realm {
@@ -117,15 +125,6 @@ extension RealmManager {
                               
         return []
     }
-    
-//    func saveCommonMemo(memoModel: MemoModel, update: Bool = false) {
-//        realm.beginWrite()
-//        if update {
-//            memoModel.count += 1
-//        }
-//        realm.add(memoModel, update: .modified)
-//        try! realm.commitWrite()
-//    }
     
     func getCommonMemos(billingType: Int, groupId: String, memo: String) -> [MemoModel] {
         if memo.isEmpty {
@@ -146,21 +145,14 @@ extension RealmManager {
 
 // MARK: Account Method
 extension RealmManager {
-//    func saveAccount(_ accountlModel: AccountModel) {
+    
+//    func deleteAccount(_ accountlModel: AccountModel) {
 //        if let realm = realm {
 //            realm.beginWrite()
-//            realm.add(accountlModel, update: .modified)
+//            realm.delete(accountlModel)
 //            try! realm.commitWrite()
 //        }
 //    }
-    
-    func deleteAccount(_ accountlModel: AccountModel) {
-        if let realm = realm {
-            realm.beginWrite()
-            realm.delete(accountlModel)
-            try! realm.commitWrite()
-        }
-    }
     
     func updateAccountMoney(billingType: BillingType, amount: Int, accountId: ObjectId, toAccountId: ObjectId = ObjectId()) {
 

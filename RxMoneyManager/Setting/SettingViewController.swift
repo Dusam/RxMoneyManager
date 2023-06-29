@@ -36,7 +36,7 @@ extension SettingViewController {
     private func setUpThemeColorView() {
         let themeColorTitle = UILabel()
         themeColorTitle.font = .systemFont(ofSize: 20)
-        themeColorTitle.text = "主題顏色"
+        themeColorTitle.text = R.string.localizable.theme_color()
         view.addSubview(themeColorTitle)
                 
         themeColorTitle.snp.makeConstraints { make in
@@ -45,7 +45,6 @@ extension SettingViewController {
             make.width.equalTo(safeAreaLayoutGuide).multipliedBy(0.8)
             make.height.equalTo(safeAreaLayoutGuide).multipliedBy(0.08)
         }
-        
         
         colorPickerButton = UIButton()
         colorPickerButton.backgroundColor = UserInfo.share.themeColor
@@ -68,6 +67,7 @@ extension SettingViewController {
             .subscribe(onNext: {
                 let colorPicker = UIColorPickerViewController()
                 colorPicker.delegate = self
+                colorPicker.selectedColor = UserInfo.share.themeColor
                 self.present(colorPicker, animated: true)
             })
             .disposed(by: disposeBag)

@@ -51,7 +51,7 @@ extension AccountViewModel {
     }
 
     func deleteAccount(_ accountlModel: AccountModel) {
-        RealmManager.share.deleteAccount(accountlModel)
+        RealmManager.share.delete(accountlModel)
         getAccounts()
     }
     

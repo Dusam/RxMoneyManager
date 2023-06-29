@@ -39,7 +39,7 @@ class DetailViewModel {
         detailDatas.removeAll(detail)
         details.accept(detailDatas)
         
-        RealmManager.share.deleteDetail(detail.id)
+        RealmManager.share.delete(detail)
     }
     
     private func countTotalAmount() {
