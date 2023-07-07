@@ -11,9 +11,9 @@ import RxSwift
 import SamUtils
 
 class CalculatorViewModel {
-    var amount = BehaviorRelay<String>(value: "0")
-    var transferFee = BehaviorRelay<String>(value: "0")
-    var isShowCalcutor = BehaviorRelay<Bool>(value: false)
+    
+    private var addDetailVM: AddDetailViewModel?
+    private var addAccountVM: AddAccountViewModel?
     
     private var amountString = "0"
     private var amountValue = 0.0
@@ -21,6 +21,14 @@ class CalculatorViewModel {
     private var transferValue = 0.0
     private var currentOperation: Operation = .none
     private var isEditAmount = true
+    
+    func setViewModel(_ viewModel: BaseViewModel) {
+        if let addDetailViewModel = viewModel as? AddDetailViewModel {
+            self.addDetailVM = addDetailViewModel
+        } else if let addAccountViewModel = viewModel as? AddAccountViewModel {
+            self.addAccountVM = addAccountViewModel
+        }
+    }
     
     func buttonTap(_ button: CalcButton) {
         switch button {
@@ -44,7 +52,8 @@ class CalculatorViewModel {
             
             currentOperation = .none
             amountValue = 0.0
-            isShowCalcutor.accept(false)
+            addDetailVM?.setShowCalcutor(false)
+            addAccountVM?.setShowCalcutor(false)
             
         case .clear:
             if isEditAmount {
@@ -92,9 +101,10 @@ class CalculatorViewModel {
         }
         
         if isEditAmount {
-            amount.accept(amountString)
+            addDetailVM?.setAmount(amountString)
+            addAccountVM?.setAmount(amountString)
         } else {
-            transferFee.accept(transferString)
+            addDetailVM?.setTransferFee(transferString)
         }
     }
     

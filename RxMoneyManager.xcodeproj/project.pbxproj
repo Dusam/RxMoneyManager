@@ -264,13 +264,6 @@
 			path = Transfer;
 			sourceTree = "<group>";
 		};
-		687044F62A4C201D00176C05 /* AddGroup */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = AddGroup;
-			sourceTree = "<group>";
-		};
 		6876E19E2A1F38C20072A26F = {
 			isa = PBXGroup;
 			children = (
@@ -300,7 +293,6 @@
 				6876E1C32A2037680072A26F /* Detail */,
 				6896C4BC2A208A2000F18E6D /* AddDetail */,
 				687F0D1B2A3C4575009A81AE /* AddAccount */,
-				687044F62A4C201D00176C05 /* AddGroup */,
 				687F0D292A493612009A81AE /* Account */,
 				687F0D262A428E35009A81AE /* Setting */,
 				680E6D482A207BA400874D22 /* DB */,

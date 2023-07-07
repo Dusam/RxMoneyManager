@@ -11,4 +11,11 @@ import RxCocoa
 
 class BaseViewModel {
     let disposeBag = DisposeBag()
+    
+    private let isShowCalcutorRelay = BehaviorRelay<Bool>(value: false)
+    private(set) lazy var isShowCalcutor = isShowCalcutorRelay.asDriver()
+    
+    func setShowCalcutor(_ show: Bool) {
+        isShowCalcutorRelay.accept(show)
+    }
 }

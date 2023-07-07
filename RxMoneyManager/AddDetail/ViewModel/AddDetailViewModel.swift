@@ -12,50 +12,69 @@ import RealmSwift
 
 class AddDetailViewModel: BaseViewModel {
     
-    let amount = BehaviorRelay<String>(value: "0")
-    let transferFee = BehaviorRelay<String>(value: "0")
-    let isShowCalcutor = BehaviorRelay<Bool>(value: false)
-    let selectedSegmentRelay = BehaviorRelay<Int>(value: 0)
-    let addDetailCellModels = BehaviorRelay<[String]>(value: [R.string.localizable.type_title(),
-                                                              R.string.localizable.account_title(),
-                                                              R.string.localizable.memo_title()])
+    private let amountRelay = BehaviorRelay<String>(value: "0")
+    private(set) lazy var amount = amountRelay.asDriver(onErrorJustReturn: "0")
+    
+    private let transferFeeRelay = BehaviorRelay<String>(value: "0")
+    private(set) lazy var transferFee = transferFeeRelay.asDriver()
+    
+//    private let isShowCalcutorRelay = BehaviorRelay<Bool>(value: false)
+//    private(set) lazy var isShowCalcutor = isShowCalcutorRelay.asDriver()
+    
+    private let selectedSegmentRelay = BehaviorRelay<Int>(value: 0)
+    private(set) lazy var selectedSegment = selectedSegmentRelay.asDriver()
+    
+    private let addDetailCellModelsRelay = BehaviorRelay<[String]>(value: [R.string.localizable.type_title(),
+                                                                           R.string.localizable.account_title(),
+                                                                           R.string.localizable.memo_title()])
+    private(set) lazy var addDetailCellModels = addDetailCellModelsRelay.asDriver()
     
     private var detail = DetailModel()
-    let detailGroupModels = BehaviorRelay<[DetailGroupModel]>(value: [])
-    let detailTypeModels = BehaviorRelay<[DetailTypeModel]>(value: [])
+    private let detailGroupModelsRelay = BehaviorRelay<[DetailGroupModel]>(value: [])
+    private(set) lazy var detailGroupModels = detailGroupModelsRelay.asDriver()
+    
+    private let detailTypeModelsRelay = BehaviorRelay<[DetailTypeModel]>(value: [])
+    private(set) lazy var detailTypeModels = detailTypeModelsRelay.asDriver()
     
     private var billingType: BillingType = .spend
-    let typeName = BehaviorRelay<String>(value: "")
-    let detailGroupId = BehaviorRelay<String>(value: UserInfo.share.expensesGroupId)
-    private let detailTypeId = BehaviorRelay<String>(value: UserInfo.share.expensesTypeId)
+    private let typeNameRelay = BehaviorRelay<String>(value: "")
+    private(set) lazy var typeName = typeNameRelay.asDriver()
+    
+    private var selectedDetailGroupId: String = ""
+    private let detailGroupIdRelay = BehaviorRelay<String>(value: UserInfo.share.expensesGroupId)
+    private(set) lazy var detailGroupId = detailGroupIdRelay.asDriver()
+    
+    private let detailTypeIdRelay = BehaviorRelay<String>(value: UserInfo.share.expensesTypeId)
+    private(set) lazy var detailTypeId = detailTypeIdRelay.asDriver()
     
     private var accountId = UserInfo.share.accountId
-    let accountName = BehaviorRelay<String>(value: "")
-    let accountModels = BehaviorRelay<[AccountModel]>(value: [])
+    private let accountNameRelay = BehaviorRelay<String>(value: "")
+    private(set) lazy var accountName = accountNameRelay.asDriver()
+    
+    private let accountModelsRelay = BehaviorRelay<[AccountModel]>(value: [])
+    private(set) lazy var accountModels = accountModelsRelay.asDriver()
     
     private var toAccountId = UserInfo.share.transferToAccountId
-    let toAccountName = BehaviorRelay<String>(value: "")
+    private let toAccountNameRelay = BehaviorRelay<String>(value: "")
+    private(set) lazy var toAccountName = toAccountNameRelay.asDriver()
     
-    let memo = BehaviorRelay<String>(value: "")
-    let memoModels = BehaviorRelay<[MemoModel]>(value: [])
+    private let memoRelay = BehaviorRelay<String>(value: "")
+    private(set) lazy var memo = memoRelay.asDriver()
     
+    private let memoModelsRelay = BehaviorRelay<[MemoModel]>(value: [])
+    private(set) lazy var memoModels = memoModelsRelay.asDriver()
     
     private var isEdit = false
     
     override init() {
         super.init()
         
-        detailGroupModels.accept(RealmManager.share.getDetailGroup(billType: billingType))
-        memoModels.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue, groupId: detailGroupId.value, memo: memo.value))
+        detailGroupModelsRelay.accept(RealmManager.share.getDetailGroup(billType: billingType))
+        memoModelsRelay.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue,
+                                                                 groupId: detailGroupIdRelay.value,
+                                                                 memo: memoRelay.value))
         setSelectValue()
         getAccountName()
-    }
-}
-
-// MARK: Calcutor
-extension AddDetailViewModel {
-    func setShowCalcutor(_ show: Bool) {
-        isShowCalcutor.accept(show)
     }
 }
 
@@ -67,10 +86,10 @@ extension AddDetailViewModel {
         detail = data
         
         selectedSegmentRelay.accept(data.billingType)
-        amount.accept(data.amount.string)
-        detailGroupId.accept(data.detailGroup)
-        detailTypeId.accept(data.detailType)
-        memo.accept(data.memo)
+        amountRelay.accept(data.amount.string)
+        detailGroupIdRelay.accept(data.detailGroup)
+        detailTypeIdRelay.accept(data.detailType)
+        memoRelay.accept(data.memo)
         
         setAccountId(data.accountId.stringValue)
         setToAccountId(data.toAccountId.stringValue)
@@ -80,7 +99,7 @@ extension AddDetailViewModel {
     }
     
     func saveDetail() {
-        guard let amount = amount.value.int, amount > 0, let accountId = try? ObjectId(string: accountId) else { return }
+        guard let amount = amountRelay.value.int, amount > 0, let accountId = try? ObjectId(string: accountId) else { return }
         
         if isEdit {
             resetDetailStatus()
@@ -89,11 +108,11 @@ extension AddDetailViewModel {
         
         detail.billingType    = billingType.rawValue
         detail.accountId      = accountId
-        detail.accountName    = accountName.value
-        detail.detailGroup    = detailGroupId.value
-        detail.detailType     = detailTypeId.value
+        detail.accountName    = accountNameRelay.value
+        detail.detailGroup    = detailGroupIdRelay.value
+        detail.detailType     = detailTypeIdRelay.value
         detail.amount         = amount
-        detail.memo           = memo.value
+        detail.memo           = memoRelay.value
         detail.date           = UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd")
         detail.modifyDateTime = Date().string(withFormat: "yyyy-MM-dd")
         
@@ -101,7 +120,7 @@ extension AddDetailViewModel {
         
         if billingType == .transfer, let toAccountId = try? ObjectId(string: toAccountId) {
             detail.toAccountId    = toAccountId
-            detail.toAccountName  = toAccountName.value
+            detail.toAccountName  = toAccountNameRelay.value
             
             UserInfo.share.transferToAccountId = toAccountId.stringValue
         }
@@ -112,14 +131,14 @@ extension AddDetailViewModel {
             
             switch billingType {
             case .spend:
-                UserInfo.share.expensesGroupId = detailGroupId.value
-                UserInfo.share.expensesTypeId = detailTypeId.value
+                UserInfo.share.expensesGroupId = detailGroupIdRelay.value
+                UserInfo.share.expensesTypeId = detailTypeIdRelay.value
             case .income:
-                UserInfo.share.incomeGroupId = detailGroupId.value
-                UserInfo.share.incomeTypeId = detailTypeId.value
+                UserInfo.share.incomeGroupId = detailGroupIdRelay.value
+                UserInfo.share.incomeTypeId = detailTypeIdRelay.value
             case .transfer:
-                UserInfo.share.transferGroupId = detailGroupId.value
-                UserInfo.share.trnasferTypeId = detailTypeId.value
+                UserInfo.share.transferGroupId = detailGroupIdRelay.value
+                UserInfo.share.trnasferTypeId = detailTypeIdRelay.value
             }
             
             RealmManager.share.saveData(detail)
@@ -132,11 +151,11 @@ extension AddDetailViewModel {
         }
         
         // 新增手續費
-        if let transferFee = transferFee.value.int, transferFee > 0 {
+        if let transferFee = transferFeeRelay.value.int, transferFee > 0 {
             let transferFeeModel = DetailModel()
             transferFeeModel.billingType    = 0
             transferFeeModel.accountId      = accountId
-            transferFeeModel.accountName    = accountName.value
+            transferFeeModel.accountName    = accountNameRelay.value
             transferFeeModel.detailGroup    = UserInfo.share.transferFeeGroupId
             transferFeeModel.detailType     = UserInfo.share.transferFeeTypeId
             transferFeeModel.amount         = transferFee
@@ -149,16 +168,16 @@ extension AddDetailViewModel {
         }
         
         // 儲存備註
-        if !memo.value.isEmpty {
+        if !memoRelay.value.isEmpty {
             getMemos()
-            if memoModels.value.count > 0, let model = memoModels.value.first {
+            if memoModelsRelay.value.count > 0, let model = memoModelsRelay.value.first {
                 // 更新次數
                 RealmManager.share.saveData(model, update: true)
             } else {
                 let memoModel = MemoModel()
                 memoModel.billingType = billingType.rawValue
-                memoModel.detailGroup = detailGroupId.value
-                memoModel.memo = memo.value
+                memoModel.detailGroup = detailGroupIdRelay.value
+                memoModel.memo = memoRelay.value
                 memoModel.count = 1
                 RealmManager.share.saveData(memoModel)
             }
@@ -173,64 +192,32 @@ extension AddDetailViewModel {
     
     func setBillingType(_ billingType: BillingType) {
         self.billingType = billingType
-        detailGroupModels.accept(RealmManager.share.getDetailGroup(billType: billingType))
+        detailGroupModelsRelay.accept(RealmManager.share.getDetailGroup(billType: billingType))
         
         switch billingType {
         case .spend:
-            addDetailCellModels.accept([R.string.localizable.type_title(),
-                                        R.string.localizable.account_title(),
-                                        R.string.localizable.memo_title()])
-            detailGroupId.accept(UserInfo.share.expensesGroupId)
-            detailTypeId.accept(UserInfo.share.expensesTypeId)
+            addDetailCellModelsRelay.accept([R.string.localizable.type_title(),
+                                             R.string.localizable.account_title(),
+                                             R.string.localizable.memo_title()])
+            detailGroupIdRelay.accept(UserInfo.share.expensesGroupId)
+            detailTypeIdRelay.accept(UserInfo.share.expensesTypeId)
         case .income:
-            addDetailCellModels.accept([R.string.localizable.type_title(),
-                                        R.string.localizable.account_title(),
-                                        R.string.localizable.memo_title()])
-            detailGroupId.accept(UserInfo.share.incomeGroupId)
-            detailTypeId.accept(UserInfo.share.incomeTypeId)
+            addDetailCellModelsRelay.accept([R.string.localizable.type_title(),
+                                             R.string.localizable.account_title(),
+                                             R.string.localizable.memo_title()])
+            detailGroupIdRelay.accept(UserInfo.share.incomeGroupId)
+            detailTypeIdRelay.accept(UserInfo.share.incomeTypeId)
         case .transfer:
-            addDetailCellModels.accept([R.string.localizable.from_title(),
-                                        R.string.localizable.to_title(),
-                                        R.string.localizable.handlingfee_title(),
-                                        R.string.localizable.type_title(),
-                                        R.string.localizable.memo_title()])
-            detailGroupId.accept(UserInfo.share.transferGroupId)
-            detailTypeId.accept(UserInfo.share.trnasferTypeId)
+            addDetailCellModelsRelay.accept([R.string.localizable.from_title(),
+                                             R.string.localizable.to_title(),
+                                             R.string.localizable.handlingfee_title(),
+                                             R.string.localizable.type_title(),
+                                             R.string.localizable.memo_title()])
+            detailGroupIdRelay.accept(UserInfo.share.transferGroupId)
+            detailTypeIdRelay.accept(UserInfo.share.trnasferTypeId)
         }
         
         setSelectValue()
-    }
-    
-    func setAccountId(_ accountId: String) {
-        self.accountId = accountId
-        getAccountName()
-    }
-    
-    func getAccountId() -> String{
-        return self.accountId
-    }
-    
-    func setToAccountId(_ toAccountId: String) {
-        self.toAccountId = toAccountId
-        getAccountName()
-    }
-    
-    func getToAccountId() -> String{
-        return self.toAccountId
-    }
-    
-    private func getAccountName() {
-        if !accountId.isEmpty {
-            accountName.accept(RealmManager.share.getAccount(accountId).first?.name ?? "")
-        }
-        
-        if !toAccountId.isEmpty {
-            toAccountName.accept(RealmManager.share.getAccount(toAccountId).first?.name ?? "")
-        }
-    }
-    
-    func getAccounts() {
-        accountModels.accept(RealmManager.share.getAccount())
     }
     
     private func resetDetailStatus() {
@@ -257,17 +244,20 @@ extension AddDetailViewModel {
 // MARK: Selected Group
 extension AddDetailViewModel {
     func setSelectGroup(_ groupId: String) {
-        detailGroupId.accept(groupId)
-        detailTypeModels.accept(RealmManager.share.getDetailType(detailGroupId.value))
+        selectedDetailGroupId = groupId
+        detailTypeModelsRelay.accept(RealmManager.share.getDetailType(groupId))
     }
     
     func setSelectType(_ typeId: String) {
-        detailTypeId.accept(typeId)
+        detailGroupIdRelay.accept(selectedDetailGroupId)
+        detailTypeIdRelay.accept(typeId)
         setSelectValue()
     }
     
     private func setSelectValue() {
-        typeName.accept(DBTools.detailTypeToString(billingType: billingType, detailGroupId: detailGroupId.value, detailTypeId: detailTypeId.value))
+        typeNameRelay.accept(DBTools.detailTypeToString(billingType: billingType,
+                                                        detailGroupId: detailGroupIdRelay.value,
+                                                        detailTypeId: detailTypeIdRelay.value))
     }
 }
 
@@ -275,7 +265,9 @@ extension AddDetailViewModel {
 // MARK: Memo
 extension AddDetailViewModel {
     func getMemos() {
-        memoModels.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue, groupId: detailGroupId.value, memo: memo.value))
+        memoModelsRelay.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue,
+                                                                 groupId: detailGroupIdRelay.value,
+                                                                 memo: memoRelay.value))
     }
 }
 
@@ -290,35 +282,107 @@ extension AddDetailViewModel {
         
         setSelectGroup(group.id.stringValue)
         setSelectType(group.id.stringValue)
-        detailGroupModels.accept(RealmManager.share.getDetailGroup(billType: billingType))
+        detailGroupModelsRelay.accept(RealmManager.share.getDetailGroup(billType: billingType))
     }
     
     func deleteGroup(_ model: DetailGroupModel) {
-        var models = detailGroupModels.value
-        detailGroupModels.accept(models.removeAll(model))
+        var models = detailGroupModelsRelay.value
+        detailGroupModelsRelay.accept(models.removeAll(model))
         RealmManager.share.delete(model)
         
-        detailTypeModels.value.forEach { typeModel in
+        detailTypeModelsRelay.value.forEach { typeModel in
             RealmManager.share.delete(typeModel)
         }
         
-        if let groupId = detailGroupModels.value.first?.id.stringValue {
+        if detailGroupModelsRelay.value.first?.id.stringValue != nil {
             setBillingType(billingType)
         }
     }
     
     func addType(_ typeName: String) {
         let type = DetailTypeModel()
-        type.groupId = detailGroupId.value
+        type.groupId = detailGroupIdRelay.value
         type.name = typeName
         RealmManager.share.saveData(type)
         
-        setSelectGroup(detailGroupId.value)
+        setSelectGroup(detailGroupIdRelay.value)
     }
     
     func deleteType(_ model: DetailTypeModel) {
-        var models = detailTypeModels.value
-        detailTypeModels.accept(models.removeAll(model))
+        var models = detailTypeModelsRelay.value
+        detailTypeModelsRelay.accept(models.removeAll(model))
         RealmManager.share.delete(model)
+    }
+}
+
+
+// MARK: Set Method
+extension AddDetailViewModel {
+    func setAccountId(_ accountId: String) {
+        self.accountId = accountId
+        getAccountName()
+    }
+    
+    func setToAccountId(_ toAccountId: String) {
+        self.toAccountId = toAccountId
+        getAccountName()
+    }
+    
+    func setAmount(_ amount: String) {
+        amountRelay.accept(amount)
+    }
+    
+    func setTransferFee(_ transferFee: String) {
+        transferFeeRelay.accept(transferFee)
+    }
+    
+//    func setShowCalcutor(_ show: Bool) {
+//        isShowCalcutorRelay.accept(show)
+//    }
+    
+    func setMemo(_ memoString: String) {
+        memoRelay.accept(memoString)
+        getMemos()
+    }
+    
+    func setSegmentIndex(_ index: Int) {
+        selectedSegmentRelay.accept(index)
+    }
+}
+
+// MARK: Get Method
+extension AddDetailViewModel {
+    func getGroupId() -> String {
+        return detailGroupIdRelay.value
+    }
+    
+    func getTypeId() -> String {
+        return detailTypeIdRelay.value
+    }
+    
+    func getAccountId() -> String {
+        return self.accountId
+    }
+    
+    func getToAccountId() -> String{
+        return self.toAccountId
+    }
+    
+    func getAccounts() {
+        accountModelsRelay.accept(RealmManager.share.getAccount())
+    }
+    
+    private func getAccountName() {
+        if !accountId.isEmpty {
+            accountNameRelay.accept(RealmManager.share.getAccount(accountId).first?.name ?? "")
+        }
+        
+        if !toAccountId.isEmpty {
+            toAccountNameRelay.accept(RealmManager.share.getAccount(toAccountId).first?.name ?? "")
+        }
+    }
+    
+    func getSegmentIndex() -> Int {
+        return selectedSegmentRelay.value
     }
 }

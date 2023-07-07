@@ -3,11 +3,11 @@ PODS:
   - Differentiator (5.0.0)
   - IQKeyboardManagerSwift (6.5.12)
   - R.swift (7.3.2)
-  - Realm (10.40.2):
-    - Realm/Headers (= 10.40.2)
-  - Realm/Headers (10.40.2)
-  - RealmSwift (10.40.2):
-    - Realm (= 10.40.2)
+  - Realm (10.41.0):
+    - Realm/Headers (= 10.41.0)
+  - Realm/Headers (10.41.0)
+  - RealmSwift (10.41.0):
+    - Realm (= 10.41.0)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
@@ -21,22 +21,22 @@ PODS:
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
-  - SamUtils (1.0.0):
+  - SamUtils (1.0.1):
     - Alamofire
     - IQKeyboardManagerSwift
-    - SamUtils/CommonTools (= 1.0.0)
+    - SamUtils/CommonTools (= 1.0.1)
     - SwifterSwift
-  - SamUtils/CommonTools (1.0.0):
+  - SamUtils/CommonTools (1.0.1):
     - Alamofire
     - IQKeyboardManagerSwift
-    - SamUtils/CommonTools/API (= 1.0.0)
-    - SamUtils/CommonTools/Extensions (= 1.0.0)
+    - SamUtils/CommonTools/API (= 1.0.1)
+    - SamUtils/CommonTools/Extensions (= 1.0.1)
     - SwifterSwift
-  - SamUtils/CommonTools/API (1.0.0):
+  - SamUtils/CommonTools/API (1.0.1):
     - Alamofire
     - IQKeyboardManagerSwift
     - SwifterSwift
-  - SamUtils/CommonTools/Extensions (1.0.0):
+  - SamUtils/CommonTools/Extensions (1.0.1):
     - Alamofire
     - IQKeyboardManagerSwift
     - SwifterSwift
@@ -102,14 +102,14 @@ SPEC CHECKSUMS:
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   IQKeyboardManagerSwift: 371b08cb39664fb56030f5345c815a4ffc74bbc0
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
-  Realm: 731e86d9388287b18e36b0beb2493fc4845ce8a2
-  RealmSwift: c2a1059ba52e1e08467b1253b1d4ab354ef3177b
+  Realm: 669efee7dc1ce0aa9f6739a60f8c0df0a3835067
+  RealmSwift: 6b7b0e91b79dc66d5cfceeb3b319cacfc9b1a70e
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
   RxGesture: f3efb47ed2d26a8082f7b660d4a59970e275a7f8
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
-  SamUtils: 4ecf93b4d83ed7e111fdc14c8567011d19897e26
+  SamUtils: 52eb185e201cf442eb03d1079f7fcc1085e8a653
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwifterSwift: 334181863c416882d97b7a60c05054d9e4d799e2
 

@@ -139,19 +139,6 @@ extension AccountViewController {
             make.top.equalTo(accountHeaderView.snp.bottom).offset(10)
             make.left.right.bottom.equalTo(safeAreaLayoutGuide)
         }
-        
-        accountDataSource = RxTableViewSectionedReloadDataSource<AccountSectionModel>(configureCell: { (dataSource, tableView, indexPath, item) in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountCell
-            cell.accountNameLabel.font = .systemFont(ofSize: 20)
-            cell.accountNameLabel.text = item.name
-            cell.amountLabel.font = .systemFont(ofSize: 20)
-            cell.amountLabel.text = "$\(item.money.string)"
-            cell.amountLabel.textColor = item.money >= 0 ? R.color.incomeColor() : R.color.spendColor()
-            
-            return cell
-        }, titleForHeaderInSection: { (dataSource, index) in
-            return dataSource.sectionModels[index].sectionTitle
-        })
     }
     
     private func setUpAddAccountButton() {
@@ -164,8 +151,19 @@ extension AccountViewController {
 // MARK: BindUI
 extension AccountViewController {
     private func bindTableView() {
-        accountVM.sections
-            .bind(to: accountTableView.rx.items(dataSource: accountDataSource))
+        accountDataSource = RxTableViewSectionedReloadDataSource<AccountSectionModel>(configureCell: { (dataSource, tableView, indexPath, item) in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountCell
+            cell.accountNameLabel.font = .systemFont(ofSize: 20)
+            cell.accountNameLabel.text = item.name
+            cell.amountLabel.font = .systemFont(ofSize: 20)
+            cell.amountLabel.text = "$\(item.money.string)"
+            cell.amountLabel.textColor = item.money >= 0 ? R.color.incomeColor() : R.color.spendColor()
+            
+            return cell
+        })
+        
+        accountVM.accountModels
+            .drive(accountTableView.rx.items(dataSource: accountDataSource))
             .disposed(by: disposeBag)
         
         accountTableView.rx.modelSelected(AccountModel.self)
@@ -193,33 +191,33 @@ extension AccountViewController {
     private func bindLabel() {
         accountVM.totalAssets
             .map { "$\($0)" }
-            .bind(to: totalAssetsLabel.rx.text)
+            .drive(totalAssetsLabel.rx.text)
             .disposed(by: disposeBag)
         
         accountVM.totalAssets
-            .subscribe(onNext: { [weak self] amount in
+            .drive(onNext: { [weak self] amount in
                 self?.totalAssetsLabel.textColor = amount >= 0 ? R.color.incomeColor() : R.color.spendColor()
             })
             .disposed(by: disposeBag)
         
         accountVM.totalLiability
             .map { "$\($0)" }
-            .bind(to: totalLiabilityLabel.rx.text)
+            .drive(totalLiabilityLabel.rx.text)
             .disposed(by: disposeBag)
         
         accountVM.totalLiability
-            .subscribe(onNext: { [weak self] amount in
+            .drive(onNext: { [weak self] amount in
                 self?.totalLiabilityLabel.textColor = amount >= 0 ? R.color.incomeColor() : R.color.spendColor()
             })
             .disposed(by: disposeBag)
         
         accountVM.balance
             .map { "$\($0)" }
-            .bind(to: balanceLabel.rx.text)
+            .drive(balanceLabel.rx.text)
             .disposed(by: disposeBag)
         
         accountVM.balance
-            .subscribe(onNext: { [weak self] amount in
+            .drive(onNext: { [weak self] amount in
                 self?.balanceLabel.textColor = amount >= 0 ? R.color.incomeColor() : R.color.spendColor()
             })
             .disposed(by: disposeBag)

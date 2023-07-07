@@ -21,22 +21,25 @@ class AddAccountViewController: BaseViewController {
     private var joinTotalView: UIStackView!
     
     private var typeButton: UIButton!
-    private var typeNameTextField: UITextField!
+    private var accountNameTextField: UITextField!
     private var initAmountTextField: UITextField!
     private var joinTotalSwitch: UISwitch!
+    
+    private var calcutor: CalculatorView!
     
     private var saveButton: UIButton!
     
     override func setUpView() {
-        view.backgroundColor = .lightGray
         setBackButton(title: R.string.localizable.addAccount())
         setUpAddAccountView()
+        createCalcutorView()
     }
     
     override func bindUI() {
         bindButton()
         bindTextField()
         bindSwitch()
+        bindCalcutorView()
     }
     
     override func viewWillLayoutSubviews() {
@@ -89,6 +92,8 @@ extension AddAccountViewController {
         accountTypeView.distribution = .fill
         accountTypeView.spacing = 10
         accountTypeView.backgroundColor = .white
+        accountTypeView.borderColor = .lightGray
+        accountTypeView.borderWidth = 1
         
         let titleLabel = PaddingLabel()
         titleLabel.text = "帳戶類型:"
@@ -112,20 +117,20 @@ extension AddAccountViewController {
     private func setUpAccountName() {
         accountNameView = UIView()
         accountNameView.backgroundColor = .white
+        accountNameView.borderColor = .lightGray
+        accountNameView.borderWidth = 1
         
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        
         
         let titleLabel = PaddingLabel()
         titleLabel.text = R.string.localizable.accountName()
         titleLabel.font = .systemFont(ofSize: 20)
         
-        typeNameTextField = UITextField()
-        typeNameTextField.font = .systemFont(ofSize: 20)
-        typeNameTextField.borderStyle = .roundedRect
+        accountNameTextField = UITextField()
+        accountNameTextField.font = .systemFont(ofSize: 20)
+        accountNameTextField.borderStyle = .roundedRect
         
         let initAmountTitleLabel = PaddingLabel()
         initAmountTitleLabel.text = R.string.localizable.initialAmount()
@@ -136,7 +141,7 @@ extension AddAccountViewController {
         initAmountTextField.borderStyle = .roundedRect
         initAmountTextField.keyboardType = .asciiCapableNumberPad
         
-        stackView.addArrangedSubviews([titleLabel, typeNameTextField, initAmountTitleLabel, initAmountTextField])
+        stackView.addArrangedSubviews([titleLabel, accountNameTextField, initAmountTitleLabel, initAmountTextField])
         accountNameView.addSubview(stackView)
         
         stackView.snp.makeConstraints { make in
@@ -151,6 +156,8 @@ extension AddAccountViewController {
         joinTotalView.distribution = .fill
         joinTotalView.spacing = 10
         joinTotalView.backgroundColor = .white
+        joinTotalView.borderColor = .lightGray
+        joinTotalView.borderWidth = 1
         
         let includeTitle = PaddingLabel()
         includeTitle.text = R.string.localizable.joinTotal()
@@ -188,6 +195,17 @@ extension AddAccountViewController {
             make.width.equalTo(safeAreaLayoutGuide).multipliedBy(0.15)
         }
     }
+    
+    private func createCalcutorView() {
+        calcutor = CalculatorView(viewModel: addAccountVM)
+        self.calcutor.isHidden = true
+        self.view.addSubview(calcutor)
+        
+        calcutor.snp.makeConstraints { make in
+            make.left.right.bottom.equalTo(safeAreaLayoutGuide)
+            make.height.equalTo(safeAreaLayoutGuide).multipliedBy(0.5)
+        }
+    }
 }
 
 
@@ -219,30 +237,66 @@ extension AddAccountViewController {
     
     private func bindTextField() {
         addAccountVM.accountName
-            .bind(to: typeNameTextField.rx.text)
+            .drive(accountNameTextField.rx.text)
             .disposed(by: disposeBag)
         
-        typeNameTextField.rx.text.orEmpty
-            .bind(to: addAccountVM.accountName)
+        accountNameTextField.rx.text.orEmpty
+            .changed
+            .subscribe(onNext: { [weak self] accountName in
+                self?.addAccountVM.setAccountName(accountName)
+            })
+            .disposed(by: disposeBag)
+        
+        accountNameTextField.rx
+            .controlEvent(.editingDidBegin)
+            .subscribe(onNext: { [weak self] in
+                self?.addAccountVM.setShowCalcutor(false)
+            })
             .disposed(by: disposeBag)
         
         
         addAccountVM.initAmount
-            .bind(to: initAmountTextField.rx.text)
+            .drive(initAmountTextField.rx.text)
             .disposed(by: disposeBag)
         
-        initAmountTextField.rx.text.orEmpty
-            .bind(to: addAccountVM.initAmount)
+        initAmountTextField.rx
+            .controlEvent([.touchDown, .editingDidBegin])
+            .subscribe(onNext: { [weak self] in
+                self?.accountNameTextField.resignFirstResponder()
+                self?.initAmountTextField.resignFirstResponder()
+                self?.addAccountVM.setShowCalcutor(true)
+                self?.calcutor.setEditType(isEditAmount: true)
+            })
             .disposed(by: disposeBag)
     }
     
     private func bindSwitch() {
         addAccountVM.joinTotal
-            .bind(to: joinTotalSwitch.rx.isOn)
+            .drive(joinTotalSwitch.rx.isOn)
             .disposed(by: disposeBag)
         
         joinTotalSwitch.rx.isOn
-            .bind(to: addAccountVM.joinTotal)
+            .changed
+            .subscribe(onNext: { [weak self] isOn in
+                self?.addAccountVM.setJoinTotal(isOn)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindCalcutorView() {
+        addAccountVM.isShowCalcutor
+            .drive(onNext: { [weak self] show in
+                if show {
+                    UIView.animate(withDuration: 0.3) {
+                        self?.calcutor.isHidden = false
+                        self?.calcutor.transform = CGAffineTransform(translationX: 0, y: 0)
+                    }
+                } else {
+                    UIView.animate(withDuration: 0.3) {
+                        self?.calcutor.transform = CGAffineTransform(translationX: 0, y: 800)
+                    }
+                }
+            })
             .disposed(by: disposeBag)
     }
 }

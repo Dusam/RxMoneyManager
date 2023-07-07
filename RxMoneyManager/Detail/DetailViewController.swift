@@ -29,7 +29,7 @@ class DetailViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // 與新增時選擇的日期同步
+        // 與新增或修改時選擇的日期同步
         headerView.toSelectedDate()
     }
     
@@ -119,7 +119,7 @@ extension DetailViewController {
     // 數據綁定 TableView
     private func bindTableView() {
         DetailViewModel.shared.details
-            .bind(to: detailTableView.rx.items(cellIdentifier: "DetailCell", cellType: DetailCell.self)) { row, data, cell in
+            .drive(detailTableView.rx.items(cellIdentifier: "DetailCell", cellType: DetailCell.self)) { row, data, cell in
                 if data.billingType < 3 {
                     let billingType = BillingType(rawValue: data.billingType)
                     cell.titleLabel.text = DBTools.detailTypeToString(detailModel: data)
@@ -165,7 +165,7 @@ extension DetailViewController {
     
     private func bindThemeColor() {
         DetailViewModel.shared.themeColor
-            .subscribe(onNext: { [weak self] color in
+            .drive(onNext: { [weak self] color in
                 UserInfo.share.themeColor = color
                 self?.setNavigationColor(navigationColor: color)
                 self?.setNeedsStatusBarAppearanceUpdate()
@@ -177,7 +177,7 @@ extension DetailViewController {
             .disposed(by: disposeBag)
         
         DetailViewModel.shared.themeColor
-            .bind(to: tabView.rx.backgroundColor)
+            .drive(tabView.rx.backgroundColor)
             .disposed(by: disposeBag)
     }
 

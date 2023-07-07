@@ -77,6 +77,6 @@ extension SettingViewController {
 extension SettingViewController: UIColorPickerViewControllerDelegate {
     func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
         colorPickerButton.backgroundColor = color
-        DetailViewModel.shared.themeColor.accept(color)
+        DetailViewModel.shared.setThemeColor(color)
     }
 }

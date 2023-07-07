@@ -96,22 +96,23 @@ extension ChooseAccountViewController {
 // MARK: BindUI
 extension ChooseAccountViewController {
     private func bindAccountTableView() {
-        addDetailVM.accountModels.bind(to: accountTableView.rx.items(cellIdentifier: "ChooseAccountCell", cellType: ChooseAccountCell.self)) { row, data, cell in
-            cell.titleLabel.text = data.name
-            cell.titleLabel.paddingLeft = 10
-            cell.accessoryType = .none
-            
-            if self.chooseAccountType == .normal {
-                if data.id.stringValue == self.addDetailVM.getAccountId() {
-                    cell.accessoryType = .checkmark
-                }
-            } else {
-                if data.id.stringValue == self.addDetailVM.getToAccountId() {
-                    cell.accessoryType = .checkmark
+        addDetailVM.accountModels
+            .drive(accountTableView.rx.items(cellIdentifier: "ChooseAccountCell", cellType: ChooseAccountCell.self)) { row, data, cell in
+                cell.titleLabel.text = data.name
+                cell.titleLabel.paddingLeft = 10
+                cell.accessoryType = .none
+                
+                if self.chooseAccountType == .normal {
+                    if data.id.stringValue == self.addDetailVM.getAccountId() {
+                        cell.accessoryType = .checkmark
+                    }
+                } else {
+                    if data.id.stringValue == self.addDetailVM.getToAccountId() {
+                        cell.accessoryType = .checkmark
+                    }
                 }
             }
-        }
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
         
         accountTableView.rx.modelSelected(AccountModel.self).subscribe(onNext: { [weak self] data in
             if self?.chooseAccountType == .normal {

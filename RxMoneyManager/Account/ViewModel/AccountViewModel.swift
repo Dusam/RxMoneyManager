@@ -11,10 +11,17 @@ import RxSwift
 
 class AccountViewModel: BaseViewModel {
     
-    let sections = BehaviorRelay<[AccountSectionModel]>(value: [])
-    let totalAssets = BehaviorRelay<Int>(value: 0)
-    let totalLiability = BehaviorRelay<Int>(value: 0)
-    let balance = BehaviorRelay<Int>(value: 0)
+    private let accountModelsRelay = BehaviorRelay<[AccountSectionModel]>(value: [])
+    private(set) lazy var accountModels = accountModelsRelay.asDriver()
+    
+    private let totalAssetsRelay = BehaviorRelay<Int>(value: 0)
+    private(set) lazy var totalAssets = totalAssetsRelay.asDriver()
+    
+    private let totalLiabilityRelay = BehaviorRelay<Int>(value: 0)
+    private(set) lazy var totalLiability = totalLiabilityRelay.asDriver()
+    
+    private let balanceRelay = BehaviorRelay<Int>(value: 0)
+    private(set) lazy var balance = balanceRelay.asDriver()
     
     private var includeTotalAccounts: [AccountModel] = []
     private var notIncludeTotalAccounts: [AccountModel] = []
@@ -22,9 +29,9 @@ class AccountViewModel: BaseViewModel {
 
 extension AccountViewModel {
     func getAccounts() {
-        totalAssets.accept(0)
-        totalLiability.accept(0)
-        balance.accept(0)
+        totalAssetsRelay.accept(0)
+        totalLiabilityRelay.accept(0)
+        balanceRelay.accept(0)
         includeTotalAccounts.removeAll()
         notIncludeTotalAccounts.removeAll()
         
@@ -35,21 +42,21 @@ extension AccountViewModel {
         
         includeTotalAccounts.forEach { account in
             if account.money >= 0 {
-                totalAssets.accept(totalAssets.value + account.money)
+                totalAssetsRelay.accept(totalAssetsRelay.value + account.money)
             } else {
-                totalLiability.accept(totalLiability.value + account.money)
+                totalLiabilityRelay.accept(totalLiabilityRelay.value + account.money)
             }
             
-            balance.accept(totalAssets.value + totalLiability.value)
+            balanceRelay.accept(totalAssetsRelay.value + totalLiabilityRelay.value)
         }
         if notIncludeTotalAccounts.count == 0 {
-            sections.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts)])
+            accountModelsRelay.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts)])
         } else {
-            sections.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts),
-                             AccountSectionModel(sectionTitle: R.string.localizable.notJoinTotal(), items: notIncludeTotalAccounts)])
+            accountModelsRelay.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts),
+                                       AccountSectionModel(sectionTitle: R.string.localizable.notJoinTotal(), items: notIncludeTotalAccounts)])
         }
     }
-
+    
     func deleteAccount(_ accountlModel: AccountModel) {
         RealmManager.share.delete(accountlModel)
         getAccounts()

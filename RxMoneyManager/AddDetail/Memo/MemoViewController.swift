@@ -85,24 +85,20 @@ extension MemoViewController {
 extension MemoViewController {
     private func bindTextView() {
         addDetailVM.memo
-            .bind(to: memoTextView.rx.text)
+            .drive(memoTextView.rx.text)
             .disposed(by: disposeBag)
         
         memoTextView.rx.text.orEmpty
-            .bind(to: addDetailVM.memo)
-            .disposed(by: disposeBag)
-        
-        memoTextView.rx.text
             .changed
-            .subscribe(onNext: { [weak self] _ in
-                self?.addDetailVM.getMemos()
+            .subscribe(onNext: { [weak self] memo in
+                self?.addDetailVM.setMemo(memo)
             })
             .disposed(by: disposeBag)
     }
     
     private func bindTableView() {
         addDetailVM.memoModels
-            .bind(to: memoTableView.rx.items(cellIdentifier: "MemoCell", cellType: UITableViewCell.self)) { row, data, cell in
+            .drive(memoTableView.rx.items(cellIdentifier: "MemoCell", cellType: UITableViewCell.self)) { row, data, cell in
                 var config = cell.defaultContentConfiguration()
                 config.text = data.memo.replacingOccurrences(of: "\n", with: " ")
                 config.textProperties.font = .systemFont(ofSize: 20)
@@ -112,7 +108,7 @@ extension MemoViewController {
         
         memoTableView.rx.modelSelected(MemoModel.self)
             .subscribe(onNext: { [weak self] data in
-                self?.addDetailVM.memo.accept(data.memo)
+                self?.addDetailVM.setMemo(data.memo)
             })
             .disposed(by: disposeBag)
     }

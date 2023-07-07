@@ -135,11 +135,11 @@ extension ChooseTypeViewController {
 extension ChooseTypeViewController {
     private func bindGroupTableView() {
         addDetailVM.detailGroupModels
-            .bind(to: groupTableView.rx.items(cellIdentifier: "ChooseTypeCell", cellType: ChooseTypeCell.self)) { [weak self] row, data, cell in
+            .drive(groupTableView.rx.items(cellIdentifier: "ChooseTypeCell", cellType: ChooseTypeCell.self)) { [weak self] row, data, cell in
                 cell.titleLabel.text = data.name
                 cell.titleLabel.paddingLeft = 15
                 
-                if self?.addDetailVM.detailGroupId.value == data.id.stringValue {
+                if self?.addDetailVM.getGroupId() == data.id.stringValue {
                     self?.groupTableView.selectRow(at: IndexPath(row: row, section: 0), animated: true, scrollPosition: .none)
                     self?.addDetailVM.setSelectGroup(data.id.stringValue)
                 }
@@ -161,9 +161,15 @@ extension ChooseTypeViewController {
     
     private func bindTypeTableView() {
         addDetailVM.detailTypeModels
-            .bind(to: typeTableView.rx.items(cellIdentifier: "ChooseTypeCell", cellType: ChooseTypeCell.self)) { row, data, cell in
+            .drive(typeTableView.rx.items(cellIdentifier: "ChooseTypeCell", cellType: ChooseTypeCell.self)) { [weak self] row, data, cell in
                 cell.titleLabel.text = data.name
                 cell.titleLabel.paddingLeft = 15
+                
+                if self?.addDetailVM.getTypeId() == data.id.stringValue {
+                    cell.accessoryType = .checkmark
+                } else {
+                    cell.accessoryType = .none
+                }
             }
             .disposed(by: disposeBag)
         
@@ -184,7 +190,7 @@ extension ChooseTypeViewController {
     private func bindAddButtons() {
         addGroupButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                let alert = UIAlertController(title: "新增群組", message: "例: 餐飲食品", preferredStyle: .alert)
+                let alert = UIAlertController(title: "新增群組", message: nil, preferredStyle: .alert)
                 alert.addTextField { textField in
                     textField.placeholder = "群組名稱"
                 }
@@ -203,8 +209,8 @@ extension ChooseTypeViewController {
             .disposed(by: disposeBag)
         
         addTypeButton.rx.tap
-            .subscribe(onNext: {[weak self] in
-                let alert = UIAlertController(title: "新增類別", message: "例: 午餐", preferredStyle: .alert)
+            .subscribe(onNext: { [weak self] in
+                let alert = UIAlertController(title: "新增類別", message: nil, preferredStyle: .alert)
                 alert.addTextField { textField in
                     textField.placeholder = "類別名稱"
                 }

@@ -15,9 +15,15 @@ class DetailViewModel {
     static let shared = DetailViewModel()
 
     private var detailDatas: [DetailModel] = []
-    let details = BehaviorRelay<[DetailModel]>(value: [])
-    let totalAmount = BehaviorRelay<Int>(value: 0)
-    let themeColor = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
+    
+    private let detailsRelay = BehaviorRelay<[DetailModel]>(value: [])
+    private(set) lazy var details = detailsRelay.asDriver(onErrorJustReturn: [])
+
+    private let totalAmountRelay = BehaviorRelay<Int>(value: 0)
+    private(set) lazy var totalAmount = totalAmountRelay.asDriver(onErrorJustReturn: 0)
+    
+    private let themeColorRelay = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
+    private(set) lazy var themeColor = themeColorRelay.asDriver()
     
     init() {
         getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
@@ -32,12 +38,12 @@ class DetailViewModel {
         
         countTotalAmount()
         
-        details.accept(detailDatas)
+        detailsRelay.accept(detailDatas)
     }
     
     func deleteDetail(_ detail: DetailModel) {
         detailDatas.removeAll(detail)
-        details.accept(detailDatas)
+        detailsRelay.accept(detailDatas)
         
         RealmManager.share.delete(detail)
     }
@@ -52,6 +58,10 @@ class DetailViewModel {
             }
         }
         
-        totalAmount.accept(total)
+        totalAmountRelay.accept(total)
+    }
+    
+    func setThemeColor(_ color: UIColor) {
+        themeColorRelay.accept(color)
     }
 }
