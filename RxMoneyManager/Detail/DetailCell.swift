@@ -20,7 +20,6 @@ class DetailCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        selectionStyle = .none
         setUpCellView()
     }
     
@@ -39,8 +38,8 @@ class DetailCell: UITableViewCell {
             verticalStackView.snp.makeConstraints { make in
                 make.top.equalToSuperview().offset(10)
                 make.bottom.equalToSuperview().offset(-10)
-                make.left.equalToSuperview().offset(5)
-                make.right.equalToSuperview().offset(-5)
+                make.left.equalToSuperview().offset(15)
+                make.right.equalToSuperview().offset(-15)
             }
         }
         
@@ -53,7 +52,9 @@ class DetailCell: UITableViewCell {
             stackView.addArrangedSubviews([titleLabel, amountLabel])
             
             titleLabel.textAlignment = .left
+            titleLabel.font = .systemFont(ofSize: 18)
             amountLabel.textAlignment = .right
+            amountLabel.font = .systemFont(ofSize: 18)
             
             titleLabel.snp.makeConstraints { make in
                 make.width.equalToSuperview().multipliedBy(0.65)
@@ -70,12 +71,13 @@ class DetailCell: UITableViewCell {
             
             memoLabel.textAlignment = .left
             memoLabel.textColor = .lightGray
-            memoLabel.font = .systemFont(ofSize: 16)
+            memoLabel.font = .systemFont(ofSize: 18)
             accountLabel.textAlignment = .right
-            memoLabel.font = .systemFont(ofSize: 16)
+            accountLabel.adjustsFontSizeToFitWidth = true
+            accountLabel.font = .systemFont(ofSize: 18)
             
             memoLabel.snp.makeConstraints { make in
-                make.width.equalToSuperview().multipliedBy(0.65)
+                make.width.equalToSuperview().multipliedBy(0.5)
             }
         }
         

@@ -36,6 +36,18 @@ class HeaderView: UIView {
         #endif
     }
     
+    func toSelectedDate() {
+        headerVM.toSelectedDate()
+    }
+    
+    func toPerviousDate() {
+        headerVM.toPerviousDate()
+    }
+    
+    func toNextDate() {
+        headerVM.toNextDate()
+    }
+    
     private func setUpHeaderView() {
         
         // 設定橫向 StackView
@@ -112,10 +124,7 @@ class HeaderView: UIView {
                     .drive(subTitleLabel.rx.text)
                     .disposed(by: disposeBag)
             } else {
-                headerVM.currentTime
-                    .asDriver(onErrorJustReturn: "")
-                    .drive(subTitleLabel.rx.text)
-                    .disposed(by: disposeBag)
+                subTitleLabel.isHidden = true
             }
             
             return subTitleLabel

@@ -10,32 +10,48 @@ import SamUtils
 import RxSwift
 import RxCocoa
 import SnapKit
+import RxGesture
 
-class DetailViewController: BaseViewViewController {
+class DetailViewController: BaseViewController {
     
     private var detailTableView: UITableView!
+    private var tabView: UIView!
     private let headerView = HeaderView(headerType: .detail)
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.initView()
-    }
-                  
+    private var accountButton: UIButton!
+    private var settingButton: UIButton!
+   
     deinit {
         #if DEBUG
         print("DetailViewController deinit")
         #endif
     }
     
-    private func initView() {
-        self.setBackButton(title: R.string.localizable.spend_details())
-        
-        self.setUpHeaderView()
-        self.setUpTableView()
-//        self.setUpSearchBar()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // 與新增或修改時選擇的日期同步
+        headerView.toSelectedDate()
     }
     
+    override func setUpView() {
+        setBackButton(title: R.string.localizable.spend_details())
+        
+        setUpHeaderView()
+        setUpTableView()
+        setUpTabView()
+    }
+    
+    override func bindUI() {
+        bindThemeColor()
+        bindTableView()
+        bindButtons()
+        listenSwipe()
+    }
+}
+
+
+// MARK: SetUpView
+extension DetailViewController {
     // 設定標題列
     private func setUpHeaderView() {
         self.view.addSubview(headerView)
@@ -55,25 +71,62 @@ class DetailViewController: BaseViewViewController {
         
         detailTableView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom)
-            make.left.equalTo(safeAreaLayoutGuide).offset(10)
+            make.left.right.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(safeAreaLayoutGuide)
-            make.right.equalTo(safeAreaLayoutGuide).offset(-10)
         }
-        
-        bindTableView()
     }
     
+    private func setUpTabView() {
+        tabView = UIView()
+        view.addSubview(tabView)
+        tabView.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.1)
+        }
+        
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        tabView.addSubview(stackView)
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.bottom.equalTo(safeAreaLayoutGuide)
+            make.left.right.equalToSuperview()
+        }
+        
+        accountButton = UIButton()
+        accountButton.setTitle(R.string.localizable.account(), for: .normal)
+        accountButton.setTitleColor(.systemGray, for: .highlighted)
+        accountButton.tintColor = .white
+        accountButton.setImage(UIImage(systemName: "house", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20)), for: .normal)
+        accountButton.centerTextAndImage(imageAboveText: true, spacing: 5)
+        
+        settingButton = UIButton()
+        settingButton.setTitle(R.string.localizable.setting(), for: .normal)
+        settingButton.setTitleColor(.systemGray, for: .highlighted)
+        settingButton.tintColor = .white
+        settingButton.setImage(UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20)), for: .normal)
+        settingButton.centerTextAndImage(imageAboveText: true, spacing: 5)
+        
+        stackView.addArrangedSubviews([accountButton, settingButton])
+    }
+}
+
+
+// MARK: BindUI
+extension DetailViewController {
     // 數據綁定 TableView
     private func bindTableView() {
         DetailViewModel.shared.details
-            .bind(to: detailTableView.rx.items(cellIdentifier: "DetailCell", cellType: DetailCell.self)) { row, data, cell in
+            .drive(detailTableView.rx.items(cellIdentifier: "DetailCell", cellType: DetailCell.self)) { row, data, cell in
                 if data.billingType < 3 {
                     let billingType = BillingType(rawValue: data.billingType)
                     cell.titleLabel.text = DBTools.detailTypeToString(detailModel: data)
                     cell.titleLabel.textColor = .black
                     cell.amountLabel.text = "$\(data.amount.string)"
                     cell.amountLabel.textColor = billingType?.forgroundColor
-                    cell.memoLabel.text = data.memo.replacing("\n", with: " ")
+                    cell.memoLabel.text = data.memo.replacingOccurrences(of: "\n", with: " ")
                     cell.accountLabel.text = billingType == .transfer ? "\(data.accountName) -> \(data.toAccountName)" : data.accountName
                     
                     cell.memoLabel.isHidden = false
@@ -89,11 +142,8 @@ class DetailViewController: BaseViewViewController {
             }
             .disposed(by: disposeBag)
         
-        // 設定 Delegate
-        detailTableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
         // 選取項目
-        detailTableView.rx.modelSelected(DetailModel.self).subscribe(onNext: { detail in
+        detailTableView.rx.modelSelected(DetailModel.self).subscribe(onNext: { [weak self] detail in
             let addDetail = AddDetailViewController()
 
             if detail.billingType < 3 {
@@ -103,59 +153,65 @@ class DetailViewController: BaseViewViewController {
                 addDetail.addType = .add
             }
             
-            self.push(vc: addDetail)
+            self?.push(vc: addDetail)
         })
         .disposed(by: disposeBag)
-                
-        // 刪除項目
-        detailTableView.rx.modelDeleted(DetailModel.self).subscribe(onNext: { detail in
-            
+        
+        detailTableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            self?.detailTableView.deselectRow(at: indexPath, animated: true)
         })
         .disposed(by: disposeBag)
     }
     
-//    private func setUpSearchBar() {
-//        let searchController = UISearchController()
-//        let searchResults = searchController.searchBar.rx.text.orEmpty
-//            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-//            .distinctUntilChanged()
-//            .flatMapLatest { query -> Observable<[String]> in
-//                if !query.isEmpty {
-//                    return .just(["sss", "sss"])
-//                }
-//
-//                return Observable.create { observer in
-//                    observer.onNext(["testsss"])
-//
-//                    return Disposables.create()
-//                }
-//            }
-//            .asDriver(onErrorJustReturn: ["sss"])
-//
-//        searchResults
-//            .drive(detailTableView.rx.items(cellIdentifier: "DetailCell", cellType: DetailCell.self)) { row, data, cell in
-//                cell.titleLabel.text = "餐飲食品 - 午餐"
-//                cell.amountLabel.text = "TW$ 461"
-//                cell.amountLabel.textColor = .red
-//
-//                cell.dateLabel.text = "2023-05-25"
-//                cell.accountLabel.text = "國泰信用卡"
-//            }
-//            .disposed(by: disposeBag)
-//
-//        self.navigationItem.searchController = searchController
-//    }
+    private func bindThemeColor() {
+        DetailViewModel.shared.themeColor
+            .drive(onNext: { [weak self] color in
+                UserInfo.share.themeColor = color
+                self?.setNavigationColor(navigationColor: color)
+                self?.setNeedsStatusBarAppearanceUpdate()
+                self?.accountButton.tintColor = color.isLight ? .black : .white
+                self?.accountButton.setTitleColor(color.isLight ? .black : .white, for: .normal)
+                self?.settingButton.tintColor = color.isLight ? .black : .white
+                self?.settingButton.setTitleColor(color.isLight ? .black : .white, for: .normal)
+            })
+            .disposed(by: disposeBag)
+        
+        DetailViewModel.shared.themeColor
+            .drive(tabView.rx.backgroundColor)
+            .disposed(by: disposeBag)
+    }
 
-
-}
-
-extension DetailViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        // 新增列不能滑動刪除
-        if indexPath.row == DetailViewModel.shared.details.value.count - 1 {
-            return .none
-        }
-        return .delete
+    private func bindButtons() {
+        accountButton.rx.tap
+            .subscribe(onNext: {
+                self.push(vc: AccountViewController())
+            })
+            .disposed(by: disposeBag)
+        
+        settingButton.rx.tap
+            .subscribe(onNext: {
+                self.push(vc: SettingViewController())
+            })
+            .disposed(by: disposeBag)
     }
 }
 
+
+// MARK: GestureSwipe
+extension DetailViewController {
+    private func listenSwipe() {
+        view.rx
+            .swipeGesture(.left, .right)
+            .when(.recognized)
+            .subscribe(onNext: { [weak self] gesture in
+                if gesture.direction == .left {
+                    // 左滑
+                    self?.headerView.toNextDate()
+                } else if gesture.direction == .right {
+                    // 右滑
+                    self?.headerView.toPerviousDate()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+}

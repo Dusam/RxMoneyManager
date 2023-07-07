@@ -45,7 +45,7 @@ class UserInfo {
             ud.set(newValue, forKey: "expensesGroupId")
         }
         get {
-            return ud.string(forKey: "expensesGroupId") ?? "0"
+            return ud.string(forKey: "expensesGroupId") ?? RealmManager.share.getDetailGroup(billType: .spend).first?.id.stringValue ?? ""
         }
     }
     
@@ -54,7 +54,7 @@ class UserInfo {
             ud.set(newValue, forKey: "expensesTypeId")
         }
         get {
-            return ud.string(forKey: "expensesTypeId") ?? "0"
+            return ud.string(forKey: "expensesTypeId") ?? RealmManager.share.getDetailType(self.expensesGroupId).first?.id.stringValue ?? ""
         }
     }
     
@@ -63,7 +63,7 @@ class UserInfo {
             ud.set(newValue, forKey: "incomeGroupId")
         }
         get {
-            return ud.string(forKey: "incomeGroupId") ?? "0"
+            return ud.string(forKey: "incomeGroupId") ?? RealmManager.share.getDetailGroup(billType: .income).first?.id.stringValue ?? ""
         }
     }
     
@@ -72,7 +72,7 @@ class UserInfo {
             ud.set(newValue, forKey: "incomeTypeId")
         }
         get {
-            return ud.string(forKey: "incomeTypeId") ?? "0"
+            return ud.string(forKey: "incomeTypeId") ?? RealmManager.share.getDetailType(self.incomeGroupId).first?.id.stringValue ?? ""
         }
     }
     
@@ -81,7 +81,7 @@ class UserInfo {
             ud.set(newValue, forKey: "transferGroupId")
         }
         get {
-            return ud.string(forKey: "transferGroupId") ?? "0"
+            return ud.string(forKey: "transferGroupId") ?? RealmManager.share.getDetailGroup(billType: .transfer).first?.id.stringValue ?? ""
         }
     }
     
@@ -90,7 +90,7 @@ class UserInfo {
             ud.set(newValue, forKey: "trnasferTypeId")
         }
         get {
-            return ud.string(forKey: "trnasferTypeId") ?? "0"
+            return ud.string(forKey: "trnasferTypeId") ?? RealmManager.share.getDetailType(self.transferGroupId).first?.id.stringValue ?? ""
         }
     }
     
@@ -99,11 +99,7 @@ class UserInfo {
             ud.set(newValue, forKey: "accountId")
         }
         get {
-            if let id = ud.string(forKey: "accountId") {
-                return id
-            } else {
-                return ""
-            }
+            return ud.string(forKey: "accountId") ?? RealmManager.share.getAccount().first?.id.stringValue ?? ""
         }
     }
     
@@ -112,11 +108,27 @@ class UserInfo {
             ud.set(newValue, forKey: "transferToAccountId")
         }
         get {
-            if let id = ud.string(forKey: "transferToAccountId") {
-                return id
-            } else {
-                return ""
-            }
+            return ud.string(forKey: "transferToAccountId") ?? RealmManager.share.getAccount().first?.id.stringValue ?? ""
         }
     }
+    
+    
+    var transferFeeGroupId: String {
+        set {
+            ud.set(newValue, forKey: "transferFeeGroupId")
+        }
+        get {
+            return ud.string(forKey: "transferFeeGroupId") ?? ""
+        }
+    }
+    
+    var transferFeeTypeId: String {
+        set {
+            ud.set(newValue, forKey: "transferFeeTypeId")
+        }
+        get {
+            return ud.string(forKey: "transferFeeTypeId") ?? ""
+        }
+    }
+    
 }

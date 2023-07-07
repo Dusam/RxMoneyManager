@@ -6,8 +6,17 @@
 //
 
 import UIKit
+import SamUtils
 
 class MainNavigationController: UINavigationController {
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if UserInfo.share.themeColor.isLight {
+            return .darkContent
+        } else {
+            return .lightContent
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

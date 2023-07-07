@@ -1,19 +1,19 @@
 //
-//  AddDetailCell.swift
+//  AccountCell.swift
 //  RxMoneyManager
 //
-//  Created by 杜千煜 on 2023/6/14.
+//  Created by 杜千煜 on 2023/6/26.
 //
 
 import UIKit
 import RxSwift
 import RxCocoa
 
-class AddDetailCell: UITableViewCell {
-    
+class AccountCell: UITableViewCell {
+
     var disposeBag: DisposeBag!
-    var addTitleLabel = UILabel()
-    var typeLabel = UILabel()
+    var accountNameLabel = UILabel()
+    var amountLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -39,16 +39,16 @@ class AddDetailCell: UITableViewCell {
             make.right.equalToSuperview().offset(-10)
         }
         
-        horizontalStackView.addArrangedSubviews([addTitleLabel, typeLabel])
+        horizontalStackView.addArrangedSubviews([accountNameLabel, amountLabel])
         
-        addTitleLabel.textAlignment = .left
-        addTitleLabel.font = .systemFont(ofSize: 18)
+        accountNameLabel.textAlignment = .left
+        accountNameLabel.font = .systemFont(ofSize: 18)
         
-        typeLabel.textAlignment = .right
-        typeLabel.font = .systemFont(ofSize: 18)
+        amountLabel.textAlignment = .right
+        amountLabel.font = .systemFont(ofSize: 18)
         
-        addTitleLabel.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.35)
+        accountNameLabel.snp.makeConstraints { make in
+            make.width.equalToSuperview().multipliedBy(0.6)
         }
     }
 }

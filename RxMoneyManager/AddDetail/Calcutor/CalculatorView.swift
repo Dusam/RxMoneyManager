@@ -26,12 +26,11 @@ class CalculatorView: UIView {
         [.zero, .decimal]
     ]
     
-    required init(addDetailVM: AddDetailViewModel) {
+    required init(viewModel: BaseViewModel) {
         super.init(frame: .zero)
 
-        self.calcutorVM.amount = addDetailVM.amount
-        self.calcutorVM.transferFee = addDetailVM.transferFee
-        self.calcutorVM.isShowCalcutor = addDetailVM.isShowCalcutor
+        backgroundColor = .white
+        calcutorVM.setViewModel(viewModel)
         self.setUpCalcutor()
     }
     
@@ -54,8 +53,8 @@ class CalculatorView: UIView {
         addSubview(mainStackView)
         
         mainStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.left.equalToSuperview().offset(10)
+            make.bottom.equalToSuperview()
+            make.top.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
         }
         
