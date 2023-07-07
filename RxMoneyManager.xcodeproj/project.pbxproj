@@ -38,6 +38,10 @@
 		680E6E422A20807C00874D22 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E412A20807C00874D22 /* R.generated.swift */; };
 		680E6E442A2080A300874D22 /* DBTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E432A2080A300874D22 /* DBTools.swift */; };
 		680E6E462A2080B400874D22 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E452A2080B400874D22 /* RealmManager.swift */; };
+		687044FC2A57A97000176C05 /* DetailChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687044FB2A57A97000176C05 /* DetailChartViewController.swift */; };
+		687045002A57AC2300176C05 /* DetailChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687044FF2A57AC2300176C05 /* DetailChartViewModel.swift */; };
+		687045022A57BFCC00176C05 /* DetailChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045012A57BFCC00176C05 /* DetailChartType.swift */; };
+		687045062A57FF8600176C05 /* DetailChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045052A57FF8600176C05 /* DetailChartCell.swift */; };
 		6876E1AB2A1F38C20072A26F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876E1AA2A1F38C20072A26F /* AppDelegate.swift */; };
 		6876E1AD2A1F38C20072A26F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876E1AC2A1F38C20072A26F /* SceneDelegate.swift */; };
 		6876E1AF2A1F38C20072A26F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876E1AE2A1F38C20072A26F /* DetailViewController.swift */; };
@@ -109,6 +113,10 @@
 		680E6E432A2080A300874D22 /* DBTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBTools.swift; sourceTree = "<group>"; };
 		680E6E452A2080B400874D22 /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		684C25D52A20636400A9AC9F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		687044FB2A57A97000176C05 /* DetailChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartViewController.swift; sourceTree = "<group>"; };
+		687044FF2A57AC2300176C05 /* DetailChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartViewModel.swift; sourceTree = "<group>"; };
+		687045012A57BFCC00176C05 /* DetailChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartType.swift; sourceTree = "<group>"; };
+		687045052A57FF8600176C05 /* DetailChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartCell.swift; sourceTree = "<group>"; };
 		6876E1A72A1F38C20072A26F /* RxMoneyManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxMoneyManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876E1AA2A1F38C20072A26F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6876E1AC2A1F38C20072A26F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -264,6 +272,33 @@
 			path = Transfer;
 			sourceTree = "<group>";
 		};
+		687044FA2A57A8FB00176C05 /* DetailChart */ = {
+			isa = PBXGroup;
+			children = (
+				687045042A57F5E300176C05 /* Enum */,
+				687045032A57E3B500176C05 /* ViewModel */,
+				687044FB2A57A97000176C05 /* DetailChartViewController.swift */,
+				687045052A57FF8600176C05 /* DetailChartCell.swift */,
+			);
+			path = DetailChart;
+			sourceTree = "<group>";
+		};
+		687045032A57E3B500176C05 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				687044FF2A57AC2300176C05 /* DetailChartViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		687045042A57F5E300176C05 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				687045012A57BFCC00176C05 /* DetailChartType.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
 		6876E19E2A1F38C20072A26F = {
 			isa = PBXGroup;
 			children = (
@@ -294,6 +329,7 @@
 				6896C4BC2A208A2000F18E6D /* AddDetail */,
 				687F0D1B2A3C4575009A81AE /* AddAccount */,
 				687F0D292A493612009A81AE /* Account */,
+				687044FA2A57A8FB00176C05 /* DetailChart */,
 				687F0D262A428E35009A81AE /* Setting */,
 				680E6D482A207BA400874D22 /* DB */,
 				6896C4BA2A20899400F18E6D /* Object */,
@@ -615,11 +651,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				687F0D2B2A493775009A81AE /* AccountViewController.swift in Sources */,
+				687045022A57BFCC00176C05 /* DetailChartType.swift in Sources */,
 				6876E1C22A1F4F9E0072A26F /* DetailCell.swift in Sources */,
 				687F0D112A3AA666009A81AE /* ChooseTypeViewController.swift in Sources */,
 				680E6E2C2A20805000874D22 /* ExpensesFee.swift in Sources */,
 				680E6E2F2A20805000874D22 /* ExpensesEducate.swift in Sources */,
 				6896C4C82A248C0000F18E6D /* AddDetailViewController.swift in Sources */,
+				687045002A57AC2300176C05 /* DetailChartViewModel.swift in Sources */,
 				680E6E312A20805000874D22 /* ExpensesPersonalCommunication.swift in Sources */,
 				687F0D0B2A3859AB009A81AE /* BaseViewModel.swift in Sources */,
 				680E6E282A20805000874D22 /* PresetUserDB.swift in Sources */,
@@ -647,6 +685,7 @@
 				687F0D282A428E4F009A81AE /* SettingViewController.swift in Sources */,
 				680E6E442A2080A300874D22 /* DBTools.swift in Sources */,
 				680E6E322A20805000874D22 /* ExpensesElectronicProduct.swift in Sources */,
+				687045062A57FF8600176C05 /* DetailChartCell.swift in Sources */,
 				6876E1AF2A1F38C20072A26F /* DetailViewController.swift in Sources */,
 				6896C4CA2A248C3B00F18E6D /* BaseViewController.swift in Sources */,
 				680E6E3C2A20805000874D22 /* IncomeGeneral.swift in Sources */,
@@ -658,6 +697,7 @@
 				687F0D2F2A4969A4009A81AE /* AccountCell.swift in Sources */,
 				680E6E422A20807C00874D22 /* R.generated.swift in Sources */,
 				687F0D152A3AB5CA009A81AE /* PaddingLabel.swift in Sources */,
+				687044FC2A57A97000176C05 /* DetailChartViewController.swift in Sources */,
 				680E6D8E2A207C6500874D22 /* DetailGroupModel.swift in Sources */,
 				6896C4C12A209F8D00F18E6D /* AddDetailViewModel.swift in Sources */,
 				68935E2B2A2586DB004849A8 /* CalcutorButton.swift in Sources */,
