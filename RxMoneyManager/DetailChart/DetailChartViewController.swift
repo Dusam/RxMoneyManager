@@ -38,6 +38,7 @@ class DetailChartViewController: BaseViewController {
         bindTypeSegment()
         bindPieChartView()
         bindTotalLabel()
+        bindDetailChartTableView()
     }
 }
 
@@ -194,10 +195,8 @@ extension DetailChartViewController {
         view.addSubview(detailChartTableView)
         
         detailChartTableView.snp.makeConstraints { make in
-            make.top.equalTo(totalLabel.snp.bottom)
-            make.left.equalTo(safeAreaLayoutGuide).offset(10)
-            make.right.equalTo(safeAreaLayoutGuide).offset(-10)
-            make.bottom.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(totalLabel.snp.bottom).offset(10)
+            make.left.right.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }
@@ -228,6 +227,25 @@ extension DetailChartViewController {
         detailChartVM.total
             .map { "總計: $\($0)" }
             .drive(totalLabel.rx.text)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindDetailChartTableView() {
+        detailChartVM.detail
+            .drive(detailChartTableView.rx.items(cellIdentifier: "DetailChartCell", cellType: DetailChartCell.self)) { row, data, cell in
+                cell.totalLabel.text = "\(data.billingType.name) - $\(data.total)"
+                cell.percentLabel.text = "\(data.percent)%"
+                cell.progressView.progress = data.percent.float / 100
+                cell.progressView.progressTintColor = data.billingType.forgroundColor
+                cell.accessoryType = .disclosureIndicator
+                
+            }
+            .disposed(by: disposeBag)
+        
+        detailChartTableView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.detailChartTableView.deselectRow(at: indexPath, animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }

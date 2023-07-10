@@ -57,13 +57,19 @@ class DetailChartViewModel: BaseViewModel {
     private let transferTotalRelay = BehaviorRelay<Int>(value: 0)
     private(set) lazy var transferTotal = transferTotalRelay.asDriver()
     
-    private var incomePercent: Double = 0
-    private var expensesPercent: Double = 0
-    private var transferPercent: Double = 0
+   
     
-//    private let incomeSectionDatas: [SectionDetailModel] = []
-//    private let expensesSectionDatas: [SectionDetailModel] = []
-//    private let transferSectionDatas: [SectionDetailModel] = []
+    
+    
+    private let detailRelay = BehaviorRelay<[ChartDetailModel]>(value: [])
+    private(set) lazy var detail = detailRelay.asDriver()
+    
+    private var incomeDatas: [DetailModel] = []
+    private var spendDatas: [DetailModel] = []
+    private var transferDatas: [DetailModel] = []
+    
+    private let chartSectionDatasRelay = BehaviorRelay<[ChartDetailSectionModel]>(value: [])
+    private(set) lazy var chartSectionDatas = chartSectionDatasRelay.asDriver()
     
     override init() {
         super.init()
@@ -73,6 +79,17 @@ class DetailChartViewModel: BaseViewModel {
 }
 
 extension DetailChartViewModel {
+    private func setSectionData(_ billingType: BillingType) {
+        switch billingType {
+        case .spend:
+            chartSectionDatasRelay.accept(setSectionDatas(datas: spendDatas))
+        case .income:
+            chartSectionDatasRelay.accept(setSectionDatas(datas: incomeDatas))
+        case .transfer:
+            chartSectionDatasRelay.accept(setSectionDatas(datas: transferDatas))
+        }
+    }
+    
     private func getChartData() {
         countDate()
         
@@ -82,19 +99,15 @@ extension DetailChartViewModel {
             partialResult + abs(model.amount)
         }
         
-        let incomeDatas = data.filter {BillingType(rawValue: $0.billingType) == .income}
-        let expensesDatas = data.filter {BillingType(rawValue: $0.billingType) == .spend}
-        let transferDatas = data.filter {BillingType(rawValue: $0.billingType) == .transfer}
-        
-//        incomeSectionDatas = setSectionDatas(datas: incomeDatas.reversed())
-//        expensesSectionDatas = setSectionDatas(datas: expensesDatas.reversed())
-//        transferSectionDatas = setSectionDatas(datas: transferDatas.reversed())
+        incomeDatas = data.filter {BillingType(rawValue: $0.billingType) == .income}
+        spendDatas = data.filter {BillingType(rawValue: $0.billingType) == .spend}
+        transferDatas = data.filter {BillingType(rawValue: $0.billingType) == .transfer}
         
         incomeTotalRelay.accept(incomeDatas.reduce(0) { partialResult, model in
             partialResult + abs(model.amount)
         })
         
-        spendTotalRelay.accept(expensesDatas.reduce(0) { partialResult, model in
+        spendTotalRelay.accept(spendDatas.reduce(0) { partialResult, model in
             partialResult + abs(model.amount)
         })
         
@@ -103,17 +116,21 @@ extension DetailChartViewModel {
         })
         
         totalRelay.accept(incomeTotalRelay.value - spendTotalRelay.value)
-        incomePercent = String(format: "%.2f", (incomeTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
-        expensesPercent = String(format: "%.2f", (spendTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
-        transferPercent = String(format: "%.2f", (transferTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
+        let incomePercent = String(format: "%.2f", (incomeTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
+        let spendPercent = String(format: "%.2f", (spendTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
+        let transferPercent = String(format: "%.2f", (transferTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
+        
+        detailRelay.accept([ChartDetailModel(billingType: .income, percent: incomePercent, total: incomeTotalRelay.value, details: incomeDatas),
+                            ChartDetailModel(billingType: .spend, percent: spendPercent, total: spendTotalRelay.value, details: spendDatas),
+                            ChartDetailModel(billingType: .transfer, percent: transferPercent, total: transferTotalRelay.value, details: transferDatas)])
         
         chartListDatas.accept([ChartListData(billingType: .income, total: incomeTotalRelay.value, percent: incomePercent),
-                               ChartListData(billingType: .spend, total: spendTotalRelay.value, percent: expensesPercent),
+                               ChartListData(billingType: .spend, total: spendTotalRelay.value, percent: spendPercent),
                                ChartListData(billingType: .transfer, total: transferTotalRelay.value, percent: transferPercent)])
         
-        if incomePercent > 0 || expensesPercent > 0 || transferPercent > 0 {
+        if incomePercent > 0 || spendPercent > 0 || transferPercent > 0 {
             pieChartDataEntrys = [PieChartDataEntry(value: incomePercent, label: "\(incomePercent)%"),
-                                  PieChartDataEntry(value: expensesPercent, label: "\(expensesPercent)%"),
+                                  PieChartDataEntry(value: spendPercent, label: "\(spendPercent)%"),
                                   PieChartDataEntry(value: transferPercent, label: "\(transferPercent)%")]
         } else {
             pieChartDataEntrys = [PieChartDataEntry(value: 1, label: "")]
@@ -153,6 +170,29 @@ extension DetailChartViewModel {
         case .year:
             currentDateStringRelay.accept(currentDate.string(withFormat: "yyyy"))
         }
+    }
+    
+    private func setSectionDatas(datas: [DetailModel]) -> [ChartDetailSectionModel] {
+        var date = ""
+        var dateDetails: [DetailModel] = []
+        var sectionDatas: [ChartDetailSectionModel] = []
+
+        datas.forEach { detail in
+            if date != detail.date {
+                if !date.isEmpty {
+                    sectionDatas.append(ChartDetailSectionModel(sectionTitle: date, items: dateDetails))
+                }
+                dateDetails.removeAll()
+                date = detail.date
+            }
+            dateDetails.append(detail)
+
+            if let last = datas.last, last == detail {
+                sectionDatas.append(ChartDetailSectionModel(sectionTitle: date, items: dateDetails))
+            }
+        }
+
+        return sectionDatas
     }
 }
 
