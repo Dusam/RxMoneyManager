@@ -107,14 +107,14 @@ extension DetailViewController {
         chartButton.setTitle(R.string.localizable.chart(), for: .normal)
         chartButton.setTitleColor(.systemGray, for: .highlighted)
         chartButton.tintColor = .white
-        chartButton.setImage(UIImage(systemName: "chart.pie", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20)), for: .normal)
+        chartButton.setImage(UIImage(systemName: "chart.pie", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22)), for: .normal)
         chartButton.centerTextAndImage(imageAboveText: true, spacing: 5)
         
         settingButton = UIButton()
         settingButton.setTitle(R.string.localizable.setting(), for: .normal)
         settingButton.setTitleColor(.systemGray, for: .highlighted)
         settingButton.tintColor = .white
-        settingButton.setImage(UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20)), for: .normal)
+        settingButton.setImage(UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22)), for: .normal)
         settingButton.centerTextAndImage(imageAboveText: true, spacing: 5)
         
         stackView.addArrangedSubviews([accountButton, chartButton, settingButton])

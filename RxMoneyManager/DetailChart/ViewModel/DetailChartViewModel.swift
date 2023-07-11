@@ -57,19 +57,13 @@ class DetailChartViewModel: BaseViewModel {
     private let transferTotalRelay = BehaviorRelay<Int>(value: 0)
     private(set) lazy var transferTotal = transferTotalRelay.asDriver()
     
-   
-    
-    
-    
     private let detailRelay = BehaviorRelay<[ChartDetailModel]>(value: [])
     private(set) lazy var detail = detailRelay.asDriver()
     
-    private var incomeDatas: [DetailModel] = []
-    private var spendDatas: [DetailModel] = []
-    private var transferDatas: [DetailModel] = []
-    
     private let chartSectionDatasRelay = BehaviorRelay<[ChartDetailSectionModel]>(value: [])
     private(set) lazy var chartSectionDatas = chartSectionDatasRelay.asDriver()
+    
+    private(set) var billingType: BillingType = .spend
     
     override init() {
         super.init()
@@ -79,15 +73,9 @@ class DetailChartViewModel: BaseViewModel {
 }
 
 extension DetailChartViewModel {
-    private func setSectionData(_ billingType: BillingType) {
-        switch billingType {
-        case .spend:
-            chartSectionDatasRelay.accept(setSectionDatas(datas: spendDatas))
-        case .income:
-            chartSectionDatasRelay.accept(setSectionDatas(datas: incomeDatas))
-        case .transfer:
-            chartSectionDatasRelay.accept(setSectionDatas(datas: transferDatas))
-        }
+    func setSectionData(_ billingType: BillingType) {
+        self.billingType = billingType
+        getChartData()
     }
     
     private func getChartData() {
@@ -99,9 +87,18 @@ extension DetailChartViewModel {
             partialResult + abs(model.amount)
         }
         
-        incomeDatas = data.filter {BillingType(rawValue: $0.billingType) == .income}
-        spendDatas = data.filter {BillingType(rawValue: $0.billingType) == .spend}
-        transferDatas = data.filter {BillingType(rawValue: $0.billingType) == .transfer}
+        let incomeDatas = data.filter {BillingType(rawValue: $0.billingType) == .income}
+        let spendDatas = data.filter {BillingType(rawValue: $0.billingType) == .spend}
+        let transferDatas = data.filter {BillingType(rawValue: $0.billingType) == .transfer}
+        
+        switch billingType {
+        case .spend:
+            chartSectionDatasRelay.accept(setSectionDatas(datas: spendDatas.reversed()))
+        case .income:
+            chartSectionDatasRelay.accept(setSectionDatas(datas: incomeDatas.reversed()))
+        case .transfer:
+            chartSectionDatasRelay.accept(setSectionDatas(datas: transferDatas.reversed()))
+        }
         
         incomeTotalRelay.accept(incomeDatas.reduce(0) { partialResult, model in
             partialResult + abs(model.amount)
@@ -120,9 +117,9 @@ extension DetailChartViewModel {
         let spendPercent = String(format: "%.2f", (spendTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
         let transferPercent = String(format: "%.2f", (transferTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
         
-        detailRelay.accept([ChartDetailModel(billingType: .income, percent: incomePercent, total: incomeTotalRelay.value, details: incomeDatas),
-                            ChartDetailModel(billingType: .spend, percent: spendPercent, total: spendTotalRelay.value, details: spendDatas),
-                            ChartDetailModel(billingType: .transfer, percent: transferPercent, total: transferTotalRelay.value, details: transferDatas)])
+        detailRelay.accept([ChartDetailModel(billingType: .income, percent: incomePercent, total: incomeTotalRelay.value),
+                            ChartDetailModel(billingType: .spend, percent: spendPercent, total: spendTotalRelay.value),
+                            ChartDetailModel(billingType: .transfer, percent: transferPercent, total: transferTotalRelay.value)])
         
         chartListDatas.accept([ChartListData(billingType: .income, total: incomeTotalRelay.value, percent: incomePercent),
                                ChartListData(billingType: .spend, total: spendTotalRelay.value, percent: spendPercent),

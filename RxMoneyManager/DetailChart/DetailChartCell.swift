@@ -49,10 +49,10 @@ class DetailChartCell: UITableViewCell {
         hStackView.distribution = .fillEqually
         
         totalLabel = UILabel()
-        totalLabel.font = .systemFont(ofSize: 20)
+        totalLabel.font = .systemFont(ofSize: 18)
         
         percentLabel = UILabel()
-        percentLabel.font = .systemFont(ofSize: 20)
+        percentLabel.font = .systemFont(ofSize: 18)
         percentLabel.textAlignment = .right
         
         progressView = UIProgressView()

@@ -40,6 +40,12 @@ class DetailChartViewController: BaseViewController {
         bindTotalLabel()
         bindDetailChartTableView()
     }
+    
+    deinit {
+        #if DEBUG
+        print("DetailChartViewController deinit")
+        #endif
+    }
 }
 
 extension DetailChartViewController {
@@ -238,13 +244,20 @@ extension DetailChartViewController {
                 cell.progressView.progress = data.percent.float / 100
                 cell.progressView.progressTintColor = data.billingType.forgroundColor
                 cell.accessoryType = .disclosureIndicator
-                
             }
             .disposed(by: disposeBag)
         
         detailChartTableView.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
                 self?.detailChartTableView.deselectRow(at: indexPath, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        detailChartTableView.rx.modelSelected(ChartDetailModel.self)
+            .subscribe(onNext: { [unowned self] data in
+                // 分日期的明細
+                self.detailChartVM.setSectionData(data.billingType)
+                self.push(vc: ChartDetailViewController(detailChartVM: self.detailChartVM))
             })
             .disposed(by: disposeBag)
     }

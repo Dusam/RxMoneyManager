@@ -12,5 +12,4 @@ struct ChartDetailModel {
     let billingType: BillingType
     let percent: Double
     let total: Int
-    let details: [DetailModel]
 }
