@@ -25,7 +25,7 @@ class DetailViewModel {
     private let themeColorRelay = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
     private(set) lazy var themeColor = themeColorRelay.asDriver()
     
-    init() {
+    private init() {
         getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
     }
     

@@ -13,6 +13,7 @@ target 'RxMoneyManager' do
   pod 'SamUtils', :path => '/Users/si1302/Desktop/iOS/SamUtils/'
   pod 'RealmSwift'
   pod 'R.swift'
+  pod 'DGCharts'
 
   # Pods for RxMoneyManager
   

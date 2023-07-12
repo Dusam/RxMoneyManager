@@ -12,6 +12,7 @@ import RxCocoa
 import SnapKit
 import RxGesture
 import RxDataSources
+import DGCharts
 
 class BaseViewController: UIViewController {
 

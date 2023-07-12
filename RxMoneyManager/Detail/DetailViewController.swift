@@ -20,6 +20,7 @@ class DetailViewController: BaseViewController {
     
     private var accountButton: UIButton!
     private var settingButton: UIButton!
+    private var chartButton: UIButton!
    
     deinit {
         #if DEBUG
@@ -102,14 +103,21 @@ extension DetailViewController {
         accountButton.setImage(UIImage(systemName: "house", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20)), for: .normal)
         accountButton.centerTextAndImage(imageAboveText: true, spacing: 5)
         
+        chartButton = UIButton()
+        chartButton.setTitle(R.string.localizable.chart(), for: .normal)
+        chartButton.setTitleColor(.systemGray, for: .highlighted)
+        chartButton.tintColor = .white
+        chartButton.setImage(UIImage(systemName: "chart.pie", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22)), for: .normal)
+        chartButton.centerTextAndImage(imageAboveText: true, spacing: 5)
+        
         settingButton = UIButton()
         settingButton.setTitle(R.string.localizable.setting(), for: .normal)
         settingButton.setTitleColor(.systemGray, for: .highlighted)
         settingButton.tintColor = .white
-        settingButton.setImage(UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20)), for: .normal)
+        settingButton.setImage(UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22)), for: .normal)
         settingButton.centerTextAndImage(imageAboveText: true, spacing: 5)
         
-        stackView.addArrangedSubviews([accountButton, settingButton])
+        stackView.addArrangedSubviews([accountButton, chartButton, settingButton])
     }
 }
 
@@ -185,6 +193,12 @@ extension DetailViewController {
         accountButton.rx.tap
             .subscribe(onNext: {
                 self.push(vc: AccountViewController())
+            })
+            .disposed(by: disposeBag)
+        
+        chartButton.rx.tap
+            .subscribe(onNext: {
+                self.push(vc: DetailChartViewController())
             })
             .disposed(by: disposeBag)
         
