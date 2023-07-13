@@ -15,12 +15,12 @@ class CalculatorViewModel {
     private var addDetailVM: AddDetailViewModel?
     private var addAccountVM: AddAccountViewModel?
     
-    private var amountString = "0"
-    private var amountValue = 0.0
-    private var transferString = "0"
-    private var transferValue = 0.0
-    private var currentOperation: Operation = .none
-    private var isEditAmount = true
+    private(set) var amountString = "0"
+    private(set) var amountValue = 0.0
+    private(set) var transferString = "0"
+    private(set) var transferValue = 0.0
+    private(set) var currentOperation: Operation = .none
+    private(set) var isEditAmount = true
     
     func setViewModel(_ viewModel: BaseViewModel) {
         if let addDetailViewModel = viewModel as? AddDetailViewModel {

@@ -12,7 +12,7 @@ import SamUtils
 import RealmSwift
 
 class DetailViewModel {
-    static let shared = DetailViewModel()
+//    static let shared = DetailViewModel()
 
     private var detailDatas: [DetailModel] = []
     
@@ -25,7 +25,7 @@ class DetailViewModel {
     private let themeColorRelay = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
     private(set) lazy var themeColor = themeColorRelay.asDriver()
     
-    private init() {
+    init() {
         getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
     }
     

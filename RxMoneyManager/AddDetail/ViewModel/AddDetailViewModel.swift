@@ -18,8 +18,8 @@ class AddDetailViewModel: BaseViewModel {
     private let transferFeeRelay = BehaviorRelay<String>(value: "0")
     private(set) lazy var transferFee = transferFeeRelay.asDriver()
     
-//    private let isShowCalcutorRelay = BehaviorRelay<Bool>(value: false)
-//    private(set) lazy var isShowCalcutor = isShowCalcutorRelay.asDriver()
+    private let isShowCalcutorRelay = BehaviorRelay<Bool>(value: false)
+    private(set) lazy var isShowCalcutor = isShowCalcutorRelay.asDriver()
     
     private let selectedSegmentRelay = BehaviorRelay<Int>(value: 0)
     private(set) lazy var selectedSegment = selectedSegmentRelay.asDriver()
@@ -336,9 +336,9 @@ extension AddDetailViewModel {
         transferFeeRelay.accept(transferFee)
     }
     
-//    func setShowCalcutor(_ show: Bool) {
-//        isShowCalcutorRelay.accept(show)
-//    }
+    func setShowCalcutor(_ show: Bool) {
+        isShowCalcutorRelay.accept(show)
+    }
     
     func setMemo(_ memoString: String) {
         memoRelay.accept(memoString)

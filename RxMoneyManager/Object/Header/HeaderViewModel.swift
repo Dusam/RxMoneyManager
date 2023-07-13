@@ -14,44 +14,51 @@ enum HeaderType {
 }
 
 class HeaderViewModel {
-    var currentDate = BehaviorRelay<String>(value: UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
+    private let currentDateRelay = BehaviorRelay<String>(value: UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
+    private(set) lazy var currentDate = currentDateRelay.asDriver()
 //    var currentTime = BehaviorRelay<String>(value: UserInfo.share.selectedDate.string(withFormat: "HH:mm"))
     
+    private var detailVM: DetailViewModel!
     private var headerType: HeaderType = .detail
     
-    func setHeaderType(_ headerType: HeaderType) {
+    init(detailVM: DetailViewModel!, headerType: HeaderType) {
+        self.detailVM = detailVM
+        self.headerType = headerType
+    }
+    
+    init(headerType: HeaderType) {
         self.headerType = headerType
     }
     
     func toPerviousDate() {
         UserInfo.share.selectedDate = UserInfo.share.selectedDate.adding(.day, value: -1)
-        currentDate.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
+        currentDateRelay.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
         
         getDetail()
     }
     
     func toNextDate() {
         UserInfo.share.selectedDate = UserInfo.share.selectedDate.adding(.day, value: 1)
-        currentDate.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
+        currentDateRelay.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
         
         getDetail()
     }
     
     func toCurrentDate() {
         UserInfo.share.selectedDate = Date()
-        currentDate.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
+        currentDateRelay.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
         
         getDetail()
     }
     
     func toSelectedDate() {
-        currentDate.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
+        currentDateRelay.accept(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
         getDetail()
     }
     
     private func getDetail() {
         if headerType == .detail {
-            DetailViewModel.shared.getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
+            detailVM.getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
         }
     }
 }

@@ -15,14 +15,24 @@ class HeaderView: UIView {
     
     private let disposeBag = DisposeBag()
     
-    private let headerVM = HeaderViewModel()
+    private var headerVM: HeaderViewModel!
+    private var detailVM: DetailViewModel!
     private var headerType: HeaderType = .detail
+    
+    required init(detailVM: DetailViewModel, headerType: HeaderType) {
+        super.init(frame: CGRect.zero)
+        self.headerType = headerType
+        
+        self.detailVM = detailVM
+        self.headerVM = HeaderViewModel(detailVM: detailVM, headerType: headerType)
+        setUpHeaderView()
+    }
     
     required init(headerType: HeaderType) {
         super.init(frame: CGRect.zero)
         self.headerType = headerType
         
-        self.headerVM.setHeaderType(headerType)
+        self.headerVM = HeaderViewModel(headerType: headerType)
         setUpHeaderView()
     }
     
@@ -118,7 +128,7 @@ class HeaderView: UIView {
             subTitleLabel.font = .systemFont(ofSize: 18)
             
             if headerType == .detail {
-                DetailViewModel.shared.totalAmount
+                detailVM.totalAmount
                     .map{ "$TW \($0)" }
                     .asDriver(onErrorJustReturn: "")
                     .drive(subTitleLabel.rx.text)

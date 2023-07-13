@@ -5,6 +5,8 @@ PODS:
   - DGCharts/Core (5.0.0)
   - Differentiator (5.0.0)
   - IQKeyboardManagerSwift (6.5.12)
+  - Nimble (12.0.1)
+  - Quick (7.1.0)
   - R.swift (7.3.2)
   - Realm (10.41.0):
     - Realm/Headers (= 10.41.0)
@@ -24,6 +26,8 @@ PODS:
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
+  - RxTest (6.5.0):
+    - RxSwift (= 6.5.0)
   - SamUtils (1.0.1):
     - Alamofire
     - IQKeyboardManagerSwift
@@ -72,12 +76,15 @@ PODS:
 
 DEPENDENCIES:
   - DGCharts
+  - Nimble
+  - Quick
   - R.swift
   - RealmSwift
   - RxCocoa
   - RxDataSources
   - RxGesture
   - RxSwift
+  - RxTest
   - SamUtils (from `/Users/si1302/Desktop/iOS/SamUtils/`)
   - SnapKit
 
@@ -87,6 +94,8 @@ SPEC REPOS:
     - DGCharts
     - Differentiator
     - IQKeyboardManagerSwift
+    - Nimble
+    - Quick
     - R.swift
     - Realm
     - RealmSwift
@@ -95,6 +104,7 @@ SPEC REPOS:
     - RxGesture
     - RxRelay
     - RxSwift
+    - RxTest
     - SnapKit
     - SwifterSwift
 
@@ -107,6 +117,8 @@ SPEC CHECKSUMS:
   DGCharts: 6e0cf2644e8f81ad13f04caa8bc18502870a1c54
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   IQKeyboardManagerSwift: 371b08cb39664fb56030f5345c815a4ffc74bbc0
+  Nimble: b279b3ca9e094508778aab5c76417be158d3ad04
+  Quick: bfee1bc96e9cdc4aeb89ecd5997aee7f4b394956
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
   Realm: 669efee7dc1ce0aa9f6739a60f8c0df0a3835067
   RealmSwift: 6b7b0e91b79dc66d5cfceeb3b319cacfc9b1a70e
@@ -115,10 +127,11 @@ SPEC CHECKSUMS:
   RxGesture: f3efb47ed2d26a8082f7b660d4a59970e275a7f8
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  RxTest: eb2d23adefc5a5ebf5779c7792fa3edfe6ebcc17
   SamUtils: 52eb185e201cf442eb03d1079f7fcc1085e8a653
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwifterSwift: 334181863c416882d97b7a60c05054d9e4d799e2
 
-PODFILE CHECKSUM: 7a309c2c0d292d50fe5e635457fd5287e6d43214
+PODFILE CHECKSUM: ee382a469cd6b76003238f3dd47563bc9e5ee2fd
 
 COCOAPODS: 1.12.1

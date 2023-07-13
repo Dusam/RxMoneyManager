@@ -13,8 +13,18 @@ import RxSwift
 
 class SettingViewController: BaseViewController {
     
+    private var detailVM: DetailViewModel!
     private var colorPickerButton: UIButton!
-
+    
+    init(detailVM: DetailViewModel) {
+        self.detailVM = detailVM
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func setUpView() {
         setBackButton(title: R.string.localizable.setting())
         setUpThemeColorView()
@@ -77,6 +87,6 @@ extension SettingViewController {
 extension SettingViewController: UIColorPickerViewControllerDelegate {
     func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
         colorPickerButton.backgroundColor = color
-        DetailViewModel.shared.setThemeColor(color)
+        detailVM.setThemeColor(color)
     }
 }
