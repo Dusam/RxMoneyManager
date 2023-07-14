@@ -111,11 +111,13 @@ class AccountViewModelTests: QuickSpec {
                     
                     viewModel.getAccounts()
                     
+                    // 刪除測試時新增的帳戶
                     viewModel.deleteAccount(RealmManager.share.getAccount().last!)
-                    expect(RealmManager.share.getAccount().last?.name).toNot(equal("安安你好"))
-                    expect(RealmManager.share.getAccount().last?.initMoney).toNot(equal(150))
-                    expect(RealmManager.share.getAccount().last?.money).toNot(equal(150))
-                    expect(RealmManager.share.getAccount().last?.includTotal).toNot(beFalse())
+                    let accounts = RealmManager.share.getAccount()
+                    expect(accounts.last?.name).toNot(equal("安安你好"))
+                    expect(accounts.last?.initMoney).toNot(equal(150))
+                    expect(accounts.last?.money).toNot(equal(150))
+                    expect(accounts.last?.includTotal).toNot(beFalse())
                 }
                 
                 xit("when not have detail data") {

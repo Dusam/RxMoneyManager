@@ -97,6 +97,8 @@ class AddAccountViewModelTests: QuickSpec {
                     viewModel.setAccountType(.bank)
                     viewModel.setShowCalcutor(true)
                     viewModel.saveAccount()
+                    
+                    
                                         
 //                    debugPrint(self, "accountNameObserver: \(accountNameObserver.events)")
                     expect(accountNameObserver.events.last?.value.element).to(equal("安安你好"))
@@ -109,6 +111,8 @@ class AddAccountViewModelTests: QuickSpec {
                     expect(RealmManager.share.getAccount().last?.money).to(equal(150))
                     expect(RealmManager.share.getAccount().last?.includTotal).to(beFalse())
                     expect(RealmManager.share.getAccount().last?.type).to(equal(AccountType.bank.typeInt))
+                    
+                    
                 }
                 
                 it("when save account error") {
@@ -124,6 +128,10 @@ class AddAccountViewModelTests: QuickSpec {
                     expect(RealmManager.share.getAccount().last?.money).to(equal(150))
                     expect(RealmManager.share.getAccount().last?.includTotal).to(beFalse())
                     expect(RealmManager.share.getAccount().last?.type).to(equal(AccountType.bank.typeInt))
+                    
+                    // 刪除測試時新增的帳戶
+                    let accountVM = AccountViewModel()
+                    accountVM.deleteAccount(RealmManager.share.getAccount().last!)
                 }
             }
         }

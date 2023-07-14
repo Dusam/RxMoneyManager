@@ -21,7 +21,7 @@ class HeaderViewModelTest: QuickSpec {
             var disposeBag: DisposeBag!
             
             beforeEach {
-                viewModel = HeaderViewModel(detailVM: DetailViewModel(), headerType: .detail)
+                viewModel = HeaderViewModel(headerType: .detail, detailVM: DetailViewModel())
                 scheduler = TestScheduler(initialClock: 0)
                 disposeBag = DisposeBag()
             }
@@ -43,7 +43,30 @@ class HeaderViewModelTest: QuickSpec {
                     scheduler.start()
                     
 //                    debugPrint(self, "currentDateObserver: \(currentDateObserver.events)")
-                    expect(currentDateObserver.events.first?.value.element).to(equal(Date().string(withFormat: "yyyy-MM-dd(EE)")))
+                    expect(currentDateObserver.events.first?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
+                }
+                
+                it("change date method") {
+                    let currentDateObserver = scheduler.createObserver(String.self)
+                    
+                    viewModel.currentDate
+                        .drive(currentDateObserver)
+                        .disposed(by: disposeBag)
+                  
+                    scheduler.start()
+                    
+                    viewModel.toPerviousDate()
+                    expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
+                    
+                    viewModel.toCurrentDate()
+                    expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
+                    
+                    viewModel.toNextDate()
+                    expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
+                    
+                    UserInfo.share.selectedDate = "2023-10-11".toDate()
+                    viewModel.toSelectedDate()
+                    expect(currentDateObserver.events.last?.value.element).to(equal("2023-10-11(週三)"))
                 }
             }
         }

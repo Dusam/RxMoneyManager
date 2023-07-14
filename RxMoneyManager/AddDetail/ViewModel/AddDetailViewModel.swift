@@ -21,8 +21,8 @@ class AddDetailViewModel: BaseViewModel {
     private let isShowCalcutorRelay = BehaviorRelay<Bool>(value: false)
     private(set) lazy var isShowCalcutor = isShowCalcutorRelay.asDriver()
     
-    private let selectedSegmentRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var selectedSegment = selectedSegmentRelay.asDriver()
+    private let billingSegmentRelay = BehaviorRelay<Int>(value: 0)
+    private(set) lazy var billingSegment = billingSegmentRelay.asDriver()
     
     private let addDetailCellModelsRelay = BehaviorRelay<[String]>(value: [R.string.localizable.type_title(),
                                                                            R.string.localizable.account_title(),
@@ -40,7 +40,7 @@ class AddDetailViewModel: BaseViewModel {
     private let typeNameRelay = BehaviorRelay<String>(value: "")
     private(set) lazy var typeName = typeNameRelay.asDriver()
     
-    private var selectedDetailGroupId: String = ""
+    private var selectedDetailGroupId: String = UserInfo.share.expensesGroupId
     private let detailGroupIdRelay = BehaviorRelay<String>(value: UserInfo.share.expensesGroupId)
     private(set) lazy var detailGroupId = detailGroupIdRelay.asDriver()
     
@@ -70,9 +70,9 @@ class AddDetailViewModel: BaseViewModel {
         super.init()
         
         detailGroupModelsRelay.accept(RealmManager.share.getDetailGroup(billType: billingType))
-        memoModelsRelay.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue,
-                                                                 groupId: detailGroupIdRelay.value,
-                                                                 memo: memoRelay.value))
+//        memoModelsRelay.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue,
+//                                                                 groupId: detailGroupIdRelay.value,
+//                                                                 memo: memoRelay.value))
         setSelectValue()
         getAccountName()
     }
@@ -85,7 +85,7 @@ extension AddDetailViewModel {
     func setEditData(_ data: DetailModel) {
         detail = data
         
-        selectedSegmentRelay.accept(data.billingType)
+        billingSegmentRelay.accept(data.billingType)
         amountRelay.accept(data.amount.string)
         detailGroupIdRelay.accept(data.detailGroup)
         detailTypeIdRelay.accept(data.detailType)
@@ -345,8 +345,8 @@ extension AddDetailViewModel {
         getMemos()
     }
     
-    func setSegmentIndex(_ index: Int) {
-        selectedSegmentRelay.accept(index)
+    func setBillingSegmentIndex(_ index: Int) {
+        billingSegmentRelay.accept(index)
     }
 }
 
@@ -383,6 +383,6 @@ extension AddDetailViewModel {
     }
     
     func getSegmentIndex() -> Int {
-        return selectedSegmentRelay.value
+        return billingSegmentRelay.value
     }
 }

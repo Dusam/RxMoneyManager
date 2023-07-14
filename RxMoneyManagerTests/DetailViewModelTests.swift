@@ -17,11 +17,13 @@ class DetailViewModelTests: QuickSpec {
     override class func spec() {
         describe("DetailViewModel") {
             var viewModel: DetailViewModel!
+            var addDetailViewModel: AddDetailViewModel!
             var scheduler: TestScheduler!
             var disposeBag: DisposeBag!
 
             beforeEach {
                 viewModel = DetailViewModel()
+                addDetailViewModel = AddDetailViewModel()
                 scheduler = TestScheduler(initialClock: 0)
                 disposeBag = DisposeBag()
             }
@@ -79,13 +81,26 @@ class DetailViewModelTests: QuickSpec {
                     
                     scheduler.start()
                     
+                    addDetailViewModel.setBillingType(.income)
+                    addDetailViewModel.setAmount("1000")
+                    UserInfo.share.selectedDate = "2023-07-11".toDate()
+                    addDetailViewModel.saveDetail()
+                    
                     viewModel.getDetail("2023-07-11")
+                    
+                    addDetailViewModel.setEditData(RealmManager.share.readDetail("2023-07-11").last!)
+                    addDetailViewModel.delDetail()
                     
 //                    debugPrint(self, "detailsObserver: \(detailsObserver.events)")
                     expect(detailsObserver.events.last?.value.element?.isEmpty).to(beFalse())
                     expect(totalAmountObserver.events.last?.value.element).toNot(equal(0))
                     expect(themeColorObserver.events.last?.value.element).to(equal(UserInfo.share.themeColor))
+                    
+                    // 設定主題顏色
+                    viewModel.setThemeColor(.blue)
+                    expect(themeColorObserver.events.last?.value.element).to(equal(.blue))
                 }
+                
             }
         }
     }

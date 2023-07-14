@@ -41,13 +41,6 @@ class DetailViewModel {
         detailsRelay.accept(detailDatas)
     }
     
-    func deleteDetail(_ detail: DetailModel) {
-        detailDatas.removeAll(detail)
-        detailsRelay.accept(detailDatas)
-        
-        RealmManager.share.delete(detail)
-    }
-    
     private func countTotalAmount() {
         var total = 0
         detailDatas.forEach { detail in

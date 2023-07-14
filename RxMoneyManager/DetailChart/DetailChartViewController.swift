@@ -24,6 +24,11 @@ class DetailChartViewController: BaseViewController {
     private var totalLabel: UILabel!
     private var detailChartTableView: UITableView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        detailChartVM.setChart()
+    }
+    
     override func setUpView() {
         setBackButton(title: R.string.localizable.chart())
         
@@ -212,11 +217,11 @@ extension DetailChartViewController {
         typeSegment.rx.selectedSegmentIndex
             .changed
             .subscribe(onNext: { [weak self] selectedIndex in
-                self?.detailChartVM.setSegmentIndex(selectedIndex)
+                self?.detailChartVM.setChartSegmentIndex(selectedIndex)
             })
             .disposed(by: disposeBag)
         
-        detailChartVM.selectedSegment
+        detailChartVM.chartSegment
             .drive(typeSegment.rx.selectedSegmentIndex)
             .disposed(by: disposeBag)
     }
@@ -237,7 +242,7 @@ extension DetailChartViewController {
     }
     
     private func bindDetailChartTableView() {
-        detailChartVM.detail
+        detailChartVM.chartDetail
             .drive(detailChartTableView.rx.items(cellIdentifier: "DetailChartCell", cellType: DetailChartCell.self)) { row, data, cell in
                 cell.totalLabel.text = "\(data.billingType.name) - $\(data.total)"
                 cell.percentLabel.text = "\(data.percent)%"
@@ -256,7 +261,7 @@ extension DetailChartViewController {
         detailChartTableView.rx.modelSelected(ChartDetailModel.self)
             .subscribe(onNext: { [unowned self] data in
                 // 分日期的明細
-                self.detailChartVM.setSectionData(data.billingType)
+                self.detailChartVM.setChart(with: data.billingType)
                 self.push(vc: ChartDetailViewController(detailChartVM: self.detailChartVM))
             })
             .disposed(by: disposeBag)

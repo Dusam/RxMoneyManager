@@ -130,11 +130,11 @@ extension AddDetailViewController {
         typeSegment.rx.selectedSegmentIndex
             .changed
             .subscribe(onNext: { [weak self] selectedIndex in
-                self?.addDetailVM.setSegmentIndex(selectedIndex)
+                self?.addDetailVM.setBillingSegmentIndex(selectedIndex)
             })
             .disposed(by: disposeBag)
         
-        addDetailVM.selectedSegment
+        addDetailVM.billingSegment
             .drive(onNext: { [weak self] selectedIndex in
                 guard let billType = BillingType(rawValue: selectedIndex) else { return }
                 self?.addDetailVM.setBillingType(billType)

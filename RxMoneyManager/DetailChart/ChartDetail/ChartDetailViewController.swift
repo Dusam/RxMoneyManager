@@ -32,7 +32,7 @@ class ChartDetailViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        detailChartVM.setSectionData(detailChartVM.billingType)
+        detailChartVM.setChart(with: detailChartVM.billingType)
     }
 
     override func setUpView() {

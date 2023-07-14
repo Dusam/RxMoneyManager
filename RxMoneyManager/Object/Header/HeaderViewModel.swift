@@ -18,16 +18,12 @@ class HeaderViewModel {
     private(set) lazy var currentDate = currentDateRelay.asDriver()
 //    var currentTime = BehaviorRelay<String>(value: UserInfo.share.selectedDate.string(withFormat: "HH:mm"))
     
-    private var detailVM: DetailViewModel!
     private var headerType: HeaderType = .detail
+    private var detailVM: DetailViewModel?
     
-    init(detailVM: DetailViewModel!, headerType: HeaderType) {
+    init(headerType: HeaderType, detailVM: DetailViewModel? = nil) {
+        self.headerType = headerType
         self.detailVM = detailVM
-        self.headerType = headerType
-    }
-    
-    init(headerType: HeaderType) {
-        self.headerType = headerType
     }
     
     func toPerviousDate() {
@@ -58,7 +54,7 @@ class HeaderViewModel {
     
     private func getDetail() {
         if headerType == .detail {
-            detailVM.getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
+            detailVM?.getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
         }
     }
 }

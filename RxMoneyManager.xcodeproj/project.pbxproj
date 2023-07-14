@@ -38,6 +38,7 @@
 		680E6E422A20807C00874D22 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E412A20807C00874D22 /* R.generated.swift */; };
 		680E6E442A2080A300874D22 /* DBTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E432A2080A300874D22 /* DBTools.swift */; };
 		680E6E462A2080B400874D22 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E452A2080B400874D22 /* RealmManager.swift */; };
+		68550F9A2A5FCB970006A655 /* AddDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68550F992A5FCB970006A655 /* AddDetailViewModelTests.swift */; };
 		687044FC2A57A97000176C05 /* DetailChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687044FB2A57A97000176C05 /* DetailChartViewController.swift */; };
 		687045002A57AC2300176C05 /* DetailChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687044FF2A57AC2300176C05 /* DetailChartViewModel.swift */; };
 		687045022A57BFCC00176C05 /* DetailChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045012A57BFCC00176C05 /* DetailChartType.swift */; };
@@ -83,6 +84,7 @@
 		6896C4C52A20B12100F18E6D /* HeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6896C4C42A20B12100F18E6D /* HeaderViewModel.swift */; };
 		6896C4C82A248C0000F18E6D /* AddDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6896C4C72A248C0000F18E6D /* AddDetailViewController.swift */; };
 		6896C4CA2A248C3B00F18E6D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6896C4C92A248C3B00F18E6D /* BaseViewController.swift */; };
+		68BE66C82A61373C00662909 /* DetailChartViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BE66C72A61373C00662909 /* DetailChartViewModelTests.swift */; };
 		CE5F9A5C0620ABFE6AB6EE7F /* Pods_RxMoneyManagerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68497467701AFE0FE4C1CF7F /* Pods_RxMoneyManagerTests.framework */; };
 		EB58C245E57985A381398CCD /* Pods_RxMoneyManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D436C5D71B581F1518464B2 /* Pods_RxMoneyManager.framework */; };
 /* End PBXBuildFile section */
@@ -132,6 +134,7 @@
 		680E6E452A2080B400874D22 /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		68497467701AFE0FE4C1CF7F /* Pods_RxMoneyManagerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxMoneyManagerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		684C25D52A20636400A9AC9F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		68550F992A5FCB970006A655 /* AddDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailViewModelTests.swift; sourceTree = "<group>"; };
 		687044FB2A57A97000176C05 /* DetailChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartViewController.swift; sourceTree = "<group>"; };
 		687044FF2A57AC2300176C05 /* DetailChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartViewModel.swift; sourceTree = "<group>"; };
 		687045012A57BFCC00176C05 /* DetailChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartType.swift; sourceTree = "<group>"; };
@@ -182,6 +185,7 @@
 		6896C4C42A20B12100F18E6D /* HeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewModel.swift; sourceTree = "<group>"; };
 		6896C4C72A248C0000F18E6D /* AddDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailViewController.swift; sourceTree = "<group>"; };
 		6896C4C92A248C3B00F18E6D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		68BE66C72A61373C00662909 /* DetailChartViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartViewModelTests.swift; sourceTree = "<group>"; };
 		839E242F495666A89AA68C34 /* Pods-RxMoneyManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMoneyManagerTests.debug.xcconfig"; path = "Target Support Files/Pods-RxMoneyManagerTests/Pods-RxMoneyManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		97BDB19467A021DD7535DB06 /* Pods-RxMoneyManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMoneyManager.debug.xcconfig"; path = "Target Support Files/Pods-RxMoneyManager/Pods-RxMoneyManager.debug.xcconfig"; sourceTree = "<group>"; };
 		9F9D55DD732A8ED9C53A0977 /* Pods-RxMoneyManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMoneyManager.release.xcconfig"; path = "Target Support Files/Pods-RxMoneyManager/Pods-RxMoneyManager.release.xcconfig"; sourceTree = "<group>"; };
@@ -366,6 +370,8 @@
 				687045652A5F88BF00176C05 /* AddAccountViewModelTests.swift */,
 				687045672A5F88BF00176C05 /* DetailViewModelTests.swift */,
 				687045662A5F88BF00176C05 /* HeaderViewModelTests.swift */,
+				68550F992A5FCB970006A655 /* AddDetailViewModelTests.swift */,
+				68BE66C72A61373C00662909 /* DetailChartViewModelTests.swift */,
 			);
 			path = RxMoneyManagerTests;
 			sourceTree = "<group>";
@@ -705,7 +711,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$SRCROOT/R.generated.swift",
+				$SRCROOT/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -796,9 +802,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68BE66C82A61373C00662909 /* DetailChartViewModelTests.swift in Sources */,
 				687045692A5F88BF00176C05 /* AddAccountViewModelTests.swift in Sources */,
 				6870456A2A5F88BF00176C05 /* HeaderViewModelTests.swift in Sources */,
 				6870456C2A5F88BF00176C05 /* AccountViewModelTests.swift in Sources */,
+				68550F9A2A5FCB970006A655 /* AddDetailViewModelTests.swift in Sources */,
 				6870456B2A5F88BF00176C05 /* DetailViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

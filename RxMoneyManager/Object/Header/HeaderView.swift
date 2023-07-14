@@ -24,7 +24,7 @@ class HeaderView: UIView {
         self.headerType = headerType
         
         self.detailVM = detailVM
-        self.headerVM = HeaderViewModel(detailVM: detailVM, headerType: headerType)
+        self.headerVM = HeaderViewModel(headerType: headerType, detailVM: detailVM)
         setUpHeaderView()
     }
     
