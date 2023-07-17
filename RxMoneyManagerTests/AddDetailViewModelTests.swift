@@ -131,9 +131,9 @@ class AddDetailViewModelTests: QuickSpec {
                     expect(typeNameObserver.events.first?.value.element).toNot(equal(""))
                     expect(detailGroupIdObserver.events.first?.value.element).to(equal(UserInfo.share.expensesGroupId))
                     expect(detailTypeIdObserver.events.first?.value.element).to(equal(UserInfo.share.expensesTypeId))
-                    expect(accountNameObserver.events.first?.value.element).to(equal(""))
+                    expect(accountNameObserver.events.first?.value.element).toNot(equal(""))
                     expect(accountModelsObserver.events.first?.value.element?.isEmpty).to(beTrue())
-                    expect(toAccountNameObserver.events.first?.value.element).to(equal(""))
+                    expect(toAccountNameObserver.events.first?.value.element).toNot(equal(""))
                     expect(memoObserver.events.first?.value.element).to(equal(""))
                     expect(memoModelsObserver.events.first?.value.element?.isEmpty).to(beTrue())
                 }

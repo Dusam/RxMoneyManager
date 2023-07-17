@@ -123,10 +123,170 @@ class DetailChartViewModelTests: QuickSpec {
                     viewModel.setChart()
                     
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
-                    expect(pieChartDataObserver.events.last?.value.element?.dataSetCount).to(beGreaterThanOrEqualTo(1))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(beGreaterThanOrEqualTo(1))
                     expect(totalObserver.events.last?.value.element).toNot(equal(0))
                     expect(chartDetailObserver.events.last?.value.element?.isEmpty).to(beFalse())
                     expect(chartSectionDatasObserver.events.last?.value.element?.isEmpty).to(beFalse())
+                }
+                
+                it("set chart by change month") {
+                    let currentDateStringObserver = scheduler.createObserver(String.self)
+                    let pieChartDataObserver = scheduler.createObserver(PieChartData.self)
+                    let totalObserver = scheduler.createObserver(Int.self)
+                   
+                    viewModel.currentDateString
+                        .drive(currentDateStringObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.pieChartData
+                        .drive(pieChartDataObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.total
+                        .drive(totalObserver)
+                        .disposed(by: disposeBag)
+                    
+                    scheduler.start()
+                    
+                    viewModel.toNext()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-08"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    
+                    viewModel.toPrevious()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
+                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    
+                    viewModel.toCurrentDate()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
+                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                }
+                
+                it("set chart by change year") {
+                    let chartSegmentObserver = scheduler.createObserver(Int.self)
+                    let currentDateStringObserver = scheduler.createObserver(String.self)
+                    let pieChartDataObserver = scheduler.createObserver(PieChartData.self)
+                    let totalObserver = scheduler.createObserver(Int.self)
+               
+                    viewModel.chartSegment
+                        .drive(chartSegmentObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.currentDateString
+                        .drive(currentDateStringObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.pieChartData
+                        .drive(pieChartDataObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.total
+                        .drive(totalObserver)
+                        .disposed(by: disposeBag)
+                    
+                    scheduler.start()
+                    
+                    viewModel.setChartSegmentIndex(2)
+                    viewModel.toNext()
+                    expect(chartSegmentObserver.events.last?.value.element).to(equal(2))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2024"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    
+                    viewModel.toPrevious()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
+                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    
+                    viewModel.toPrevious()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2022"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    
+                    viewModel.toCurrentDate()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
+                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                }
+                
+                it("set chart by change week") {
+                    let chartSegmentObserver = scheduler.createObserver(Int.self)
+                    let currentDateStringObserver = scheduler.createObserver(String.self)
+                    let pieChartDataObserver = scheduler.createObserver(PieChartData.self)
+                    let totalObserver = scheduler.createObserver(Int.self)
+                    
+                    viewModel.chartSegment
+                        .drive(chartSegmentObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.currentDateString
+                        .drive(currentDateStringObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.pieChartData
+                        .drive(pieChartDataObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.total
+                        .drive(totalObserver)
+                        .disposed(by: disposeBag)
+                    
+                    scheduler.start()
+                    
+                    viewModel.setChartSegmentIndex(0)
+                    viewModel.toNext()
+                    expect(chartSegmentObserver.events.last?.value.element).to(equal(0))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(30)"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    
+                    viewModel.toPrevious()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(29)"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    
+                    viewModel.toPrevious()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(28)"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
+                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    
+                    viewModel.toCurrentDate()
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(29)"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                }
+                
+                it("set chart by billing type") {
+                    let sectionDatasObserver = scheduler.createObserver([ChartDetailSectionModel].self)
+                    viewModel.chartSectionDatas
+                        .drive(sectionDatasObserver)
+                        .disposed(by: disposeBag)
+                    
+                    scheduler.start()
+                    
+                    viewModel.setChart(with: .income)
+                    expect(sectionDatasObserver.events.last?.value.element?.first?.items).to(allPass({$0.billingType == BillingType.income.rawValue}))
+                    
+                    viewModel.setChart(with: .spend)
+                    expect(sectionDatasObserver.events.last?.value.element?.first?.items).to(allPass({$0.billingType == BillingType.spend.rawValue}))
+                    
+                    viewModel.setChart(with: .transfer)
+                    expect(sectionDatasObserver.events.last?.value.element?.first?.items).to(allPass({$0.billingType == BillingType.transfer.rawValue}))
+                }
+                
+                it("if segment index not contains from DetailChartType") {
+                    let chartSegmentObserver = scheduler.createObserver(Int.self)
+                   
+                    viewModel.chartSegment
+                        .drive(chartSegmentObserver)
+                        .disposed(by: disposeBag)
+                    
+                    scheduler.start()
+                    
+                    viewModel.setChartSegmentIndex(5)
+                    expect(chartSegmentObserver.events.last?.value.element).to(equal(1))
                 }
             }
         }
