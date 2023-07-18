@@ -17,6 +17,14 @@ target 'RxMoneyManager' do
 
   # Pods for RxMoneyManager
   
+  target 'RxMoneyManagerTests' do
+    inherit! :search_paths
+
+    pod 'Quick'
+    pod 'Nimble'
+    pod 'RxTest'
+  end
+  
   post_install do |installer|
       installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
@@ -26,3 +34,5 @@ target 'RxMoneyManager' do
     end
 
 end
+
+

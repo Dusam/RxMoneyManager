@@ -16,7 +16,8 @@ class DetailViewController: BaseViewController {
     
     private var detailTableView: UITableView!
     private var tabView: UIView!
-    private let headerView = HeaderView(headerType: .detail)
+    private let detailVM = DetailViewModel()
+    private var headerView: HeaderView!
     
     private var accountButton: UIButton!
     private var settingButton: UIButton!
@@ -55,6 +56,7 @@ class DetailViewController: BaseViewController {
 extension DetailViewController {
     // 設定標題列
     private func setUpHeaderView() {
+        headerView = HeaderView(detailVM: detailVM, headerType: .detail)
         self.view.addSubview(headerView)
         
         headerView.snp.makeConstraints { make in
@@ -126,7 +128,7 @@ extension DetailViewController {
 extension DetailViewController {
     // 數據綁定 TableView
     private func bindTableView() {
-        DetailViewModel.shared.details
+        detailVM.details
             .drive(detailTableView.rx.items(cellIdentifier: "DetailCell", cellType: DetailCell.self)) { row, data, cell in
                 if data.billingType < 3 {
                     let billingType = BillingType(rawValue: data.billingType)
@@ -172,19 +174,21 @@ extension DetailViewController {
     }
     
     private func bindThemeColor() {
-        DetailViewModel.shared.themeColor
+        detailVM.themeColor
             .drive(onNext: { [weak self] color in
                 UserInfo.share.themeColor = color
                 self?.setNavigationColor(navigationColor: color)
                 self?.setNeedsStatusBarAppearanceUpdate()
                 self?.accountButton.tintColor = color.isLight ? .black : .white
                 self?.accountButton.setTitleColor(color.isLight ? .black : .white, for: .normal)
+                self?.chartButton.tintColor = color.isLight ? .black : .white
+                self?.chartButton.setTitleColor(color.isLight ? .black : .white, for: .normal)
                 self?.settingButton.tintColor = color.isLight ? .black : .white
                 self?.settingButton.setTitleColor(color.isLight ? .black : .white, for: .normal)
             })
             .disposed(by: disposeBag)
         
-        DetailViewModel.shared.themeColor
+        detailVM.themeColor
             .drive(tabView.rx.backgroundColor)
             .disposed(by: disposeBag)
     }
@@ -204,7 +208,7 @@ extension DetailViewController {
         
         settingButton.rx.tap
             .subscribe(onNext: {
-                self.push(vc: SettingViewController())
+                self.push(vc: SettingViewController(detailVM: self.detailVM))
             })
             .disposed(by: disposeBag)
     }

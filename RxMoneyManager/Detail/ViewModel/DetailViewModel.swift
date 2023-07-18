@@ -12,7 +12,7 @@ import SamUtils
 import RealmSwift
 
 class DetailViewModel {
-    static let shared = DetailViewModel()
+//    static let shared = DetailViewModel()
 
     private var detailDatas: [DetailModel] = []
     
@@ -25,9 +25,6 @@ class DetailViewModel {
     private let themeColorRelay = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
     private(set) lazy var themeColor = themeColorRelay.asDriver()
     
-    private init() {
-        getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
-    }
     
     func getDetail(_ date: String = UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd")) {
         detailDatas = RealmManager.share.readDetail(date)
@@ -39,13 +36,6 @@ class DetailViewModel {
         countTotalAmount()
         
         detailsRelay.accept(detailDatas)
-    }
-    
-    func deleteDetail(_ detail: DetailModel) {
-        detailDatas.removeAll(detail)
-        detailsRelay.accept(detailDatas)
-        
-        RealmManager.share.delete(detail)
     }
     
     private func countTotalAmount() {

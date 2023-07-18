@@ -27,8 +27,9 @@ class DetailChartViewModel: BaseViewModel {
     private var endDate = Date()
     
     private var chartType: DetailChartType = .month
-    private let selectedSegmentRelay = BehaviorRelay<Int>(value: DetailChartType.month.rawValue)
-    private(set) lazy var selectedSegment = selectedSegmentRelay.asDriver()
+    
+    private let chartSegmentRelay = BehaviorRelay<Int>(value: DetailChartType.month.rawValue)
+    private(set) lazy var chartSegment = chartSegmentRelay.asDriver()
     
     private var currentDate: Date = Date().adding(.hour, value: 8) {
         didSet {
@@ -40,7 +41,7 @@ class DetailChartViewModel: BaseViewModel {
     private(set) lazy var currentDateString = currentDateStringRelay.asDriver()
     
     // 數據參數
-    private let chartListDatas = BehaviorRelay<[ChartListData]>(value: [])
+    private var chartListDatas: [ChartListData] = []
 
     private let pieChartDataRelay = BehaviorRelay<PieChartData>(value: .init())
     private(set) lazy var pieChartData = pieChartDataRelay.asDriver()
@@ -48,32 +49,21 @@ class DetailChartViewModel: BaseViewModel {
     private let totalRelay = BehaviorRelay<Int>(value: 0)
     private(set) lazy var total = totalRelay.asDriver()
     
-    private let incomeTotalRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var incomeTotal = incomeTotalRelay.asDriver()
+    private var incomeTotal = 0
+    private var spendTotal = 0
+    private var transferTotal = 0
     
-    private let spendTotalRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var expensesTotal = spendTotalRelay.asDriver()
-    
-    private let transferTotalRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var transferTotal = transferTotalRelay.asDriver()
-    
-    private let detailRelay = BehaviorRelay<[ChartDetailModel]>(value: [])
-    private(set) lazy var detail = detailRelay.asDriver()
+    private let chartDetailRelay = BehaviorRelay<[ChartDetailModel]>(value: [])
+    private(set) lazy var chartDetail = chartDetailRelay.asDriver()
     
     private let chartSectionDatasRelay = BehaviorRelay<[ChartDetailSectionModel]>(value: [])
     private(set) lazy var chartSectionDatas = chartSectionDatasRelay.asDriver()
-    
-    private(set) var billingType: BillingType = .spend
-    
-    override init() {
-        super.init()
         
-        getChartData()
-    }
+    private(set) var billingType: BillingType = .spend
 }
 
 extension DetailChartViewModel {
-    func setSectionData(_ billingType: BillingType) {
+    func setChart(with billingType: BillingType = .spend) {
         self.billingType = billingType
         getChartData()
     }
@@ -100,30 +90,30 @@ extension DetailChartViewModel {
             chartSectionDatasRelay.accept(setSectionDatas(datas: transferDatas.reversed()))
         }
         
-        incomeTotalRelay.accept(incomeDatas.reduce(0) { partialResult, model in
+        incomeTotal = incomeDatas.reduce(0) { partialResult, model in
             partialResult + abs(model.amount)
-        })
+        }
         
-        spendTotalRelay.accept(spendDatas.reduce(0) { partialResult, model in
+        spendTotal = spendDatas.reduce(0) { partialResult, model in
             partialResult + abs(model.amount)
-        })
+        }
         
-        transferTotalRelay.accept(transferDatas.reduce(0) { partialResult, model in
+        transferTotal = transferDatas.reduce(0) { partialResult, model in
             partialResult + abs(model.amount)
-        })
+        }
         
-        totalRelay.accept(incomeTotalRelay.value - spendTotalRelay.value)
-        let incomePercent = String(format: "%.2f", (incomeTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
-        let spendPercent = String(format: "%.2f", (spendTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
-        let transferPercent = String(format: "%.2f", (transferTotalRelay.value.double / totalAmount.double) * 100).double() ?? 0.0
+        totalRelay.accept(incomeTotal - spendTotal)
+        let incomePercent = String(format: "%.2f", (incomeTotal.double / totalAmount.double) * 100).double() ?? 0.0
+        let spendPercent = String(format: "%.2f", (spendTotal.double / totalAmount.double) * 100).double() ?? 0.0
+        let transferPercent = String(format: "%.2f", (transferTotal.double / totalAmount.double) * 100).double() ?? 0.0
         
-        detailRelay.accept([ChartDetailModel(billingType: .income, percent: incomePercent, total: incomeTotalRelay.value),
-                            ChartDetailModel(billingType: .spend, percent: spendPercent, total: spendTotalRelay.value),
-                            ChartDetailModel(billingType: .transfer, percent: transferPercent, total: transferTotalRelay.value)])
+        chartDetailRelay.accept([ChartDetailModel(billingType: .income, percent: incomePercent, total: incomeTotal),
+                                 ChartDetailModel(billingType: .spend, percent: spendPercent, total: spendTotal),
+                                 ChartDetailModel(billingType: .transfer, percent: transferPercent, total: transferTotal)])
         
-        chartListDatas.accept([ChartListData(billingType: .income, total: incomeTotalRelay.value, percent: incomePercent),
-                               ChartListData(billingType: .spend, total: spendTotalRelay.value, percent: spendPercent),
-                               ChartListData(billingType: .transfer, total: transferTotalRelay.value, percent: transferPercent)])
+        chartListDatas = [ChartListData(billingType: .income, total: incomeTotal, percent: incomePercent),
+                          ChartListData(billingType: .spend, total: spendTotal, percent: spendPercent),
+                          ChartListData(billingType: .transfer, total: transferTotal, percent: transferPercent)]
         
         if incomePercent > 0 || spendPercent > 0 || transferPercent > 0 {
             pieChartDataEntrys = [PieChartDataEntry(value: incomePercent, label: "\(incomePercent)%"),
@@ -251,10 +241,10 @@ extension DetailChartViewModel {
 
 // MARK: Set Method
 extension DetailChartViewModel {
-    func setSegmentIndex(_ index: Int) {
+    func setChartSegmentIndex(_ index: Int) {
         guard let type = DetailChartType(rawValue: index) else { return }
         chartType = type
-        selectedSegmentRelay.accept(index)
+        chartSegmentRelay.accept(index)
         
         getChartData()
         setDateString()

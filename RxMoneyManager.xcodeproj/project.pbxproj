@@ -38,6 +38,7 @@
 		680E6E422A20807C00874D22 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E412A20807C00874D22 /* R.generated.swift */; };
 		680E6E442A2080A300874D22 /* DBTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E432A2080A300874D22 /* DBTools.swift */; };
 		680E6E462A2080B400874D22 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E6E452A2080B400874D22 /* RealmManager.swift */; };
+		68550F9A2A5FCB970006A655 /* AddDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68550F992A5FCB970006A655 /* AddDetailViewModelTests.swift */; };
 		687044FC2A57A97000176C05 /* DetailChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687044FB2A57A97000176C05 /* DetailChartViewController.swift */; };
 		687045002A57AC2300176C05 /* DetailChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687044FF2A57AC2300176C05 /* DetailChartViewModel.swift */; };
 		687045022A57BFCC00176C05 /* DetailChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045012A57BFCC00176C05 /* DetailChartType.swift */; };
@@ -45,6 +46,10 @@
 		687045092A5BA19200176C05 /* ChartDetailSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045082A5BA19200176C05 /* ChartDetailSectionModel.swift */; };
 		6870450B2A5BA20300176C05 /* ChartDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6870450A2A5BA20300176C05 /* ChartDetailModel.swift */; };
 		6870450E2A5CE45500176C05 /* ChartDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6870450D2A5CE45500176C05 /* ChartDetailViewController.swift */; };
+		687045692A5F88BF00176C05 /* AddAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045652A5F88BF00176C05 /* AddAccountViewModelTests.swift */; };
+		6870456A2A5F88BF00176C05 /* HeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045662A5F88BF00176C05 /* HeaderViewModelTests.swift */; };
+		6870456B2A5F88BF00176C05 /* DetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045672A5F88BF00176C05 /* DetailViewModelTests.swift */; };
+		6870456C2A5F88BF00176C05 /* AccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687045682A5F88BF00176C05 /* AccountViewModelTests.swift */; };
 		6876E1AB2A1F38C20072A26F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876E1AA2A1F38C20072A26F /* AppDelegate.swift */; };
 		6876E1AD2A1F38C20072A26F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876E1AC2A1F38C20072A26F /* SceneDelegate.swift */; };
 		6876E1AF2A1F38C20072A26F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876E1AE2A1F38C20072A26F /* DetailViewController.swift */; };
@@ -79,8 +84,21 @@
 		6896C4C52A20B12100F18E6D /* HeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6896C4C42A20B12100F18E6D /* HeaderViewModel.swift */; };
 		6896C4C82A248C0000F18E6D /* AddDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6896C4C72A248C0000F18E6D /* AddDetailViewController.swift */; };
 		6896C4CA2A248C3B00F18E6D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6896C4C92A248C3B00F18E6D /* BaseViewController.swift */; };
+		68BE66C82A61373C00662909 /* DetailChartViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BE66C72A61373C00662909 /* DetailChartViewModelTests.swift */; };
+		68BE66CA2A66254900662909 /* CalculatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BE66C92A66254900662909 /* CalculatorViewModelTests.swift */; };
+		CE5F9A5C0620ABFE6AB6EE7F /* Pods_RxMoneyManagerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68497467701AFE0FE4C1CF7F /* Pods_RxMoneyManagerTests.framework */; };
 		EB58C245E57985A381398CCD /* Pods_RxMoneyManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D436C5D71B581F1518464B2 /* Pods_RxMoneyManager.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6870455A2A5F87AD00176C05 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6876E19F2A1F38C20072A26F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6876E1A62A1F38C20072A26F;
+			remoteInfo = RxMoneyManager;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4D436C5D71B581F1518464B2 /* Pods_RxMoneyManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxMoneyManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,7 +133,9 @@
 		680E6E412A20807C00874D22 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
 		680E6E432A2080A300874D22 /* DBTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBTools.swift; sourceTree = "<group>"; };
 		680E6E452A2080B400874D22 /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		68497467701AFE0FE4C1CF7F /* Pods_RxMoneyManagerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxMoneyManagerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		684C25D52A20636400A9AC9F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		68550F992A5FCB970006A655 /* AddDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailViewModelTests.swift; sourceTree = "<group>"; };
 		687044FB2A57A97000176C05 /* DetailChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartViewController.swift; sourceTree = "<group>"; };
 		687044FF2A57AC2300176C05 /* DetailChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartViewModel.swift; sourceTree = "<group>"; };
 		687045012A57BFCC00176C05 /* DetailChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartType.swift; sourceTree = "<group>"; };
@@ -123,6 +143,12 @@
 		687045082A5BA19200176C05 /* ChartDetailSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDetailSectionModel.swift; sourceTree = "<group>"; };
 		6870450A2A5BA20300176C05 /* ChartDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDetailModel.swift; sourceTree = "<group>"; };
 		6870450D2A5CE45500176C05 /* ChartDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDetailViewController.swift; sourceTree = "<group>"; };
+		687045562A5F87AC00176C05 /* RxMoneyManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxMoneyManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		687045602A5F887900176C05 /* RxMoneyManagerTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RxMoneyManagerTestPlan.xctestplan; sourceTree = "<group>"; };
+		687045652A5F88BF00176C05 /* AddAccountViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAccountViewModelTests.swift; sourceTree = "<group>"; };
+		687045662A5F88BF00176C05 /* HeaderViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderViewModelTests.swift; sourceTree = "<group>"; };
+		687045672A5F88BF00176C05 /* DetailViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModelTests.swift; sourceTree = "<group>"; };
+		687045682A5F88BF00176C05 /* AccountViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewModelTests.swift; sourceTree = "<group>"; };
 		6876E1A72A1F38C20072A26F /* RxMoneyManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxMoneyManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876E1AA2A1F38C20072A26F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6876E1AC2A1F38C20072A26F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -160,11 +186,23 @@
 		6896C4C42A20B12100F18E6D /* HeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewModel.swift; sourceTree = "<group>"; };
 		6896C4C72A248C0000F18E6D /* AddDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailViewController.swift; sourceTree = "<group>"; };
 		6896C4C92A248C3B00F18E6D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		68BE66C72A61373C00662909 /* DetailChartViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailChartViewModelTests.swift; sourceTree = "<group>"; };
+		68BE66C92A66254900662909 /* CalculatorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewModelTests.swift; sourceTree = "<group>"; };
+		839E242F495666A89AA68C34 /* Pods-RxMoneyManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMoneyManagerTests.debug.xcconfig"; path = "Target Support Files/Pods-RxMoneyManagerTests/Pods-RxMoneyManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		97BDB19467A021DD7535DB06 /* Pods-RxMoneyManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMoneyManager.debug.xcconfig"; path = "Target Support Files/Pods-RxMoneyManager/Pods-RxMoneyManager.debug.xcconfig"; sourceTree = "<group>"; };
 		9F9D55DD732A8ED9C53A0977 /* Pods-RxMoneyManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMoneyManager.release.xcconfig"; path = "Target Support Files/Pods-RxMoneyManager/Pods-RxMoneyManager.release.xcconfig"; sourceTree = "<group>"; };
+		D5C5E8D387643518DB83935E /* Pods-RxMoneyManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMoneyManagerTests.release.xcconfig"; path = "Target Support Files/Pods-RxMoneyManagerTests/Pods-RxMoneyManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		687045532A5F87AC00176C05 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE5F9A5C0620ABFE6AB6EE7F /* Pods_RxMoneyManagerTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6876E1A42A1F38C20072A26F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -180,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				4D436C5D71B581F1518464B2 /* Pods_RxMoneyManager.framework */,
+				68497467701AFE0FE4C1CF7F /* Pods_RxMoneyManagerTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -189,6 +228,8 @@
 			children = (
 				97BDB19467A021DD7535DB06 /* Pods-RxMoneyManager.debug.xcconfig */,
 				9F9D55DD732A8ED9C53A0977 /* Pods-RxMoneyManager.release.xcconfig */,
+				839E242F495666A89AA68C34 /* Pods-RxMoneyManagerTests.debug.xcconfig */,
+				D5C5E8D387643518DB83935E /* Pods-RxMoneyManagerTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -324,10 +365,26 @@
 			path = ChartDetail;
 			sourceTree = "<group>";
 		};
+		687045572A5F87AD00176C05 /* RxMoneyManagerTests */ = {
+			isa = PBXGroup;
+			children = (
+				687045682A5F88BF00176C05 /* AccountViewModelTests.swift */,
+				687045652A5F88BF00176C05 /* AddAccountViewModelTests.swift */,
+				687045672A5F88BF00176C05 /* DetailViewModelTests.swift */,
+				687045662A5F88BF00176C05 /* HeaderViewModelTests.swift */,
+				68550F992A5FCB970006A655 /* AddDetailViewModelTests.swift */,
+				68BE66C72A61373C00662909 /* DetailChartViewModelTests.swift */,
+				68BE66C92A66254900662909 /* CalculatorViewModelTests.swift */,
+			);
+			path = RxMoneyManagerTests;
+			sourceTree = "<group>";
+		};
 		6876E19E2A1F38C20072A26F = {
 			isa = PBXGroup;
 			children = (
+				687045602A5F887900176C05 /* RxMoneyManagerTestPlan.xctestplan */,
 				6876E1A92A1F38C20072A26F /* RxMoneyManager */,
+				687045572A5F87AD00176C05 /* RxMoneyManagerTests */,
 				6876E1A82A1F38C20072A26F /* Products */,
 				33CECF8CB37A7095298EB1C1 /* Pods */,
 				336C6C40985F64236CD6FC86 /* Frameworks */,
@@ -338,6 +395,7 @@
 			isa = PBXGroup;
 			children = (
 				6876E1A72A1F38C20072A26F /* RxMoneyManager.app */,
+				687045562A5F87AC00176C05 /* RxMoneyManagerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -356,6 +414,7 @@
 				687F0D292A493612009A81AE /* Account */,
 				687044FA2A57A8FB00176C05 /* DetailChart */,
 				687F0D262A428E35009A81AE /* Setting */,
+				68BE66CD2A666DBF00662909 /* View */,
 				680E6D482A207BA400874D22 /* DB */,
 				6896C4BA2A20899400F18E6D /* Object */,
 				6876E1B32A1F38C30072A26F /* Assets.xcassets */,
@@ -484,7 +543,6 @@
 		6896C4BA2A20899400F18E6D /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				6896C4C62A24510700F18E6D /* Header */,
 				687F0D142A3AB5CA009A81AE /* PaddingLabel.swift */,
 				6876E2172A203A120072A26F /* UserInfo.swift */,
 			);
@@ -539,9 +597,37 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		68BE66CD2A666DBF00662909 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6896C4C62A24510700F18E6D /* Header */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		687045552A5F87AC00176C05 /* RxMoneyManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6870455C2A5F87AD00176C05 /* Build configuration list for PBXNativeTarget "RxMoneyManagerTests" */;
+			buildPhases = (
+				AD2A90061E4709699AACEF5E /* [CP] Check Pods Manifest.lock */,
+				687045522A5F87AC00176C05 /* Sources */,
+				687045532A5F87AC00176C05 /* Frameworks */,
+				687045542A5F87AC00176C05 /* Resources */,
+				ABA83147E5C3F0701DCB77BE /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6870455B2A5F87AD00176C05 /* PBXTargetDependency */,
+			);
+			name = RxMoneyManagerTests;
+			productName = RxMoneyManagerTests;
+			productReference = 687045562A5F87AC00176C05 /* RxMoneyManagerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		6876E1A62A1F38C20072A26F /* RxMoneyManager */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6876E1BB2A1F38C30072A26F /* Build configuration list for PBXNativeTarget "RxMoneyManager" */;
@@ -572,6 +658,11 @@
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					687045552A5F87AC00176C05 = {
+						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
+						TestTargetID = 6876E1A62A1F38C20072A26F;
+					};
 					6876E1A62A1F38C20072A26F = {
 						CreatedOnToolsVersion = 14.3;
 					};
@@ -592,11 +683,19 @@
 			projectRoot = "";
 			targets = (
 				6876E1A62A1F38C20072A26F /* RxMoneyManager */,
+				687045552A5F87AC00176C05 /* RxMoneyManagerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		687045542A5F87AC00176C05 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6876E1A52A1F38C20072A26F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -668,9 +767,62 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RxMoneyManager/Pods-RxMoneyManager-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		ABA83147E5C3F0701DCB77BE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RxMoneyManagerTests/Pods-RxMoneyManagerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RxMoneyManagerTests/Pods-RxMoneyManagerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RxMoneyManagerTests/Pods-RxMoneyManagerTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AD2A90061E4709699AACEF5E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RxMoneyManagerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		687045522A5F87AC00176C05 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68BE66C82A61373C00662909 /* DetailChartViewModelTests.swift in Sources */,
+				687045692A5F88BF00176C05 /* AddAccountViewModelTests.swift in Sources */,
+				68BE66CA2A66254900662909 /* CalculatorViewModelTests.swift in Sources */,
+				6870456A2A5F88BF00176C05 /* HeaderViewModelTests.swift in Sources */,
+				6870456C2A5F88BF00176C05 /* AccountViewModelTests.swift in Sources */,
+				68550F9A2A5FCB970006A655 /* AddDetailViewModelTests.swift in Sources */,
+				6870456B2A5F88BF00176C05 /* DetailViewModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6876E1A32A1F38C20072A26F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -749,6 +901,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6870455B2A5F87AD00176C05 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6876E1A62A1F38C20072A26F /* RxMoneyManager */;
+			targetProxy = 6870455A2A5F87AD00176C05 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		6876E1B52A1F38C30072A26F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -771,6 +931,47 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6870455D2A5F87AD00176C05 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 839E242F495666A89AA68C34 /* Pods-RxMoneyManagerTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = E2ZGHA3NG6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sam.du.RxMoneyManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RxMoneyManager.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RxMoneyManager";
+			};
+			name = Debug;
+		};
+		6870455E2A5F87AD00176C05 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D5C5E8D387643518DB83935E /* Pods-RxMoneyManagerTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = E2ZGHA3NG6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sam.du.RxMoneyManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RxMoneyManager.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RxMoneyManager";
+			};
+			name = Release;
+		};
 		6876E1B92A1F38C30072A26F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -950,6 +1151,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6870455C2A5F87AD00176C05 /* Build configuration list for PBXNativeTarget "RxMoneyManagerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6870455D2A5F87AD00176C05 /* Debug */,
+				6870455E2A5F87AD00176C05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6876E1A22A1F38C20072A26F /* Build configuration list for PBXProject "RxMoneyManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

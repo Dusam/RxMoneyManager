@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "5363F874-9C23-4544-BE81-D7546FE4586B",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:RxMoneyManager.xcodeproj",
+        "identifier" : "687045552A5F87AC00176C05",
+        "name" : "RxMoneyManagerTests"
+      }
+    }
+  ],
+  "version" : 1
+}

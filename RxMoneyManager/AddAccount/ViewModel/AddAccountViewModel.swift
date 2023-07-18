@@ -11,7 +11,7 @@ import RxCocoa
 
 class AddAccountViewModel: BaseViewModel {
     
-    private var type: AccountType = .cash
+    private(set) var type: AccountType = .cash
     
     private let accountNameRelay = BehaviorRelay<String>(value: "")
     private(set) lazy var accountName = accountNameRelay.asDriver()
@@ -21,6 +21,9 @@ class AddAccountViewModel: BaseViewModel {
     
     private let joinTotalRelay = BehaviorRelay<Bool>(value: true)
     private(set) lazy var joinTotal = joinTotalRelay.asDriver()
+    
+    private let isShowCalcutorRelay = BehaviorRelay<Bool>(value: false)
+    private(set) lazy var isShowCalcutor = isShowCalcutorRelay.asDriver()
     
     
     func setAccountType(_ type: AccountType) {
@@ -54,5 +57,9 @@ extension AddAccountViewModel {
     
     func setJoinTotal(_ isOn: Bool) {
         joinTotalRelay.accept(isOn)
+    }
+    
+    func setShowCalcutor(_ show: Bool) {
+        isShowCalcutorRelay.accept(show)
     }
 }
