@@ -12,8 +12,8 @@ import SamUtils
 
 class CalculatorViewModel {
     
-    private var addDetailVM: AddDetailViewModel?
-    private var addAccountVM: AddAccountViewModel?
+    private(set) var addDetailVM: AddDetailViewModel?
+    private(set) var addAccountVM: AddAccountViewModel?
     
     private(set) var amountString = "0"
     private(set) var amountValue = 0.0
@@ -52,6 +52,7 @@ class CalculatorViewModel {
             
             currentOperation = .none
             amountValue = 0.0
+            transferValue = 0.0
             addDetailVM?.setShowCalcutor(false)
             addAccountVM?.setShowCalcutor(false)
             
@@ -109,8 +110,6 @@ class CalculatorViewModel {
     }
     
     private func calculateAmount() {
-        guard currentOperation != .none && !amountString.isEmpty else { return }
-        
         switch currentOperation {
         case .add:
             let array = amountString.split(separator: "+").compactMap { Double($0) }
@@ -170,9 +169,7 @@ class CalculatorViewModel {
         }
     }
     
-    private func calculateTransferFee() {
-        guard currentOperation != .none && !transferString.isEmpty else { return }
-        
+    private func calculateTransferFee() {        
         switch currentOperation {
         case .add:
             let array = transferString.split(separator: "+").compactMap { Double($0) }

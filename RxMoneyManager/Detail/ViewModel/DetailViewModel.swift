@@ -25,9 +25,6 @@ class DetailViewModel {
     private let themeColorRelay = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
     private(set) lazy var themeColor = themeColorRelay.asDriver()
     
-    init() {
-        getDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
-    }
     
     func getDetail(_ date: String = UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd")) {
         detailDatas = RealmManager.share.readDetail(date)

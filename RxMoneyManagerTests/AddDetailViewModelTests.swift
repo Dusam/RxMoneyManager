@@ -158,8 +158,8 @@ class AddDetailViewModelTests: QuickSpec {
                     expect(count).to(equal(0))
                     
                     viewModel.setAmount("0")
-                    viewModel.setAccountId("64a65e95d3f890f8458eb0da")
-                    viewModel.setToAccountId("64a503c0828b916fa8c4afa9")
+                    viewModel.setAccountId(UserInfo.share.accountId)
+                    viewModel.setToAccountId(UserInfo.share.transferToAccountId)
                     viewModel.setBillingType(.transfer)
                     viewModel.saveDetail()
                     
@@ -178,7 +178,7 @@ class AddDetailViewModelTests: QuickSpec {
                                         
                     // 新增支出
                     viewModel.setAmount("50")
-                    viewModel.setAccountId("649d2e2f178caebfe8715c5e")
+                    viewModel.setAccountId(UserInfo.share.accountId)
                     viewModel.setBillingType(.spend)
                     viewModel.setMemo(spendMemo)
                     viewModel.saveDetail()
@@ -204,7 +204,7 @@ class AddDetailViewModelTests: QuickSpec {
                                         
                     // 新增支出2
                     viewModel.setAmount("1600")
-                    viewModel.setAccountId("649d2e2f178caebfe8715c5e")
+                    viewModel.setAccountId(UserInfo.share.accountId)
                     viewModel.setBillingType(.spend)
                     viewModel.setMemo(spendMemo)
                     viewModel.saveDetail()
@@ -231,7 +231,7 @@ class AddDetailViewModelTests: QuickSpec {
                                         
                     // 新增收入
                     viewModel.setAmount("14230")
-                    viewModel.setAccountId("64a65e95d3f890f8458eb0da")
+                    viewModel.setAccountId(UserInfo.share.accountId)
                     viewModel.setBillingType(.income)
                     viewModel.setMemo("電話補助費")
                     viewModel.saveDetail()
@@ -262,8 +262,8 @@ class AddDetailViewModelTests: QuickSpec {
                  
                     // 新增轉帳
                     viewModel.setAmount("1000")
-                    viewModel.setAccountId("64a65e95d3f890f8458eb0da")
-                    viewModel.setToAccountId("64a503c0828b916fa8c4afa9")
+                    viewModel.setAccountId(UserInfo.share.accountId)
+                    viewModel.setToAccountId(UserInfo.share.transferToAccountId)
                     viewModel.setBillingType(.transfer)
                     viewModel.setMemo("薩爾達傳說")
                     viewModel.setTransferFee("15")
@@ -293,7 +293,7 @@ class AddDetailViewModelTests: QuickSpec {
                                         
                     // 新增支出
                     viewModel.setAmount("50")
-                    viewModel.setAccountId("649d2e2f178caebfe8715c5e")
+                    viewModel.setAccountId(UserInfo.share.accountId)
                     viewModel.setBillingType(.spend)
                     viewModel.setMemo(spendMemo)
                     viewModel.saveDetail()
