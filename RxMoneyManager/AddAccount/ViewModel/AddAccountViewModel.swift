@@ -9,7 +9,10 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class AddAccountViewModel: BaseViewModel {
+class AddAccountViewModel: BaseViewModel, ViewModelType {
+    
+    private(set) var input: Input!
+    private(set) var output: Output!
     
     private(set) var type: AccountType = .cash
     
@@ -43,6 +46,23 @@ class AddAccountViewModel: BaseViewModel {
         RealmManager.share.saveData(account)
     }
 
+}
+
+extension AddAccountViewModel {
+    struct Input {
+        let accountType: AnyObserver<AccountType>
+        let accountName: AnyObserver<String>
+        let initAmount: AnyObserver<String>
+        let joinTotal: AnyObserver<Bool>
+        let isShowCalcutor: AnyObserver<Bool>
+    }
+    
+    struct Output {
+        let accountName: Driver<String>
+        let initAmount: Driver<String>
+        let joinTotal: Driver<Bool>
+        let isShowCalcutor: Driver<Bool>
+    }
 }
 
 // MARK: Set method

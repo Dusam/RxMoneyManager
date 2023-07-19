@@ -11,20 +11,23 @@ import RxCocoa
 import SamUtils
 import RealmSwift
 
-class DetailViewModel {
-//    static let shared = DetailViewModel()
+class DetailViewModel: ViewModelType {
+    
+    private(set) var input: Input!
+    private(set) var output: Output!
 
     private var detailDatas: [DetailModel] = []
     
-    private let detailsRelay = BehaviorRelay<[DetailModel]>(value: [])
-    private(set) lazy var details = detailsRelay.asDriver(onErrorJustReturn: [])
-
-    private let totalAmountRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var totalAmount = totalAmountRelay.asDriver(onErrorJustReturn: 0)
+    private let details = BehaviorRelay<[DetailModel]>(value: [])
+    private let totalAmount = BehaviorRelay<Int>(value: 0)
+    private let themeColor = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
     
-    private let themeColorRelay = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
-    private(set) lazy var themeColor = themeColorRelay.asDriver()
-    
+    init() {
+        input = .init()
+        output = .init(totalAmount: totalAmount.asDriver(),
+                       details: details.asDriver(),
+                       themeColor: themeColor.asDriver())
+    }
     
     func getDetail(_ date: String = UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd")) {
         detailDatas = RealmManager.share.readDetail(date)
@@ -35,7 +38,7 @@ class DetailViewModel {
         
         countTotalAmount()
         
-        detailsRelay.accept(detailDatas)
+        details.accept(detailDatas)
     }
     
     private func countTotalAmount() {
@@ -48,10 +51,22 @@ class DetailViewModel {
             }
         }
         
-        totalAmountRelay.accept(total)
+        totalAmount.accept(total)
     }
     
     func setThemeColor(_ color: UIColor) {
-        themeColorRelay.accept(color)
+        themeColor.accept(color)
+    }
+}
+
+extension DetailViewModel {
+    struct Input {
+        
+    }
+    
+    struct Output {
+        let totalAmount: Driver<Int>
+        let details: Driver<[DetailModel]>
+        let themeColor: Driver<UIColor>
     }
 }

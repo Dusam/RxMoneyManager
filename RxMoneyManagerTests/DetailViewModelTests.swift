@@ -40,15 +40,15 @@ class DetailViewModelTests: QuickSpec {
                     let totalAmountObserver = scheduler.createObserver(Int.self)
                     let themeColorObserver = scheduler.createObserver(UIColor.self)
                     
-                    viewModel.details
+                    viewModel.output.details
                         .drive(detailsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalAmount
+                    viewModel.output.totalAmount
                         .drive(totalAmountObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.themeColor
+                    viewModel.output.themeColor
                         .drive(themeColorObserver)
                         .disposed(by: disposeBag)
                     
@@ -67,15 +67,15 @@ class DetailViewModelTests: QuickSpec {
                     let totalAmountObserver = scheduler.createObserver(Int.self)
                     let themeColorObserver = scheduler.createObserver(UIColor.self)
                     
-                    viewModel.details
+                    viewModel.output.details
                         .drive(detailsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalAmount
+                    viewModel.output.totalAmount
                         .drive(totalAmountObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.themeColor
+                    viewModel.output.themeColor
                         .drive(themeColorObserver)
                         .disposed(by: disposeBag)
                     

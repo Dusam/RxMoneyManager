@@ -10,7 +10,10 @@ import RxCocoa
 import RxSwift
 import RealmSwift
 
-class AddDetailViewModel: BaseViewModel {
+class AddDetailViewModel: BaseViewModel, ViewModelType {
+    
+    private(set) var input: Input!
+    private(set) var output: Output!
     
     private let amountRelay = BehaviorRelay<String>(value: "0")
     private(set) lazy var amount = amountRelay.asDriver(onErrorJustReturn: "0")
@@ -70,11 +73,18 @@ class AddDetailViewModel: BaseViewModel {
         super.init()
         
         detailGroupModelsRelay.accept(RealmManager.share.getDetailGroup(billType: billingType))
-//        memoModelsRelay.accept(RealmManager.share.getCommonMemos(billingType: billingType.rawValue,
-//                                                                 groupId: detailGroupIdRelay.value,
-//                                                                 memo: memoRelay.value))
         setSelectValue()
         getAccountName()
+    }
+}
+
+extension AddDetailViewModel {
+    struct Input {
+        
+    }
+    
+    struct Output {
+        
     }
 }
 

@@ -17,6 +17,7 @@ class DetailViewController: BaseViewController {
     private var detailTableView: UITableView!
     private var tabView: UIView!
     private let detailVM = DetailViewModel()
+    private var headerVM: HeaderViewModel!
     private var headerView: HeaderView!
     
     private var accountButton: UIButton!
@@ -29,10 +30,14 @@ class DetailViewController: BaseViewController {
         #endif
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // 與新增或修改時選擇的日期同步
-        headerView.toSelectedDate()
+    override func viewDidLoad() {
+        headerVM = HeaderViewModel(headerType: .detail, detailVM: detailVM)
+        rx.viewWillAppear
+            .mapToVoid()
+            .bind(to: headerVM.input.toSelected)
+            .disposed(by: disposeBag)
+        
+        super.viewDidLoad()
     }
     
     override func setUpView() {
@@ -56,7 +61,7 @@ class DetailViewController: BaseViewController {
 extension DetailViewController {
     // 設定標題列
     private func setUpHeaderView() {
-        headerView = HeaderView(detailVM: detailVM, headerType: .detail)
+        headerView = HeaderView(detailVM: detailVM, headerVM: headerVM, headerType: .detail)
         self.view.addSubview(headerView)
         
         headerView.snp.makeConstraints { make in
@@ -128,7 +133,7 @@ extension DetailViewController {
 extension DetailViewController {
     // 數據綁定 TableView
     private func bindTableView() {
-        detailVM.details
+        detailVM.output.details
             .drive(detailTableView.rx.items(cellIdentifier: "DetailCell", cellType: DetailCell.self)) { row, data, cell in
                 if data.billingType < 3 {
                     let billingType = BillingType(rawValue: data.billingType)
@@ -174,7 +179,7 @@ extension DetailViewController {
     }
     
     private func bindThemeColor() {
-        detailVM.themeColor
+        detailVM.output.themeColor
             .drive(onNext: { [weak self] color in
                 UserInfo.share.themeColor = color
                 self?.setNavigationColor(navigationColor: color)
@@ -188,7 +193,7 @@ extension DetailViewController {
             })
             .disposed(by: disposeBag)
         
-        detailVM.themeColor
+        detailVM.output.themeColor
             .drive(tabView.rx.backgroundColor)
             .disposed(by: disposeBag)
     }
@@ -219,17 +224,17 @@ extension DetailViewController {
 extension DetailViewController {
     private func listenSwipe() {
         view.rx
-            .swipeGesture(.left, .right)
+            .swipeGesture(.left)
             .when(.recognized)
-            .subscribe(onNext: { [weak self] gesture in
-                if gesture.direction == .left {
-                    // 左滑
-                    self?.headerView.toNextDate()
-                } else if gesture.direction == .right {
-                    // 右滑
-                    self?.headerView.toPerviousDate()
-                }
-            })
+            .mapToVoid()
+            .bind(to: headerVM.input.toNext)
+            .disposed(by: disposeBag)
+        
+        view.rx
+            .swipeGesture(.right)
+            .when(.recognized)
+            .mapToVoid()
+            .bind(to: headerVM.input.toPervious)
             .disposed(by: disposeBag)
     }
 }
