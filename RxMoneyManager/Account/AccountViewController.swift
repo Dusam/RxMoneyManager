@@ -162,7 +162,7 @@ extension AccountViewController {
             return cell
         })
         
-        accountVM.accountModels
+        accountVM.output.accountModels
             .drive(accountTableView.rx.items(dataSource: accountDataSource))
             .disposed(by: disposeBag)
         
@@ -189,37 +189,30 @@ extension AccountViewController {
     }
     
     private func bindLabel() {
-        accountVM.totalAssets
-            .map { "$\($0)" }
+        accountVM.output.totalAssets
             .drive(totalAssetsLabel.rx.text)
             .disposed(by: disposeBag)
         
-        accountVM.totalAssets
-            .drive(onNext: { [weak self] amount in
-                self?.totalAssetsLabel.textColor = amount >= 0 ? R.color.incomeColor() : R.color.spendColor()
-            })
+        accountVM.output.totalAssetsColor
+            .drive(totalAssetsLabel.rx.textColor)
             .disposed(by: disposeBag)
         
-        accountVM.totalLiability
+        accountVM.output.totalLiability
             .map { "$\($0)" }
             .drive(totalLiabilityLabel.rx.text)
             .disposed(by: disposeBag)
         
-        accountVM.totalLiability
-            .drive(onNext: { [weak self] amount in
-                self?.totalLiabilityLabel.textColor = amount >= 0 ? R.color.incomeColor() : R.color.spendColor()
-            })
+        accountVM.output.totalLiabilityColor
+            .drive(totalLiabilityLabel.rx.textColor)
             .disposed(by: disposeBag)
         
-        accountVM.balance
+        accountVM.output.balance
             .map { "$\($0)" }
             .drive(balanceLabel.rx.text)
             .disposed(by: disposeBag)
         
-        accountVM.balance
-            .drive(onNext: { [weak self] amount in
-                self?.balanceLabel.textColor = amount >= 0 ? R.color.incomeColor() : R.color.spendColor()
-            })
+        accountVM.output.balanceColor
+            .drive(balanceLabel.rx.textColor)
             .disposed(by: disposeBag)
     }
     

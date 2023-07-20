@@ -96,7 +96,7 @@ extension ChooseAccountViewController {
 // MARK: BindUI
 extension ChooseAccountViewController {
     private func bindAccountTableView() {
-        addDetailVM.accountModels
+        addDetailVM.output.accountModels
             .drive(accountTableView.rx.items(cellIdentifier: "ChooseAccountCell", cellType: ChooseAccountCell.self)) { row, data, cell in
                 cell.titleLabel.text = data.name
                 cell.titleLabel.paddingLeft = 10

@@ -114,9 +114,7 @@ class HeaderView: UIView {
             subTitleLabel.font = .systemFont(ofSize: 18)
             
             if headerType == .detail {
-                detailVM.totalAmount
-                    .map{ "$TW \($0)" }
-                    .asDriver(onErrorJustReturn: "")
+                detailVM.output.totalAmount
                     .drive(subTitleLabel.rx.text)
                     .disposed(by: disposeBag)
             } else {

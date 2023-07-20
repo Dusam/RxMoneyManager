@@ -134,7 +134,7 @@ extension ChooseTypeViewController {
 // MARK: BindUI
 extension ChooseTypeViewController {
     private func bindGroupTableView() {
-        addDetailVM.detailGroupModels
+        addDetailVM.output.detailGroupModels
             .drive(groupTableView.rx.items(cellIdentifier: "ChooseTypeCell", cellType: ChooseTypeCell.self)) { [weak self] row, data, cell in
                 cell.titleLabel.text = data.name
                 cell.titleLabel.paddingLeft = 15
@@ -160,7 +160,7 @@ extension ChooseTypeViewController {
     }
     
     private func bindTypeTableView() {
-        addDetailVM.detailTypeModels
+        addDetailVM.output.detailTypeModels
             .drive(typeTableView.rx.items(cellIdentifier: "ChooseTypeCell", cellType: ChooseTypeCell.self)) { [weak self] row, data, cell in
                 cell.titleLabel.text = data.name
                 cell.titleLabel.paddingLeft = 15

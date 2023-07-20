@@ -129,12 +129,13 @@ extension AddDetailViewController {
     private func bindTypeSegment() {
         typeSegment.rx.selectedSegmentIndex
             .changed
-            .subscribe(onNext: { [weak self] selectedIndex in
-                self?.addDetailVM.setBillingSegmentIndex(selectedIndex)
-            })
+            .bind(to: addDetailVM.input.billingSegment)
+//            .subscribe(onNext: { [weak self] selectedIndex in
+//                self?.addDetailVM.setBillingSegmentIndex(selectedIndex)
+//            })
             .disposed(by: disposeBag)
         
-        addDetailVM.billingSegment
+        addDetailVM.output.billingSegment
             .drive(onNext: { [weak self] selectedIndex in
                 guard let billType = BillingType(rawValue: selectedIndex) else { return }
                 self?.addDetailVM.setBillingType(billType)
@@ -147,17 +148,19 @@ extension AddDetailViewController {
     
     private func bindAmountTextField() {
         // 綁定數字
-        addDetailVM.amount
+        addDetailVM.output.amount
             .drive(amountTextField.rx.text)
             .disposed(by: disposeBag)
         
         amountTextField.rx
             .controlEvent(.editingDidBegin)
-            .subscribe(onNext: { [weak self] in
-                self?.amountTextField.resignFirstResponder()
-                self?.setShowCalcutor(true)
-                self?.calcutor.setEditType(isEditAmount: true)
-            })
+            .map { return true }
+            .bind(to: addDetailVM.input.isShowCalcutor)
+//            .subscribe(onNext: { [weak self] in
+//                self?.amountTextField.resignFirstResponder()
+//                self?.setShowCalcutor(true)
+//                self?.calcutor.setEditType(isEditAmount: true)
+//            })
             .disposed(by: disposeBag)
         
         if addType == .add {
@@ -196,9 +199,12 @@ extension AddDetailViewController {
     }
     
     private func bindCalcutorView() {
-        addDetailVM.isShowCalcutor
+        addDetailVM.output.isShowCalcutor
             .drive(onNext: { [weak self] show in
                 if show {
+                    self?.amountTextField.resignFirstResponder()
+                    self?.calcutor.setEditType(isEditAmount: true)
+                    
                     UIView.animate(withDuration: 0.3) {
                         self?.calcutor.isHidden = false
                         self?.calcutor.transform = CGAffineTransform(translationX: 0, y: 0)
@@ -212,13 +218,13 @@ extension AddDetailViewController {
             .disposed(by: disposeBag)
     }
     
-    private func setShowCalcutor(_ show: Bool) {
-        if !show {
-            amountTextField.resignFirstResponder()
-        }
-        self.addDetailVM.setShowCalcutor(show)
-        
-    }
+//    private func setShowCalcutor(_ show: Bool) {
+//        if !show {
+//            amountTextField.resignFirstResponder()
+//        }
+//        self.addDetailVM.setShowCalcutor(show)
+//
+//    }
 }
 
 
@@ -239,14 +245,14 @@ extension AddDetailViewController {
     }
     
     private func bindDetailTableView() {
-        addDetailVM.addDetailCellModels
+        addDetailVM.output.addDetailViewCells
             .drive(detailTableView.rx.items(cellIdentifier: "AddDetailCell", cellType: AddDetailCell.self)) { [weak self] row, value, cell in
                 cell.disposeBag = DisposeBag()
                 
                 cell.addTitleLabel.text = value
                 cell.accessoryType = .disclosureIndicator
                 
-                switch self?.addDetailVM.getSegmentIndex(){
+                switch self?.typeSegment.selectedSegmentIndex {
                 case 0:
                     self?.setUpSpendCell(row, cell)
                 case 1:
@@ -261,9 +267,9 @@ extension AddDetailViewController {
             .disposed(by: disposeBag)
         
         detailTableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
-            self?.setShowCalcutor(false)
+            self?.addDetailVM.setShowCalcutor(false)
             
-            if self?.addDetailVM.getSegmentIndex() == 2 {
+            if self?.typeSegment.selectedSegmentIndex == 2 {
                 
                 switch indexPath.row {
                 case 0:
@@ -278,7 +284,7 @@ extension AddDetailViewController {
                     
                 case 2:
                     // 轉帳手續費
-                    self?.setShowCalcutor(true)
+                    self?.addDetailVM.setShowCalcutor(true)
                     self?.calcutor.setEditType(isEditAmount: false)
                     
                 case 3:
@@ -324,19 +330,19 @@ extension AddDetailViewController {
         cell.typeLabel.textColor = R.color.spendColor()
         
         if row == 0 {
-            self.addDetailVM.typeName
+            self.addDetailVM.output.typeName
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
         }
         
         if row == 1 {
-            self.addDetailVM.accountName
+            self.addDetailVM.output.accountName
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
         }
         
         if row == 2 {
-            self.addDetailVM.memo
+            self.addDetailVM.output.memo
                 .map{ $0.replacingOccurrences(of: "\n", with: " ")}
                 .drive(cell.typeLabel.rx.text).disposed(by: cell.disposeBag)
         }
@@ -346,19 +352,19 @@ extension AddDetailViewController {
         cell.typeLabel.textColor = R.color.incomeColor()
         
         if row == 0 {
-            self.addDetailVM.typeName
+            self.addDetailVM.output.typeName
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
         }
         
         if row == 1 {
-            self.addDetailVM.accountName
+            self.addDetailVM.output.accountName
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
         }
         
         if row == 2 {
-            self.addDetailVM.memo
+            self.addDetailVM.output.memo
                 .map{ $0.replacingOccurrences(of: "\n", with: " ")}
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
@@ -370,24 +376,24 @@ extension AddDetailViewController {
         
         switch row {
         case 0:
-            self.addDetailVM.accountName
+            self.addDetailVM.output.accountName
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
         case 1:
-            self.addDetailVM.toAccountName
+            self.addDetailVM.output.toAccountName
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
         case 2:
             cell.accessoryType = .none
-            self.addDetailVM.transferFee
+            self.addDetailVM.output.transferFee
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
         case 3:
-            self.addDetailVM.typeName
+            self.addDetailVM.output.typeName
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)
         case 4:
-            self.addDetailVM.memo
+            self.addDetailVM.output.memo
                 .map{ $0.replacingOccurrences(of: "\n", with: " ")}
                 .drive(cell.typeLabel.rx.text)
                 .disposed(by: cell.disposeBag)

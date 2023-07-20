@@ -84,7 +84,7 @@ extension MemoViewController {
 // MARK: BindUI
 extension MemoViewController {
     private func bindTextView() {
-        addDetailVM.memo
+        addDetailVM.output.memo
             .drive(memoTextView.rx.text)
             .disposed(by: disposeBag)
         
@@ -97,7 +97,7 @@ extension MemoViewController {
     }
     
     private func bindTableView() {
-        addDetailVM.memoModels
+        addDetailVM.output.memoModels
             .drive(memoTableView.rx.items(cellIdentifier: "MemoCell", cellType: UITableViewCell.self)) { row, data, cell in
                 var config = cell.defaultContentConfiguration()
                 config.text = data.memo.replacingOccurrences(of: "\n", with: " ")

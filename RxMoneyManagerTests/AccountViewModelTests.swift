@@ -39,19 +39,19 @@ class AccountViewModelTests: QuickSpec {
                     let totalLiabilityObserver = scheduler.createObserver(Int.self)
                     let balanceObserver = scheduler.createObserver(Int.self)
                     
-                    viewModel.accountModels
+                    viewModel.output.accountModels
                         .drive(accountModelsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalAssets
+                    viewModel.output.totalAssets
                         .drive(totalAssetsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalLiability
+                    viewModel.output.totalLiability
                         .drive(totalLiabilityObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.balance
+                    viewModel.output.balance
                         .drive(balanceObserver)
                         .disposed(by: disposeBag)
                     
@@ -73,19 +73,19 @@ class AccountViewModelTests: QuickSpec {
                     let totalLiabilityObserver = scheduler.createObserver(Int.self)
                     let balanceObserver = scheduler.createObserver(Int.self)
                     
-                    viewModel.accountModels
+                    viewModel.output.accountModels
                         .drive(accountModelsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalAssets
+                    viewModel.output.totalAssets
                         .drive(totalAssetsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalLiability
+                    viewModel.output.totalLiability
                         .drive(totalLiabilityObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.balance
+                    viewModel.output.balance
                         .drive(balanceObserver)
                         .disposed(by: disposeBag)
                     
@@ -102,9 +102,15 @@ class AccountViewModelTests: QuickSpec {
                     
                     // 測試新增一個未計入總計的帳戶，測試 getAccounts 方法的正確性
                     let addAccountViewModel = AddAccountViewModel()
-                    addAccountViewModel.setAccountName("安安你好")
+                    scheduler.createColdObservable([.next(10, "安安你好")])
+                        .bind(to: addAccountViewModel.input.accountName)
+                        .disposed(by: disposeBag)
+                    scheduler.createColdObservable([.next(20, false)])
+                        .bind(to: addAccountViewModel.input.joinTotal)
+                        .disposed(by: disposeBag)
+                    scheduler.start()
+
                     addAccountViewModel.setAmount("150")
-                    addAccountViewModel.setJoinTotal(false)
                     addAccountViewModel.setAccountType(.bank)
                     addAccountViewModel.setShowCalcutor(true)
                     addAccountViewModel.saveAccount()
@@ -126,19 +132,19 @@ class AccountViewModelTests: QuickSpec {
                     let totalLiabilityObserver = scheduler.createObserver(Int.self)
                     let balanceObserver = scheduler.createObserver(Int.self)
                     
-                    viewModel.accountModels
+                    viewModel.output.accountModels
                         .drive(accountModelsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalAssets
+                    viewModel.output.totalAssets
                         .drive(totalAssetsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalLiability
+                    viewModel.output.totalLiability
                         .drive(totalLiabilityObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.balance
+                    viewModel.output.balance
                         .drive(balanceObserver)
                         .disposed(by: disposeBag)
                     

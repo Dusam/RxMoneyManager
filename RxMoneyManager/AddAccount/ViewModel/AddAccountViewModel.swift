@@ -16,32 +16,38 @@ class AddAccountViewModel: BaseViewModel, ViewModelType {
     
     private(set) var type: AccountType = .cash
     
-    private let accountNameRelay = BehaviorRelay<String>(value: "")
-    private(set) lazy var accountName = accountNameRelay.asDriver()
+    private let accountName = BehaviorRelay<String>(value: "")
+    private let initAmount = BehaviorRelay<String>(value: "0")
+    private let joinTotal = BehaviorRelay<Bool>(value: true)
+    private let isShowCalcutor = BehaviorRelay<Bool>(value: false)
     
-    private let initAmountRelay = BehaviorRelay<String>(value: "0")
-    private(set) lazy var initAmount = initAmountRelay.asDriver()
-    
-    private let joinTotalRelay = BehaviorRelay<Bool>(value: true)
-    private(set) lazy var joinTotal = joinTotalRelay.asDriver()
-    
-    private let isShowCalcutorRelay = BehaviorRelay<Bool>(value: false)
-    private(set) lazy var isShowCalcutor = isShowCalcutorRelay.asDriver()
-    
+    override init() {
+        super.init()
+        
+        input = .init(accountName: accountName,
+                      initAmount: initAmount,
+                      joinTotal: joinTotal,
+                      isShowCalcutor: isShowCalcutor)
+        
+        output = .init(accountName: accountName.asDriver(),
+                       initAmount: initAmount.asDriver(),
+                       joinTotal: joinTotal.asDriver(),
+                       isShowCalcutor: isShowCalcutor.asDriver())
+    }
     
     func setAccountType(_ type: AccountType) {
         self.type = type
     }
-    
+
     func saveAccount() {
-        guard let initAmount = initAmountRelay.value.int, !accountNameRelay.value.isEmpty else { return }
+        guard let initAmount = initAmount.value.int, !accountName.value.isEmpty else { return }
         
         let account = AccountModel()
         account.type = type.rawValue
-        account.name = accountNameRelay.value
+        account.name = accountName.value
         account.money = initAmount
         account.initMoney = initAmount
-        account.includTotal = joinTotalRelay.value
+        account.includTotal = joinTotal.value
         
         RealmManager.share.saveData(account)
     }
@@ -50,11 +56,10 @@ class AddAccountViewModel: BaseViewModel, ViewModelType {
 
 extension AddAccountViewModel {
     struct Input {
-        let accountType: AnyObserver<AccountType>
-        let accountName: AnyObserver<String>
-        let initAmount: AnyObserver<String>
-        let joinTotal: AnyObserver<Bool>
-        let isShowCalcutor: AnyObserver<Bool>
+        let accountName: BehaviorRelay<String>
+        let initAmount: BehaviorRelay<String>
+        let joinTotal: BehaviorRelay<Bool>
+        let isShowCalcutor: BehaviorRelay<Bool>
     }
     
     struct Output {
@@ -67,19 +72,11 @@ extension AddAccountViewModel {
 
 // MARK: Set method
 extension AddAccountViewModel {
-    func setAccountName(_ name: String) {
-        accountNameRelay.accept(name)
-    }
-    
     func setAmount(_ amount: String) {
-        initAmountRelay.accept(amount)
-    }
-    
-    func setJoinTotal(_ isOn: Bool) {
-        joinTotalRelay.accept(isOn)
+        initAmount.accept(amount)
     }
     
     func setShowCalcutor(_ show: Bool) {
-        isShowCalcutorRelay.accept(show)
+        isShowCalcutor.accept(show)
     }
 }

@@ -9,29 +9,50 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class AccountViewModel: BaseViewModel {
+class AccountViewModel: BaseViewModel, ViewModelType {
     
-    private let accountModelsRelay = BehaviorRelay<[AccountSectionModel]>(value: [])
-    private(set) lazy var accountModels = accountModelsRelay.asDriver()
+    private(set) var input: Input!
+    private(set) var output: Output!
     
-    private let totalAssetsRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var totalAssets = totalAssetsRelay.asDriver()
-    
-    private let totalLiabilityRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var totalLiability = totalLiabilityRelay.asDriver()
-    
-    private let balanceRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var balance = balanceRelay.asDriver()
+    private let accountModels = BehaviorRelay<[AccountSectionModel]>(value: [])
+    private let totalAssets = BehaviorRelay<Int>(value: 0)
+    private let totalLiability = BehaviorRelay<Int>(value: 0)
+    private let balance = BehaviorRelay<Int>(value: 0)
     
     private var includeTotalAccounts: [AccountModel] = []
     private var notIncludeTotalAccounts: [AccountModel] = []
+    
+    override init() {
+        super.init()
+        
+        let totalAssetsColor = totalAssets.map {
+            $0 >= 0 ? R.color.incomeColor() : R.color.spendColor()
+        }.asDriver(onErrorJustReturn: R.color.incomeColor())
+        
+        let totalLiabilityColor = totalLiability.map {
+            $0 >= 0 ? R.color.incomeColor() : R.color.spendColor()
+        }.asDriver(onErrorJustReturn: R.color.incomeColor())
+        
+        let balanceColor = balance.map {
+            $0 >= 0 ? R.color.incomeColor() : R.color.spendColor()
+        }.asDriver(onErrorJustReturn: R.color.incomeColor())
+        
+        input = .init()
+        output = .init(accountModels: accountModels.asDriver(),
+                       totalAssets: totalAssets.map { "$\($0)" }.asDriver(onErrorJustReturn: ""),
+                       totalLiability: totalLiability.map { "$\($0)" }.asDriver(onErrorJustReturn: ""),
+                       balance: balance.map { "$\($0)" }.asDriver(onErrorJustReturn: ""),
+                       totalAssetsColor: totalAssetsColor,
+                       totalLiabilityColor: totalLiabilityColor,
+                       balanceColor: balanceColor)
+    }
 }
 
 extension AccountViewModel {
     func getAccounts() {
-        totalAssetsRelay.accept(0)
-        totalLiabilityRelay.accept(0)
-        balanceRelay.accept(0)
+        totalAssets.accept(0)
+        totalLiability.accept(0)
+        balance.accept(0)
         includeTotalAccounts.removeAll()
         notIncludeTotalAccounts.removeAll()
         
@@ -42,17 +63,17 @@ extension AccountViewModel {
         
         includeTotalAccounts.forEach { account in
             if account.money >= 0 {
-                totalAssetsRelay.accept(totalAssetsRelay.value + account.money)
+                totalAssets.accept(totalAssets.value + account.money)
             } else {
-                totalLiabilityRelay.accept(totalLiabilityRelay.value + account.money)
+                totalLiability.accept(totalLiability.value + account.money)
             }
             
-            balanceRelay.accept(totalAssetsRelay.value + totalLiabilityRelay.value)
+            balance.accept(totalAssets.value + totalLiability.value)
         }
         if notIncludeTotalAccounts.count == 0 {
-            accountModelsRelay.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts)])
+            accountModels.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts)])
         } else {
-            accountModelsRelay.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts),
+            accountModels.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts),
                                        AccountSectionModel(sectionTitle: R.string.localizable.notJoinTotal(), items: notIncludeTotalAccounts)])
         }
     }
@@ -62,4 +83,20 @@ extension AccountViewModel {
         getAccounts()
     }
     
+}
+
+extension AccountViewModel {
+    struct Input {
+        
+    }
+    
+    struct Output {
+        let accountModels: Driver<[AccountSectionModel]>
+        let totalAssets: Driver<String>
+        let totalLiability: Driver<String>
+        let balance: Driver<String>
+        let totalAssetsColor: Driver<UIColor?>
+        let totalLiabilityColor: Driver<UIColor?>
+        let balanceColor: Driver<UIColor?>
+    }
 }

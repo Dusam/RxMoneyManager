@@ -24,7 +24,7 @@ class DetailViewModel: ViewModelType {
     
     init() {
         input = .init()
-        output = .init(totalAmount: totalAmount.asDriver(),
+        output = .init(totalAmount: totalAmount.map{ "$TW \($0)" }.asDriver(onErrorJustReturn: ""),
                        details: details.asDriver(),
                        themeColor: themeColor.asDriver())
     }
@@ -65,7 +65,7 @@ extension DetailViewModel {
     }
     
     struct Output {
-        let totalAmount: Driver<Int>
+        let totalAmount: Driver<String>
         let details: Driver<[DetailModel]>
         let themeColor: Driver<UIColor>
     }

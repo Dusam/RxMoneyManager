@@ -236,57 +236,52 @@ extension AddAccountViewController {
     }
     
     private func bindTextField() {
-        addAccountVM.accountName
+        addAccountVM.output.accountName
             .drive(accountNameTextField.rx.text)
             .disposed(by: disposeBag)
         
         accountNameTextField.rx.text.orEmpty
             .changed
-            .subscribe(onNext: { [weak self] accountName in
-                self?.addAccountVM.setAccountName(accountName)
-            })
+            .bind(to: addAccountVM.input.accountName)
             .disposed(by: disposeBag)
         
         accountNameTextField.rx
             .controlEvent(.editingDidBegin)
-            .subscribe(onNext: { [weak self] in
-                self?.addAccountVM.setShowCalcutor(false)
-            })
+            .map { return false }
+            .bind(to: addAccountVM.input.isShowCalcutor)
             .disposed(by: disposeBag)
         
         
-        addAccountVM.initAmount
+        addAccountVM.output.initAmount
             .drive(initAmountTextField.rx.text)
             .disposed(by: disposeBag)
         
         initAmountTextField.rx
             .controlEvent([.touchDown, .editingDidBegin])
-            .subscribe(onNext: { [weak self] in
-                self?.accountNameTextField.resignFirstResponder()
-                self?.initAmountTextField.resignFirstResponder()
-                self?.addAccountVM.setShowCalcutor(true)
-                self?.calcutor.setEditType(isEditAmount: true)
-            })
+            .map { return true }
+            .bind(to: addAccountVM.input.isShowCalcutor)
             .disposed(by: disposeBag)
     }
     
     private func bindSwitch() {
-        addAccountVM.joinTotal
+        addAccountVM.output.joinTotal
             .drive(joinTotalSwitch.rx.isOn)
             .disposed(by: disposeBag)
         
         joinTotalSwitch.rx.isOn
             .changed
-            .subscribe(onNext: { [weak self] isOn in
-                self?.addAccountVM.setJoinTotal(isOn)
-            })
+            .bind(to: addAccountVM.input.joinTotal)
             .disposed(by: disposeBag)
     }
     
     private func bindCalcutorView() {
-        addAccountVM.isShowCalcutor
+        addAccountVM.output.isShowCalcutor
             .drive(onNext: { [weak self] show in
                 if show {
+                    self?.accountNameTextField.resignFirstResponder()
+                    self?.initAmountTextField.resignFirstResponder()
+                    self?.calcutor.setEditType(isEditAmount: true)
+                    
                     UIView.animate(withDuration: 0.3) {
                         self?.calcutor.isHidden = false
                         self?.calcutor.transform = CGAffineTransform(translationX: 0, y: 0)

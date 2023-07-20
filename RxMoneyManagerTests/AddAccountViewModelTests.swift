@@ -39,19 +39,19 @@ class AddAccountViewModelTests: QuickSpec {
                     let joinTotalObserver = scheduler.createObserver(Bool.self)
                     let isShowCalcutorObserver = scheduler.createObserver(Bool.self)
                     
-                    viewModel.accountName
+                    viewModel.output.accountName
                         .drive(accountNameObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.initAmount
+                    viewModel.output.initAmount
                         .drive(initAmountObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.joinTotal
+                    viewModel.output.joinTotal
                         .drive(joinTotalObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.isShowCalcutor
+                    viewModel.output.isShowCalcutor
                         .drive(isShowCalcutorObserver)
                         .disposed(by: disposeBag)
                     
@@ -73,32 +73,37 @@ class AddAccountViewModelTests: QuickSpec {
                     let joinTotalObserver = scheduler.createObserver(Bool.self)
                     let isShowCalcutorObserver = scheduler.createObserver(Bool.self)
                     
-                    viewModel.accountName
+                    viewModel.output.accountName
                         .drive(accountNameObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.initAmount
+                    viewModel.output.initAmount
                         .drive(initAmountObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.joinTotal
+                    viewModel.output.joinTotal
                         .drive(joinTotalObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.isShowCalcutor
+                    viewModel.output.isShowCalcutor
                         .drive(isShowCalcutorObserver)
                         .disposed(by: disposeBag)
                     
                     scheduler.start()
                     
-                    viewModel.setAccountName("安安你好")
+                    scheduler.createColdObservable([.next(10, "安安你好")])
+                        .bind(to: viewModel.input.accountName)
+                        .disposed(by: disposeBag)
+                    
+                    scheduler.createColdObservable([.next(20, false)])
+                        .bind(to: viewModel.input.joinTotal)
+                        .disposed(by: disposeBag)
+                    scheduler.start()
+
                     viewModel.setAmount("150")
-                    viewModel.setJoinTotal(false)
                     viewModel.setAccountType(.bank)
                     viewModel.setShowCalcutor(true)
                     viewModel.saveAccount()
-                    
-                    
                                         
 //                    debugPrint(self, "accountNameObserver: \(accountNameObserver.events)")
                     expect(accountNameObserver.events.last?.value.element).to(equal("安安你好"))
@@ -116,9 +121,16 @@ class AddAccountViewModelTests: QuickSpec {
                 }
                 
                 it("when save account error") {
-                    viewModel.setAccountName("")
+                    scheduler.createColdObservable([.next(10, "")])
+                        .bind(to: viewModel.input.accountName)
+                        .disposed(by: disposeBag)
+                    
+                    scheduler.createColdObservable([.next(20, false)])
+                        .bind(to: viewModel.input.joinTotal)
+                        .disposed(by: disposeBag)
+                    scheduler.start()
+                    
                     viewModel.setAmount("")
-                    viewModel.setJoinTotal(false)
                     viewModel.setAccountType(.bank)
                     viewModel.saveAccount()
                     

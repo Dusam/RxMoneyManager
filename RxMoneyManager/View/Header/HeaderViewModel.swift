@@ -35,9 +35,9 @@ class HeaderViewModel: BaseViewModel, ViewModelType {
         self.detailVM = detailVM
         
         input = .init(toNext: toNext,
-                           toPervious: toPervious,
-                           toCurrent: toCurrent,
-                           toSelected: toSelected)
+                      toPervious: toPervious,
+                      toCurrent: toCurrent,
+                      toSelected: toSelected)
         output = .init(currentDate: currentDate.asDriver())
         subscribeInput()
         
