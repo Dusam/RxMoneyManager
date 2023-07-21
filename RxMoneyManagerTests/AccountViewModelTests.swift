@@ -35,9 +35,9 @@ class AccountViewModelTests: QuickSpec {
             context("when initialized") {
                 it("should have the correct initial values") {
                     let accountModelsObserver = scheduler.createObserver([AccountSectionModel].self)
-                    let totalAssetsObserver = scheduler.createObserver(Int.self)
-                    let totalLiabilityObserver = scheduler.createObserver(Int.self)
-                    let balanceObserver = scheduler.createObserver(Int.self)
+                    let totalAssetsObserver = scheduler.createObserver(String.self)
+                    let totalLiabilityObserver = scheduler.createObserver(String.self)
+                    let balanceObserver = scheduler.createObserver(String.self)
                     
                     viewModel.output.accountModels
                         .drive(accountModelsObserver)
@@ -60,18 +60,18 @@ class AccountViewModelTests: QuickSpec {
 //                    debugPrint(self, "accountModelsObserver: \(accountModelsObserver.events)")
                     expect(accountModelsObserver.events.first?.value.element).notTo(beNil())
                     expect(accountModelsObserver.events.first?.value.element?.isEmpty).to(beTrue())
-                    expect(totalAssetsObserver.events.first?.value.element).to(equal(0))
-                    expect(totalLiabilityObserver.events.first?.value.element).to(equal(0))
-                    expect(balanceObserver.events.first?.value.element).to(equal(0))
+                    expect(totalAssetsObserver.events.first?.value.element).to(equal("$0"))
+                    expect(totalLiabilityObserver.events.first?.value.element).to(equal("$0"))
+                    expect(balanceObserver.events.first?.value.element).to(equal("$0"))
                 }
             }
             
             context("when load view") {
                 it("when have detail data") {
                     let accountModelsObserver = scheduler.createObserver([AccountSectionModel].self)
-                    let totalAssetsObserver = scheduler.createObserver(Int.self)
-                    let totalLiabilityObserver = scheduler.createObserver(Int.self)
-                    let balanceObserver = scheduler.createObserver(Int.self)
+                    let totalAssetsObserver = scheduler.createObserver(String.self)
+                    let totalLiabilityObserver = scheduler.createObserver(String.self)
+                    let balanceObserver = scheduler.createObserver(String.self)
                     
                     viewModel.output.accountModels
                         .drive(accountModelsObserver)
@@ -96,9 +96,9 @@ class AccountViewModelTests: QuickSpec {
 //                    debugPrint(self, "accountModelsObserver: \(accountModelsObserver.events)")
                     expect(accountModelsObserver.events.last?.value.element).notTo(beNil())
                     expect(accountModelsObserver.events.last?.value.element?.isEmpty).to(beFalse())
-                    expect(totalAssetsObserver.events.last?.value.element).toNot(equal(0))
-                    expect(totalLiabilityObserver.events.last?.value.element).toNot(equal(0))
-                    expect(balanceObserver.events.last?.value.element).toNot(equal(0))
+                    expect(totalAssetsObserver.events.last?.value.element).toNot(equal("$0"))
+                    expect(totalLiabilityObserver.events.last?.value.element).toNot(equal("$0"))
+                    expect(balanceObserver.events.last?.value.element).toNot(equal("$0"))
                     
                     // 測試新增一個未計入總計的帳戶，測試 getAccounts 方法的正確性
                     let addAccountViewModel = AddAccountViewModel()
@@ -128,9 +128,9 @@ class AccountViewModelTests: QuickSpec {
                 
                 xit("when not have detail data") {
                     let accountModelsObserver = scheduler.createObserver([AccountSectionModel].self)
-                    let totalAssetsObserver = scheduler.createObserver(Int.self)
-                    let totalLiabilityObserver = scheduler.createObserver(Int.self)
-                    let balanceObserver = scheduler.createObserver(Int.self)
+                    let totalAssetsObserver = scheduler.createObserver(String.self)
+                    let totalLiabilityObserver = scheduler.createObserver(String.self)
+                    let balanceObserver = scheduler.createObserver(String.self)
                     
                     viewModel.output.accountModels
                         .drive(accountModelsObserver)
@@ -155,9 +155,9 @@ class AccountViewModelTests: QuickSpec {
 //                    debugPrint(self, "accountModelsObserver: \(accountModelsObserver.events)")
                     expect(accountModelsObserver.events.last?.value.element).notTo(beNil())
                     expect(accountModelsObserver.events.last?.value.element?.isEmpty).to(beFalse())
-                    expect(totalAssetsObserver.events.last?.value.element).to(equal(0))
-                    expect(totalLiabilityObserver.events.last?.value.element).to(equal(0))
-                    expect(balanceObserver.events.last?.value.element).to(equal(0))
+                    expect(totalAssetsObserver.events.last?.value.element).to(equal("$0"))
+                    expect(totalLiabilityObserver.events.last?.value.element).to(equal("$0"))
+                    expect(balanceObserver.events.last?.value.element).to(equal("$0"))
                 }
             }
         }

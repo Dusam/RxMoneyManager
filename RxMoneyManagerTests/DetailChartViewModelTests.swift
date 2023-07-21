@@ -38,32 +38,32 @@ class DetailChartViewModelTests: QuickSpec {
                 it("should have the correct initial values") {
                     let chartSegmentObserver = scheduler.createObserver(Int.self)
                     let currentDateStringObserver = scheduler.createObserver(String.self)
-                    let pieChartDataObserver = scheduler.createObserver(PieChartData.self)
-                    let totalObserver = scheduler.createObserver(Int.self)
+                    let pieChartDataObserver = scheduler.createObserver(ChartData.self)
+                    let totalObserver = scheduler.createObserver(String.self)
                     let chartDetailObserver = scheduler.createObserver([ChartDetailModel].self)
                     let chartSectionDatasObserver = scheduler.createObserver([ChartDetailSectionModel].self)
                     
-                    viewModel.chartSegment
+                    viewModel.output.chartSegment
                         .drive(chartSegmentObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.currentDateString
+                    viewModel.output.currentDateString
                         .drive(currentDateStringObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.pieChartData
+                    viewModel.output.pieChartData
                         .drive(pieChartDataObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.total
+                    viewModel.output.total
                         .drive(totalObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.chartDetail
+                    viewModel.output.chartDetail
                         .drive(chartDetailObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.chartSectionDatas
+                    viewModel.output.chartSectionDatas
                         .drive(chartSectionDatasObserver)
                         .disposed(by: disposeBag)
                     
@@ -72,7 +72,7 @@ class DetailChartViewModelTests: QuickSpec {
                     expect(chartSegmentObserver.events.first?.value.element).to(equal(1))
                     expect(currentDateStringObserver.events.first?.value.element).to(equal("2023-07"))
                     expect(pieChartDataObserver.events.first?.value.element?.dataSetCount).to(equal(0))
-                    expect(totalObserver.events.first?.value.element).to(equal(0))
+                    expect(totalObserver.events.first?.value.element).to(equal("總計: $0"))
                     expect(chartDetailObserver.events.first?.value.element?.isEmpty).to(beTrue())
                     expect(chartSectionDatasObserver.events.first?.value.element?.isEmpty).to(beTrue())
                 }
@@ -82,32 +82,32 @@ class DetailChartViewModelTests: QuickSpec {
                 it("set chart by default value") {
                     let chartSegmentObserver = scheduler.createObserver(Int.self)
                     let currentDateStringObserver = scheduler.createObserver(String.self)
-                    let pieChartDataObserver = scheduler.createObserver(PieChartData.self)
-                    let totalObserver = scheduler.createObserver(Int.self)
+                    let pieChartDataObserver = scheduler.createObserver(ChartData.self)
+                    let totalObserver = scheduler.createObserver(String.self)
                     let chartDetailObserver = scheduler.createObserver([ChartDetailModel].self)
                     let chartSectionDatasObserver = scheduler.createObserver([ChartDetailSectionModel].self)
                     
-                    viewModel.chartSegment
+                    viewModel.output.chartSegment
                         .drive(chartSegmentObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.currentDateString
+                    viewModel.output.currentDateString
                         .drive(currentDateStringObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.pieChartData
+                    viewModel.output.pieChartData
                         .drive(pieChartDataObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.total
+                    viewModel.output.total
                         .drive(totalObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.chartDetail
+                    viewModel.output.chartDetail
                         .drive(chartDetailObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.chartSectionDatas
+                    viewModel.output.chartSectionDatas
                         .drive(chartSectionDatasObserver)
                         .disposed(by: disposeBag)
                     
@@ -116,7 +116,7 @@ class DetailChartViewModelTests: QuickSpec {
                     expect(chartSegmentObserver.events.first?.value.element).to(equal(1))
                     expect(currentDateStringObserver.events.first?.value.element).to(equal("2023-07"))
                     expect(pieChartDataObserver.events.first?.value.element?.dataSetCount).to(equal(0))
-                    expect(totalObserver.events.first?.value.element).to(equal(0))
+                    expect(totalObserver.events.first?.value.element).to(equal("總計: $0"))
                     expect(chartDetailObserver.events.first?.value.element?.isEmpty).to(beTrue())
                     expect(chartSectionDatasObserver.events.first?.value.element?.isEmpty).to(beTrue())
                     
@@ -124,25 +124,25 @@ class DetailChartViewModelTests: QuickSpec {
                     
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(beGreaterThanOrEqualTo(1))
-                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
                     expect(chartDetailObserver.events.last?.value.element?.isEmpty).to(beFalse())
                     expect(chartSectionDatasObserver.events.last?.value.element?.isEmpty).to(beFalse())
                 }
                 
                 it("set chart by change month") {
                     let currentDateStringObserver = scheduler.createObserver(String.self)
-                    let pieChartDataObserver = scheduler.createObserver(PieChartData.self)
-                    let totalObserver = scheduler.createObserver(Int.self)
+                    let pieChartDataObserver = scheduler.createObserver(ChartData.self)
+                    let totalObserver = scheduler.createObserver(String.self)
                    
-                    viewModel.currentDateString
+                    viewModel.output.currentDateString
                         .drive(currentDateStringObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.pieChartData
+                    viewModel.output.pieChartData
                         .drive(pieChartDataObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.total
+                    viewModel.output.total
                         .drive(totalObserver)
                         .disposed(by: disposeBag)
                     
@@ -151,38 +151,38 @@ class DetailChartViewModelTests: QuickSpec {
                     viewModel.toNext()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-08"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
-                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toPrevious()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
-                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
                     
                     viewModel.toCurrentDate()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
-                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
                 }
                 
                 it("set chart by change year") {
                     let chartSegmentObserver = scheduler.createObserver(Int.self)
                     let currentDateStringObserver = scheduler.createObserver(String.self)
-                    let pieChartDataObserver = scheduler.createObserver(PieChartData.self)
-                    let totalObserver = scheduler.createObserver(Int.self)
+                    let pieChartDataObserver = scheduler.createObserver(ChartData.self)
+                    let totalObserver = scheduler.createObserver(String.self)
                
-                    viewModel.chartSegment
+                    viewModel.output.chartSegment
                         .drive(chartSegmentObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.currentDateString
+                    viewModel.output.currentDateString
                         .drive(currentDateStringObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.pieChartData
+                    viewModel.output.pieChartData
                         .drive(pieChartDataObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.total
+                    viewModel.output.total
                         .drive(totalObserver)
                         .disposed(by: disposeBag)
                     
@@ -193,43 +193,43 @@ class DetailChartViewModelTests: QuickSpec {
                     expect(chartSegmentObserver.events.last?.value.element).to(equal(2))
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2024"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
-                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toPrevious()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
-                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
                     
                     viewModel.toPrevious()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2022"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
-                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toCurrentDate()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
-                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
                 }
                 
                 it("set chart by change week") {
                     let chartSegmentObserver = scheduler.createObserver(Int.self)
                     let currentDateStringObserver = scheduler.createObserver(String.self)
-                    let pieChartDataObserver = scheduler.createObserver(PieChartData.self)
-                    let totalObserver = scheduler.createObserver(Int.self)
+                    let pieChartDataObserver = scheduler.createObserver(ChartData.self)
+                    let totalObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.chartSegment
+                    viewModel.output.chartSegment
                         .drive(chartSegmentObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.currentDateString
+                    viewModel.output.currentDateString
                         .drive(currentDateStringObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.pieChartData
+                    viewModel.output.pieChartData
                         .drive(pieChartDataObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.total
+                    viewModel.output.total
                         .drive(totalObserver)
                         .disposed(by: disposeBag)
                     
@@ -240,27 +240,27 @@ class DetailChartViewModelTests: QuickSpec {
                     expect(chartSegmentObserver.events.last?.value.element).to(equal(0))
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(30)"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
-                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toPrevious()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(29)"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
-                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toPrevious()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(28)"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
-                    expect(totalObserver.events.last?.value.element).toNot(equal(0))
+                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
                     
                     viewModel.toCurrentDate()
                     expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(29)"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
-                    expect(totalObserver.events.last?.value.element).to(equal(0))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                 }
                 
                 it("set chart by billing type") {
                     let sectionDatasObserver = scheduler.createObserver([ChartDetailSectionModel].self)
-                    viewModel.chartSectionDatas
+                    viewModel.output.chartSectionDatas
                         .drive(sectionDatasObserver)
                         .disposed(by: disposeBag)
                     
@@ -279,7 +279,7 @@ class DetailChartViewModelTests: QuickSpec {
                 it("if segment index not contains from DetailChartType") {
                     let chartSegmentObserver = scheduler.createObserver(Int.self)
                    
-                    viewModel.chartSegment
+                    viewModel.output.chartSegment
                         .drive(chartSegmentObserver)
                         .disposed(by: disposeBag)
                     

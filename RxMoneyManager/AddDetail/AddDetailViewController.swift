@@ -130,9 +130,6 @@ extension AddDetailViewController {
         typeSegment.rx.selectedSegmentIndex
             .changed
             .bind(to: addDetailVM.input.billingSegment)
-//            .subscribe(onNext: { [weak self] selectedIndex in
-//                self?.addDetailVM.setBillingSegmentIndex(selectedIndex)
-//            })
             .disposed(by: disposeBag)
         
         addDetailVM.output.billingSegment
@@ -156,11 +153,6 @@ extension AddDetailViewController {
             .controlEvent(.editingDidBegin)
             .map { return true }
             .bind(to: addDetailVM.input.isShowCalcutor)
-//            .subscribe(onNext: { [weak self] in
-//                self?.amountTextField.resignFirstResponder()
-//                self?.setShowCalcutor(true)
-//                self?.calcutor.setEditType(isEditAmount: true)
-//            })
             .disposed(by: disposeBag)
         
         if addType == .add {

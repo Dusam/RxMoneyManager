@@ -16,56 +16,32 @@ class AddDetailViewModel: BaseViewModel, ViewModelType {
     private(set) var output: Output!
     
     private let amount = BehaviorRelay<String>(value: "0")
-    //    private(set) lazy var amount = amountRelay.asDriver(onErrorJustReturn: "0")
-    
     private let transferFee = BehaviorRelay<String>(value: "0")
-    //    private(set) lazy var transferFee = transferFeeRelay.asDriver()
-    
     private let isShowCalcutor = BehaviorRelay<Bool>(value: false)
-    //    private(set) lazy var isShowCalcutor = isShowCalcutorRelay.asDriver()
-    
     private let billingSegment = BehaviorRelay<Int>(value: 0)
-    //    private(set) lazy var billingSegment = billingSegmentRelay.asDriver()
-    
     private let addDetailViewCells = BehaviorRelay<[String]>(value: [R.string.localizable.type_title(),
                                                                      R.string.localizable.account_title(),
                                                                      R.string.localizable.memo_title()])
-    //    private(set) lazy var addDetailCellModels = addDetailCellModelsRelay.asDriver()
     
     private var detail = DetailModel()
     private let detailGroupModels = BehaviorRelay<[DetailGroupModel]>(value: [])
-    //    private(set) lazy var detailGroupModels = detailGroupModelsRelay.asDriver()
-    
     private let detailTypeModels = BehaviorRelay<[DetailTypeModel]>(value: [])
-    //    private(set) lazy var detailTypeModels = detailTypeModelsRelay.asDriver()
-    
     private var billingType: BillingType = .spend
     private let typeName = BehaviorRelay<String>(value: "")
-    //    private(set) lazy var typeName = typeNameRelay.asDriver()
     
     private var selectedDetailGroupId: String = UserInfo.share.expensesGroupId
     private let detailGroupId = BehaviorRelay<String>(value: UserInfo.share.expensesGroupId)
-    //    private(set) lazy var detailGroupId = detailGroupIdRelay.asDriver()
-    
     private let detailTypeId = BehaviorRelay<String>(value: UserInfo.share.expensesTypeId)
-    //    private(set) lazy var detailTypeId = detailTypeIdRelay.asDriver()
     
     private var accountId = UserInfo.share.accountId
     private let accountName = BehaviorRelay<String>(value: "")
-    //    private(set) lazy var accountName = accountNameRelay.asDriver()
-    
     private let accountModels = BehaviorRelay<[AccountModel]>(value: [])
-    //    private(set) lazy var accountModels = accountModelsRelay.asDriver()
     
     private var toAccountId = UserInfo.share.transferToAccountId
     private let toAccountName = BehaviorRelay<String>(value: "")
-    //    private(set) lazy var toAccountName = toAccountNameRelay.asDriver()
     
     private let memo = BehaviorRelay<String>(value: "")
-    //    private(set) lazy var memo = memoRelay.asDriver()
-    
     private let memoModels = BehaviorRelay<[MemoModel]>(value: [])
-    //    private(set) lazy var memoModels = memoModelsRelay.asDriver()
     
     private var isEdit = false
     
@@ -387,10 +363,6 @@ extension AddDetailViewModel {
         memo.accept(memoString)
         getMemos()
     }
-    
-    //    func setBillingSegmentIndex(_ index: Int) {
-    //        billingSegment.accept(index)
-    //    }
 }
 
 // MARK: Get Method
@@ -424,8 +396,4 @@ extension AddDetailViewModel {
             toAccountName.accept(RealmManager.share.getAccount(toAccountId).first?.name ?? "")
         }
     }
-    
-    //    func getSegmentIndex() -> Int {
-    //        return billingSegment.value
-    //    }
 }

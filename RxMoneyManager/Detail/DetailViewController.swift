@@ -30,18 +30,14 @@ class DetailViewController: BaseViewController {
         #endif
     }
     
-    override func viewDidLoad() {
-        headerVM = HeaderViewModel(headerType: .detail, detailVM: detailVM)
-        rx.viewWillAppear
-            .mapToVoid()
-            .bind(to: headerVM.input.toSelected)
-            .disposed(by: disposeBag)
-        
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        headerVM.toSelectedDate()
     }
     
     override func setUpView() {
         setBackButton(title: R.string.localizable.spend_details())
+        headerVM = HeaderViewModel(headerType: .detail, detailVM: detailVM)
         
         setUpHeaderView()
         setUpTableView()
@@ -226,15 +222,17 @@ extension DetailViewController {
         view.rx
             .swipeGesture(.left)
             .when(.recognized)
-            .mapToVoid()
-            .bind(to: headerVM.input.toNext)
+            .subscribe(onNext: { [unowned self] _ in
+                self.headerVM.toNextDate()
+            })
             .disposed(by: disposeBag)
         
         view.rx
             .swipeGesture(.right)
             .when(.recognized)
-            .mapToVoid()
-            .bind(to: headerVM.input.toPervious)
+            .subscribe(onNext: { [unowned self] _ in
+                self.headerVM.toNextDate()
+            })
             .disposed(by: disposeBag)
     }
 }

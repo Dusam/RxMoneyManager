@@ -68,7 +68,7 @@ class ChartDetailViewController: BaseViewController {
             return cell
         })
         
-        detailChartVM.chartSectionDatas
+        detailChartVM.output.chartSectionDatas
             .drive(chartDetailTableView.rx.items(dataSource: chartDetailDataSource))
             .disposed(by: disposeBag)
         

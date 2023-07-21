@@ -97,7 +97,9 @@ class HeaderView: UIView {
             dateButton.setTitleColor(.white, for: .highlighted)
             
             dateButton.rx.tap
-                .bind(to: headerVM.input.toCurrent)
+                .subscribe(onNext: { [unowned self] in
+                    self.headerVM.toCurrentDate()
+                })
                 .disposed(by: disposeBag)
             
             headerVM.output.currentDate
@@ -132,7 +134,9 @@ class HeaderView: UIView {
             perviousButton.imageView?.contentMode = .scaleAspectFill
             
             perviousButton.rx.tap
-                .bind(to: headerVM.input.toPervious)
+                .subscribe(onNext: { [unowned self] in
+                    self.headerVM.toPerviousDate()
+                })
                 .disposed(by: disposeBag)
             
             return perviousButton
@@ -146,7 +150,9 @@ class HeaderView: UIView {
             nextButton.imageView?.contentMode = .scaleAspectFill
             
             nextButton.rx.tap
-                .bind(to: headerVM.input.toNext)
+                .subscribe(onNext: { [unowned self] in
+                    self.headerVM.toNextDate()
+                })
                 .disposed(by: disposeBag)
             
             return nextButton

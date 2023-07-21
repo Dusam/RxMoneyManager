@@ -58,63 +58,63 @@ class AddDetailViewModelTests: QuickSpec {
                     let memoObserver = scheduler.createObserver(String.self)
                     let memoModelsObserver = scheduler.createObserver([MemoModel].self)
                     
-                    viewModel.amount
+                    viewModel.output.amount
                         .drive(amountObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.transferFee
+                    viewModel.output.transferFee
                         .drive(transferFeeObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.isShowCalcutor
+                    viewModel.output.isShowCalcutor
                         .drive(isShowCalcutorObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.billingSegment
+                    viewModel.output.billingSegment
                         .drive(selectedSegmentObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.addDetailCellModels
+                    viewModel.output.addDetailViewCells
                         .drive(addDetailCellModelsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.detailGroupModels
+                    viewModel.output.detailGroupModels
                         .drive(detailGroupModelsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.detailTypeModels
+                    viewModel.output.detailTypeModels
                         .drive(detailTypeModelsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.typeName
+                    viewModel.output.typeName
                         .drive(typeNameObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.detailGroupId
+                    viewModel.output.detailGroupId
                         .drive(detailGroupIdObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.detailTypeId
+                    viewModel.output.detailTypeId
                         .drive(detailTypeIdObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.accountName
+                    viewModel.output.accountName
                         .drive(accountNameObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.accountModels
+                    viewModel.output.accountModels
                         .drive(accountModelsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.toAccountName
+                    viewModel.output.toAccountName
                         .drive(toAccountNameObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.memo
+                    viewModel.output.memo
                         .drive(memoObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.memoModels
+                    viewModel.output.memoModels
                         .drive(memoModelsObserver)
                         .disposed(by: disposeBag)
                   
@@ -143,7 +143,7 @@ class AddDetailViewModelTests: QuickSpec {
                 it("can not save when amount <= 0 or accountId is error") {
                     let amountObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.amount
+                    viewModel.output.amount
                         .drive(amountObserver)
                         .disposed(by: disposeBag)
                     
@@ -170,7 +170,7 @@ class AddDetailViewModelTests: QuickSpec {
                 it("can save when amount > 0 and accountId is not error and memo is new and type is spend") {
                     let amountObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.amount
+                    viewModel.output.amount
                         .drive(amountObserver)
                         .disposed(by: disposeBag)
                     
@@ -196,7 +196,7 @@ class AddDetailViewModelTests: QuickSpec {
                 it("can save when amount > 0 and accountId is not error and memo is repeat and type is spend") {
                     let amountObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.amount
+                    viewModel.output.amount
                         .drive(amountObserver)
                         .disposed(by: disposeBag)
                     
@@ -223,7 +223,7 @@ class AddDetailViewModelTests: QuickSpec {
                 it("can save when amount > 0 and accountId is not error and type is income") {
                     let amountObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.amount
+                    viewModel.output.amount
                         .drive(amountObserver)
                         .disposed(by: disposeBag)
                     
@@ -250,11 +250,11 @@ class AddDetailViewModelTests: QuickSpec {
                     let amountObserver = scheduler.createObserver(String.self)
                     let transFeeObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.amount
+                    viewModel.output.amount
                         .drive(amountObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.transferFee
+                    viewModel.output.transferFee
                         .drive(transFeeObserver)
                         .disposed(by: disposeBag)
                     
@@ -285,7 +285,7 @@ class AddDetailViewModelTests: QuickSpec {
                 it("save changes to existing detail") {
                     let amountObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.amount
+                    viewModel.output.amount
                         .drive(amountObserver)
                         .disposed(by: disposeBag)
                     
@@ -320,7 +320,7 @@ class AddDetailViewModelTests: QuickSpec {
                 it("change calcutor view status") {
                     let isShowCalcutorObserver = scheduler.createObserver(Bool.self)
                     
-                    viewModel.isShowCalcutor
+                    viewModel.output.isShowCalcutor
                         .drive(isShowCalcutorObserver)
                         .disposed(by: disposeBag)
                     
@@ -340,11 +340,11 @@ class AddDetailViewModelTests: QuickSpec {
                     let detailGroupModelsObserver = scheduler.createObserver([DetailGroupModel].self)
                     let detailTypeModelsObserver = scheduler.createObserver([DetailTypeModel].self)
                     
-                    viewModel.detailGroupModels
+                    viewModel.output.detailGroupModels
                         .drive(detailGroupModelsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.detailTypeModels
+                    viewModel.output.detailTypeModels
                         .drive(detailTypeModelsObserver)
                         .disposed(by: disposeBag)
                     
@@ -377,7 +377,7 @@ class AddDetailViewModelTests: QuickSpec {
                 it("add/delete type") {
                     let detailTypeModelsObserver = scheduler.createObserver([DetailTypeModel].self)
                     
-                    viewModel.detailTypeModels
+                    viewModel.output.detailTypeModels
                         .drive(detailTypeModelsObserver)
                         .disposed(by: disposeBag)
                     
@@ -405,7 +405,7 @@ class AddDetailViewModelTests: QuickSpec {
                 it("should have correct value after setting segment index") {
                     let billingSegmentObserver = scheduler.createObserver(Int.self)
                     
-                    viewModel.billingSegment
+                    viewModel.output.billingSegment
                         .drive(billingSegmentObserver)
                         .disposed(by: disposeBag)
                     
@@ -413,9 +413,11 @@ class AddDetailViewModelTests: QuickSpec {
                     
                     expect(billingSegmentObserver.events.first?.value.element).to(equal(0))
                     
-                    viewModel.setBillingSegmentIndex(2)
+                    scheduler.createColdObservable([.next(10, 2)])
+                        .bind(to: viewModel.input.billingSegment)
+                        .disposed(by: disposeBag)
+                    scheduler.start()
                     expect(billingSegmentObserver.events.last?.value.element).to(equal(2))
-                    expect(viewModel.getSegmentIndex()).to(equal(2))
                 }
             }
             
@@ -425,7 +427,7 @@ class AddDetailViewModelTests: QuickSpec {
                     var accountId = viewModel.getAccountId()
                     var toAccountId = viewModel.getToAccountId()
                     
-                    viewModel.accountModels
+                    viewModel.output.accountModels
                         .drive(accountsObserver)
                         .disposed(by: disposeBag)
         

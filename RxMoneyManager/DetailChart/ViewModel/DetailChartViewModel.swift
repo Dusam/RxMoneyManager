@@ -13,7 +13,7 @@ import RxDataSources
 import SwifterSwift
 import DGCharts
 
-class DetailChartViewModel: BaseViewModel {
+class DetailChartViewModel: BaseViewModel, ViewModelType {
     
     struct ChartListData: Hashable {
         var billingType: BillingType
@@ -21,45 +21,59 @@ class DetailChartViewModel: BaseViewModel {
         var percent: Double
     }
     
-    private var pieChartDataEntrys: [PieChartDataEntry] = []
+    private(set) var input: Input!
+    private(set) var output: Output!
     
+    private var pieChartDataEntrys: [PieChartDataEntry] = []
     private var startDate = Date()
     private var endDate = Date()
-    
     private var chartType: DetailChartType = .month
-    
-    private let chartSegmentRelay = BehaviorRelay<Int>(value: DetailChartType.month.rawValue)
-    private(set) lazy var chartSegment = chartSegmentRelay.asDriver()
-    
     private var currentDate: Date = Date().adding(.hour, value: 8) {
         didSet {
             setDateString()
         }
     }
     
-    private let currentDateStringRelay = BehaviorRelay<String>(value: Date().string(withFormat: "yyyy-MM"))
-    private(set) lazy var currentDateString = currentDateStringRelay.asDriver()
+    private let chartSegment = BehaviorRelay<Int>(value: DetailChartType.month.rawValue)
+    private let currentDateString = BehaviorRelay<String>(value: Date().string(withFormat: "yyyy-MM"))
     
     // 數據參數
     private var chartListDatas: [ChartListData] = []
-
-    private let pieChartDataRelay = BehaviorRelay<PieChartData>(value: .init())
-    private(set) lazy var pieChartData = pieChartDataRelay.asDriver()
-    
-    private let totalRelay = BehaviorRelay<Int>(value: 0)
-    private(set) lazy var total = totalRelay.asDriver()
     
     private var incomeTotal = 0
     private var spendTotal = 0
     private var transferTotal = 0
-    
-    private let chartDetailRelay = BehaviorRelay<[ChartDetailModel]>(value: [])
-    private(set) lazy var chartDetail = chartDetailRelay.asDriver()
-    
-    private let chartSectionDatasRelay = BehaviorRelay<[ChartDetailSectionModel]>(value: [])
-    private(set) lazy var chartSectionDatas = chartSectionDatasRelay.asDriver()
-        
     private(set) var billingType: BillingType = .spend
+    
+    private let total = BehaviorRelay<Int>(value: 0)
+    private let pieChartData = BehaviorRelay<ChartData>(value: .init())
+    private let chartDetail = BehaviorRelay<[ChartDetailModel]>(value: [])
+    private let chartSectionDatas = BehaviorRelay<[ChartDetailSectionModel]>(value: [])
+    
+    override init() {
+        input = .init()
+        output = .init(chartSegment: chartSegment.asDriver(),
+                       currentDateString: currentDateString.asDriver(),
+                       pieChartData: pieChartData.asDriver(),
+                       total: total.map { "總計: $\($0)" }.asDriver(onErrorJustReturn: "總計: $0"),
+                       chartDetail: chartDetail.asDriver(),
+                       chartSectionDatas: chartSectionDatas.asDriver())
+    }
+}
+
+extension DetailChartViewModel {
+    struct Input {
+        
+    }
+    
+    struct Output {
+        let chartSegment: Driver<Int>
+        let currentDateString: Driver<String>
+        let pieChartData: Driver<ChartData>
+        let total: Driver<String>
+        let chartDetail: Driver<[ChartDetailModel]>
+        let chartSectionDatas: Driver<[ChartDetailSectionModel]>
+    }
 }
 
 extension DetailChartViewModel {
@@ -83,11 +97,11 @@ extension DetailChartViewModel {
         
         switch billingType {
         case .spend:
-            chartSectionDatasRelay.accept(setSectionDatas(datas: spendDatas.reversed()))
+            chartSectionDatas.accept(setSectionDatas(datas: spendDatas.reversed()))
         case .income:
-            chartSectionDatasRelay.accept(setSectionDatas(datas: incomeDatas.reversed()))
+            chartSectionDatas.accept(setSectionDatas(datas: incomeDatas.reversed()))
         case .transfer:
-            chartSectionDatasRelay.accept(setSectionDatas(datas: transferDatas.reversed()))
+            chartSectionDatas.accept(setSectionDatas(datas: transferDatas.reversed()))
         }
         
         incomeTotal = incomeDatas.reduce(0) { partialResult, model in
@@ -102,12 +116,12 @@ extension DetailChartViewModel {
             partialResult + abs(model.amount)
         }
         
-        totalRelay.accept(incomeTotal - spendTotal)
+        total.accept(incomeTotal - spendTotal)
         let incomePercent = String(format: "%.2f", (incomeTotal.double / totalAmount.double) * 100).double() ?? 0.0
         let spendPercent = String(format: "%.2f", (spendTotal.double / totalAmount.double) * 100).double() ?? 0.0
         let transferPercent = String(format: "%.2f", (transferTotal.double / totalAmount.double) * 100).double() ?? 0.0
         
-        chartDetailRelay.accept([ChartDetailModel(billingType: .income, percent: incomePercent, total: incomeTotal),
+        chartDetail.accept([ChartDetailModel(billingType: .income, percent: incomePercent, total: incomeTotal),
                                  ChartDetailModel(billingType: .spend, percent: spendPercent, total: spendTotal),
                                  ChartDetailModel(billingType: .transfer, percent: transferPercent, total: transferTotal)])
         
@@ -145,17 +159,17 @@ extension DetailChartViewModel {
         
         data.dataSet = dataSet
         
-        pieChartDataRelay.accept(data)
+        pieChartData.accept(data)
     }
     
     private func setDateString() {
         switch chartType {
         case .week:
-            currentDateStringRelay.accept(currentDate.string(withFormat: "yyyy") + "(\(currentDate.weekOfYear))")
+            currentDateString.accept(currentDate.string(withFormat: "yyyy") + "(\(currentDate.weekOfYear))")
         case .month:
-            currentDateStringRelay.accept(currentDate.string(withFormat: "yyyy-MM"))
+            currentDateString.accept(currentDate.string(withFormat: "yyyy-MM"))
         case .year:
-            currentDateStringRelay.accept(currentDate.string(withFormat: "yyyy"))
+            currentDateString.accept(currentDate.string(withFormat: "yyyy"))
         }
     }
     
@@ -244,7 +258,7 @@ extension DetailChartViewModel {
     func setChartSegmentIndex(_ index: Int) {
         guard let type = DetailChartType(rawValue: index) else { return }
         chartType = type
-        chartSegmentRelay.accept(index)
+        chartSegment.accept(index)
         
         getChartData()
         setDateString()

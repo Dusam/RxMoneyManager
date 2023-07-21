@@ -126,7 +126,7 @@ extension DetailChartViewController {
             })
             .disposed(by: disposeBag)
             
-            detailChartVM.currentDateString
+            detailChartVM.output.currentDateString
                 .drive(dateButton.rx.title())
                 .disposed(by: disposeBag)
             
@@ -221,28 +221,25 @@ extension DetailChartViewController {
             })
             .disposed(by: disposeBag)
         
-        detailChartVM.chartSegment
+        detailChartVM.output.chartSegment
             .drive(typeSegment.rx.selectedSegmentIndex)
             .disposed(by: disposeBag)
     }
     
     private func bindPieChartView() {
-        detailChartVM.pieChartData
-            .drive(onNext: { [weak self] chartData in
-                self?.pieChart.data = chartData
-            })
+        detailChartVM.output.pieChartData
+            .drive(pieChart.rx.data)
             .disposed(by: disposeBag)
     }
     
     private func bindTotalLabel() {
-        detailChartVM.total
-            .map { "總計: $\($0)" }
+        detailChartVM.output.total
             .drive(totalLabel.rx.text)
             .disposed(by: disposeBag)
     }
     
     private func bindDetailChartTableView() {
-        detailChartVM.chartDetail
+        detailChartVM.output.chartDetail
             .drive(detailChartTableView.rx.items(cellIdentifier: "DetailChartCell", cellType: DetailChartCell.self)) { row, data, cell in
                 cell.totalLabel.text = "\(data.billingType.name) - $\(data.total)"
                 cell.percentLabel.text = "\(data.percent)%"
