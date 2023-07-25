@@ -36,7 +36,7 @@ class HeaderViewModelTest: QuickSpec {
                 it("should have the correct initial values") {
                     let currentDateObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.currentDate
+                    viewModel.output.currentDate
                         .drive(currentDateObserver)
                         .disposed(by: disposeBag)
                   
@@ -49,23 +49,35 @@ class HeaderViewModelTest: QuickSpec {
                 it("change date method") {
                     let currentDateObserver = scheduler.createObserver(String.self)
                     
-                    viewModel.currentDate
+                    viewModel.output.currentDate
                         .drive(currentDateObserver)
                         .disposed(by: disposeBag)
                   
                     scheduler.start()
                     
-                    viewModel.toPerviousDate()
+                    scheduler.createColdObservable([.next(100, ())])
+                        .bind(to: viewModel.input.toPervious)
+                        .disposed(by: disposeBag)
+                    scheduler.start()
                     expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
                     
-                    viewModel.toCurrentDate()
+                    scheduler.createColdObservable([.next(200, ())])
+                        .bind(to: viewModel.input.toCurrent)
+                        .disposed(by: disposeBag)
+                    scheduler.start()
                     expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
                     
-                    viewModel.toNextDate()
+                    scheduler.createColdObservable([.next(300, ())])
+                        .bind(to: viewModel.input.toNext)
+                        .disposed(by: disposeBag)
+                    scheduler.start()
                     expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
                     
                     UserInfo.share.selectedDate = "2023-10-11".toDate()
-                    viewModel.toSelectedDate()
+                    scheduler.createColdObservable([.next(400, ())])
+                        .bind(to: viewModel.input.toSelected)
+                        .disposed(by: disposeBag)
+                    scheduler.start()
                     expect(currentDateObserver.events.last?.value.element).to(equal("2023-10-11(週三)"))
                 }
             }

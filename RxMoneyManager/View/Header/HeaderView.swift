@@ -19,12 +19,12 @@ class HeaderView: UIView {
     private var detailVM: DetailViewModel!
     private var headerType: HeaderType = .detail
     
-    required init(detailVM: DetailViewModel, headerType: HeaderType) {
+    required init(detailVM: DetailViewModel, headerVM: HeaderViewModel, headerType: HeaderType) {
         super.init(frame: CGRect.zero)
         self.headerType = headerType
         
         self.detailVM = detailVM
-        self.headerVM = HeaderViewModel(headerType: headerType, detailVM: detailVM)
+        self.headerVM = headerVM
         setUpHeaderView()
     }
     
@@ -44,18 +44,6 @@ class HeaderView: UIView {
         #if DEBUG
         print("HeaderView deinit")
         #endif
-    }
-    
-    func toSelectedDate() {
-        headerVM.toSelectedDate()
-    }
-    
-    func toPerviousDate() {
-        headerVM.toPerviousDate()
-    }
-    
-    func toNextDate() {
-        headerVM.toNextDate()
     }
     
     private func setUpHeaderView() {
@@ -108,13 +96,13 @@ class HeaderView: UIView {
             dateButton.setTitleColor(.black, for: .normal)
             dateButton.setTitleColor(.white, for: .highlighted)
             
-            dateButton.rx.tap.subscribe(onNext: { [weak self] in
-                self?.headerVM.toCurrentDate()
-            })
-            .disposed(by: disposeBag)
+            dateButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    self.headerVM.toCurrentDate()
+                })
+                .disposed(by: disposeBag)
             
-            headerVM.currentDate
-                .asDriver()
+            headerVM.output.currentDate
                 .drive(dateButton.rx.title())
                 .disposed(by: disposeBag)
             
@@ -128,9 +116,7 @@ class HeaderView: UIView {
             subTitleLabel.font = .systemFont(ofSize: 18)
             
             if headerType == .detail {
-                detailVM.totalAmount
-                    .map{ "$TW \($0)" }
-                    .asDriver(onErrorJustReturn: "")
+                detailVM.output.totalAmount
                     .drive(subTitleLabel.rx.text)
                     .disposed(by: disposeBag)
             } else {
@@ -147,10 +133,11 @@ class HeaderView: UIView {
             perviousButton.tintColor = .white
             perviousButton.imageView?.contentMode = .scaleAspectFill
             
-            perviousButton.rx.tap.subscribe(onNext: { [weak self] in
-                self?.headerVM.toPerviousDate()
-            })
-            .disposed(by: disposeBag)
+            perviousButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    self.headerVM.toPerviousDate()
+                })
+                .disposed(by: disposeBag)
             
             return perviousButton
         }
@@ -162,10 +149,11 @@ class HeaderView: UIView {
             nextButton.tintColor = .white
             nextButton.imageView?.contentMode = .scaleAspectFill
             
-            nextButton.rx.tap.subscribe(onNext: { [weak self] in
-                self?.headerVM.toNextDate()
-            })
-            .disposed(by: disposeBag)
+            nextButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    self.headerVM.toNextDate()
+                })
+                .disposed(by: disposeBag)
             
             return nextButton
         }

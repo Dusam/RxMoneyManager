@@ -37,26 +37,26 @@ class DetailViewModelTests: QuickSpec {
             context("when not have data initialized") {
                 it("should have the correct initial values") {
                     let detailsObserver = scheduler.createObserver([DetailModel].self)
-                    let totalAmountObserver = scheduler.createObserver(Int.self)
+                    let totalAmountObserver = scheduler.createObserver(String.self)
                     let themeColorObserver = scheduler.createObserver(UIColor.self)
                     
-                    viewModel.details
+                    viewModel.output.details
                         .drive(detailsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalAmount
+                    viewModel.output.totalAmount
                         .drive(totalAmountObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.themeColor
+                    viewModel.output.themeColor
                         .drive(themeColorObserver)
                         .disposed(by: disposeBag)
                     
                     scheduler.start()
                     
-//                    debugPrint(self, "detailsObserver: \(detailsObserver.events)")
-                    expect(detailsObserver.events.first?.value.element?.isEmpty).to(beFalse())
-                    expect(totalAmountObserver.events.first?.value.element).to(equal(0))
+                    debugPrint(self, "detailsObserver: \(detailsObserver.events)")
+                    expect(detailsObserver.events.first?.value.element?.isEmpty).to(beTrue())
+                    expect(totalAmountObserver.events.first?.value.element).to(equal("$TW 0"))
                     expect(themeColorObserver.events.first?.value.element).to(equal(UserInfo.share.themeColor))
                 }
             }
@@ -64,18 +64,18 @@ class DetailViewModelTests: QuickSpec {
             context("when have data initialized") {
                 it("should have the correct values") {
                     let detailsObserver = scheduler.createObserver([DetailModel].self)
-                    let totalAmountObserver = scheduler.createObserver(Int.self)
+                    let totalAmountObserver = scheduler.createObserver(String.self)
                     let themeColorObserver = scheduler.createObserver(UIColor.self)
                     
-                    viewModel.details
+                    viewModel.output.details
                         .drive(detailsObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.totalAmount
+                    viewModel.output.totalAmount
                         .drive(totalAmountObserver)
                         .disposed(by: disposeBag)
                     
-                    viewModel.themeColor
+                    viewModel.output.themeColor
                         .drive(themeColorObserver)
                         .disposed(by: disposeBag)
                     
@@ -93,7 +93,7 @@ class DetailViewModelTests: QuickSpec {
                     
 //                    debugPrint(self, "detailsObserver: \(detailsObserver.events)")
                     expect(detailsObserver.events.last?.value.element?.isEmpty).to(beFalse())
-                    expect(totalAmountObserver.events.last?.value.element).toNot(equal(0))
+                    expect(totalAmountObserver.events.last?.value.element).toNot(equal("$TW 0"))
                     expect(themeColorObserver.events.last?.value.element).to(equal(UserInfo.share.themeColor))
                     
                     // 設定主題顏色
