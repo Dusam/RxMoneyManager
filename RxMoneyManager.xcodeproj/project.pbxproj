@@ -246,12 +246,12 @@
 				680E6E452A2080B400874D22 /* RealmManager.swift */,
 				680E6E432A2080A300874D22 /* DBTools.swift */,
 				680E6D9D2A207CDA00874D22 /* Preset */,
-				680E6D802A207C5300874D22 /* Model */,
+				680E6D802A207C5300874D22 /* Models */,
 			);
 			path = DB;
 			sourceTree = "<group>";
 		};
-		680E6D802A207C5300874D22 /* Model */ = {
+		680E6D802A207C5300874D22 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				680E6D822A207C6500874D22 /* AccountModel.swift */,
@@ -260,7 +260,7 @@
 				680E6D892A207C6500874D22 /* DetailTypeModel.swift */,
 				680E6D862A207C6500874D22 /* MemoModel.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		680E6D9D2A207CDA00874D22 /* Preset */ = {
@@ -268,7 +268,6 @@
 			children = (
 				680E6E0F2A20805000874D22 /* Enum */,
 				680E6E0D2A20805000874D22 /* PresetUserDB.swift */,
-				680E6E0E2A20805000874D22 /* AccountType.swift */,
 			);
 			path = Preset;
 			sourceTree = "<group>";
@@ -276,6 +275,7 @@
 		680E6E0F2A20805000874D22 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				680E6E0E2A20805000874D22 /* AccountType.swift */,
 				680E6E102A20805000874D22 /* BillingType.swift */,
 				680E6E112A20805000874D22 /* Expenses */,
 				680E6E212A20805000874D22 /* Income */,
@@ -328,47 +328,29 @@
 		687044FA2A57A8FB00176C05 /* DetailChart */ = {
 			isa = PBXGroup;
 			children = (
-				6870450C2A5CE43D00176C05 /* ChartDetail */,
-				687045072A5BA17600176C05 /* SectionModel */,
-				687045042A57F5E300176C05 /* Enum */,
-				687045032A57E3B500176C05 /* ViewModel */,
-				687044FB2A57A97000176C05 /* DetailChartViewController.swift */,
-				687045052A57FF8600176C05 /* DetailChartCell.swift */,
+				68BE66DC2A6E6EA800662909 /* Controllers */,
+				687045032A57E3B500176C05 /* ViewModels */,
+				68BE66DD2A6E6EB000662909 /* Views */,
+				687045042A57F5E300176C05 /* Enums */,
+				68BE66DE2A6E6ECC00662909 /* Models */,
 			);
 			path = DetailChart;
 			sourceTree = "<group>";
 		};
-		687045032A57E3B500176C05 /* ViewModel */ = {
+		687045032A57E3B500176C05 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				687044FF2A57AC2300176C05 /* DetailChartViewModel.swift */,
 			);
-			path = ViewModel;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		687045042A57F5E300176C05 /* Enum */ = {
+		687045042A57F5E300176C05 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
 				687045012A57BFCC00176C05 /* DetailChartType.swift */,
 			);
-			path = Enum;
-			sourceTree = "<group>";
-		};
-		687045072A5BA17600176C05 /* SectionModel */ = {
-			isa = PBXGroup;
-			children = (
-				687045082A5BA19200176C05 /* ChartDetailSectionModel.swift */,
-			);
-			path = SectionModel;
-			sourceTree = "<group>";
-		};
-		6870450C2A5CE43D00176C05 /* ChartDetail */ = {
-			isa = PBXGroup;
-			children = (
-				6870450A2A5BA20300176C05 /* ChartDetailModel.swift */,
-				6870450D2A5CE45500176C05 /* ChartDetailViewController.swift */,
-			);
-			path = ChartDetail;
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		687045572A5F87AD00176C05 /* RxMoneyManagerTests */ = {
@@ -410,10 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				680E6E412A20807C00874D22 /* R.generated.swift */,
-				68BE66CE2A67692700662909 /* ViewModelType.swift */,
-				687F0D0A2A3859AB009A81AE /* BaseViewModel.swift */,
-				6896C4C92A248C3B00F18E6D /* BaseViewController.swift */,
-				6876E1BF2A1F3AB40072A26F /* MainNavigationController.swift */,
+				68BE66EA2A6E708200662909 /* Base */,
 				6896C4BB2A2089A700F18E6D /* AppDelegate */,
 				6876E1C32A2037680072A26F /* Detail */,
 				6896C4BC2A208A2000F18E6D /* AddDetail */,
@@ -436,60 +415,34 @@
 		6876E1C32A2037680072A26F /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				6896C4BE2A209E4E00F18E6D /* ViewModel */,
-				6876E1AE2A1F38C20072A26F /* DetailViewController.swift */,
-				6876E1C12A1F4F9E0072A26F /* DetailCell.swift */,
+				68BE66D72A6E6E3700662909 /* Controllers */,
+				6896C4BE2A209E4E00F18E6D /* ViewModels */,
+				68BE66D82A6E6E4300662909 /* Views */,
 			);
 			path = Detail;
-			sourceTree = "<group>";
-		};
-		687F0D0F2A3AA39B009A81AE /* ChooseType */ = {
-			isa = PBXGroup;
-			children = (
-				687F0D102A3AA666009A81AE /* ChooseTypeViewController.swift */,
-				687F0D122A3AB409009A81AE /* ChooseTypeCell.swift */,
-			);
-			path = ChooseType;
-			sourceTree = "<group>";
-		};
-		687F0D162A3C344C009A81AE /* ChooseAccount */ = {
-			isa = PBXGroup;
-			children = (
-				687F0D172A3C34EB009A81AE /* ChooseAccountViewController.swift */,
-				687F0D192A3C3A2A009A81AE /* ChooseAccountCell.swift */,
-			);
-			path = ChooseAccount;
 			sourceTree = "<group>";
 		};
 		687F0D1B2A3C4575009A81AE /* AddAccount */ = {
 			isa = PBXGroup;
 			children = (
-				687F0D1E2A3D914E009A81AE /* ViewModel */,
-				687F0D1C2A3C4660009A81AE /* AddAccountViewController.swift */,
+				68BE66D92A6E6E7F00662909 /* Controllers */,
+				687F0D1E2A3D914E009A81AE /* ViewModels */,
 			);
 			path = AddAccount;
 			sourceTree = "<group>";
 		};
-		687F0D1E2A3D914E009A81AE /* ViewModel */ = {
+		687F0D1E2A3D914E009A81AE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				687F0D1F2A3D9160009A81AE /* AddAccountViewModel.swift */,
 			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		687F0D212A3FE0ED009A81AE /* Memo */ = {
-			isa = PBXGroup;
-			children = (
-				687F0D222A3FE13D009A81AE /* MemoViewController.swift */,
-			);
-			path = Memo;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		687F0D262A428E35009A81AE /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				687F0D272A428E4F009A81AE /* SettingViewController.swift */,
+				68BE66E92A6E6FD400662909 /* Controllers */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -497,55 +450,55 @@
 		687F0D292A493612009A81AE /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				687F0D322A49889A009A81AE /* ViewModel */,
-				687F0D332A4988C1009A81AE /* SectionModel */,
-				687F0D2A2A493775009A81AE /* AccountViewController.swift */,
-				687F0D2E2A4969A4009A81AE /* AccountCell.swift */,
+				68BE66DA2A6E6E8F00662909 /* Controllers */,
+				687F0D322A49889A009A81AE /* ViewModels */,
+				68BE66DB2A6E6E9800662909 /* Views */,
+				687F0D332A4988C1009A81AE /* Models */,
 			);
 			path = Account;
 			sourceTree = "<group>";
 		};
-		687F0D322A49889A009A81AE /* ViewModel */ = {
+		687F0D322A49889A009A81AE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				687F0D2C2A493797009A81AE /* AccountViewModel.swift */,
 			);
-			path = ViewModel;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		687F0D332A4988C1009A81AE /* SectionModel */ = {
+		687F0D332A4988C1009A81AE /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				687F0D302A496ACF009A81AE /* AccountSectionModel.swift */,
 			);
-			path = SectionModel;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		68935E282A2586BF004849A8 /* Calcutor */ = {
 			isa = PBXGroup;
 			children = (
-				68935E292A2586CF004849A8 /* Enum */,
-				68935E322A259D85004849A8 /* ViewModel */,
+				68BE66E02A6E6F0000662909 /* Views */,
+				68935E292A2586CF004849A8 /* Enums */,
+				68935E322A259D85004849A8 /* ViewModels */,
 				68935E2C2A2587EA004849A8 /* CalculatorView.swift */,
-				68935E302A259D62004849A8 /* CalculatorButton.swift */,
 			);
 			path = Calcutor;
 			sourceTree = "<group>";
 		};
-		68935E292A2586CF004849A8 /* Enum */ = {
+		68935E292A2586CF004849A8 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
 				68935E2A2A2586DB004849A8 /* CalcutorButton.swift */,
 			);
-			path = Enum;
+			path = Enums;
 			sourceTree = "<group>";
 		};
-		68935E322A259D85004849A8 /* ViewModel */ = {
+		68935E322A259D85004849A8 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				68935E2E2A258891004849A8 /* CalculatorViewModel.swift */,
 			);
-			path = ViewModel;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		6896C4BA2A20899400F18E6D /* Object */ = {
@@ -569,38 +522,34 @@
 		6896C4BC2A208A2000F18E6D /* AddDetail */ = {
 			isa = PBXGroup;
 			children = (
-				687F0D212A3FE0ED009A81AE /* Memo */,
-				687F0D162A3C344C009A81AE /* ChooseAccount */,
-				687F0D0F2A3AA39B009A81AE /* ChooseType */,
-				68935E282A2586BF004849A8 /* Calcutor */,
-				6896C4BF2A209F7800F18E6D /* ViewModel */,
-				6896C4C72A248C0000F18E6D /* AddDetailViewController.swift */,
-				687F0D0C2A39611A009A81AE /* AddDetailCell.swift */,
+				68BE66E22A6E6F2600662909 /* Controllers */,
+				6896C4BF2A209F7800F18E6D /* ViewModels */,
+				68BE66E32A6E6F2F00662909 /* Views */,
 			);
 			path = AddDetail;
 			sourceTree = "<group>";
 		};
-		6896C4BE2A209E4E00F18E6D /* ViewModel */ = {
+		6896C4BE2A209E4E00F18E6D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				6876E1C42A2037810072A26F /* DetailViewModel.swift */,
 			);
-			path = ViewModel;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		6896C4BF2A209F7800F18E6D /* ViewModel */ = {
+		6896C4BF2A209F7800F18E6D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				6896C4C02A209F8D00F18E6D /* AddDetailViewModel.swift */,
 			);
-			path = ViewModel;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		6896C4C62A24510700F18E6D /* Header */ = {
 			isa = PBXGroup;
 			children = (
+				68BE66E12A6E6F0C00662909 /* ViewModels */,
 				6896C4C22A20A28800F18E6D /* HeaderView.swift */,
-				6896C4C42A20B12100F18E6D /* HeaderViewModel.swift */,
 			);
 			path = Header;
 			sourceTree = "<group>";
@@ -608,6 +557,7 @@
 		68BE66CD2A666DBF00662909 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				68935E282A2586BF004849A8 /* Calcutor */,
 				6896C4C62A24510700F18E6D /* Header */,
 			);
 			path = View;
@@ -620,6 +570,152 @@
 				68BE66D32A676C7600662909 /* UIViewController+RxAdditions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		68BE66D72A6E6E3700662909 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6876E1AE2A1F38C20072A26F /* DetailViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		68BE66D82A6E6E4300662909 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6876E1C12A1F4F9E0072A26F /* DetailCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		68BE66D92A6E6E7F00662909 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				687F0D1C2A3C4660009A81AE /* AddAccountViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		68BE66DA2A6E6E8F00662909 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				687F0D2A2A493775009A81AE /* AccountViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		68BE66DB2A6E6E9800662909 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				687F0D2E2A4969A4009A81AE /* AccountCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		68BE66DC2A6E6EA800662909 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6870450D2A5CE45500176C05 /* ChartDetailViewController.swift */,
+				687044FB2A57A97000176C05 /* DetailChartViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		68BE66DD2A6E6EB000662909 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				687045052A57FF8600176C05 /* DetailChartCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		68BE66DE2A6E6ECC00662909 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				687045082A5BA19200176C05 /* ChartDetailSectionModel.swift */,
+				6870450A2A5BA20300176C05 /* ChartDetailModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		68BE66E02A6E6F0000662909 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				68935E302A259D62004849A8 /* CalculatorButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		68BE66E12A6E6F0C00662909 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6896C4C42A20B12100F18E6D /* HeaderViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		68BE66E22A6E6F2600662909 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6896C4C72A248C0000F18E6D /* AddDetailViewController.swift */,
+				687F0D102A3AA666009A81AE /* ChooseTypeViewController.swift */,
+				687F0D172A3C34EB009A81AE /* ChooseAccountViewController.swift */,
+				687F0D222A3FE13D009A81AE /* MemoViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		68BE66E32A6E6F2F00662909 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				687F0D122A3AB409009A81AE /* ChooseTypeCell.swift */,
+				687F0D0C2A39611A009A81AE /* AddDetailCell.swift */,
+				687F0D192A3C3A2A009A81AE /* ChooseAccountCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		68BE66E92A6E6FD400662909 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				687F0D272A428E4F009A81AE /* SettingViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		68BE66EA2A6E708200662909 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				68BE66ED2A6E70A700662909 /* NavigationControllers */,
+				68BE66EC2A6E709800662909 /* Controllers */,
+				68BE66EB2A6E708C00662909 /* ViewModels */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		68BE66EB2A6E708C00662909 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				687F0D0A2A3859AB009A81AE /* BaseViewModel.swift */,
+				68BE66CE2A67692700662909 /* ViewModelType.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		68BE66EC2A6E709800662909 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6896C4C92A248C3B00F18E6D /* BaseViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		68BE66ED2A6E70A700662909 /* NavigationControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6876E1BF2A1F3AB40072A26F /* MainNavigationController.swift */,
+			);
+			path = NavigationControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
