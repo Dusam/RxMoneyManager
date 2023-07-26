@@ -15,7 +15,7 @@ import SnapKit
 
 class AccountViewController: BaseViewController {
 
-    private let accountVM: AccountViewModel = AccountViewModel()
+    @Inject private var accountVM: AccountViewModelType
     
     private var addAccountButton: UIBarButtonItem!
     
@@ -198,7 +198,6 @@ extension AccountViewController {
             .disposed(by: disposeBag)
         
         accountVM.output.totalLiability
-            .map { "$\($0)" }
             .drive(totalLiabilityLabel.rx.text)
             .disposed(by: disposeBag)
         
@@ -207,7 +206,6 @@ extension AccountViewController {
             .disposed(by: disposeBag)
         
         accountVM.output.balance
-            .map { "$\($0)" }
             .drive(balanceLabel.rx.text)
             .disposed(by: disposeBag)
         

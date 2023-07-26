@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class AddAccountViewModel: BaseViewModel, ViewModelType {
+class AddAccountViewModel: AddAccountViewModelType {
     
     private(set) var input: Input!
     private(set) var output: Output!
@@ -21,8 +21,7 @@ class AddAccountViewModel: BaseViewModel, ViewModelType {
     private let joinTotal = BehaviorRelay<Bool>(value: true)
     private let isShowCalcutor = BehaviorRelay<Bool>(value: false)
     
-    override init() {
-        super.init()
+    init() {
         
         input = .init(accountName: accountName,
                       initAmount: initAmount,

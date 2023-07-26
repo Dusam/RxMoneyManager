@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 import RealmSwift
 
-class AddDetailViewModel: BaseViewModel, ViewModelType {
+class AddDetailViewModel: AddDetailViewModelType {
     
     private(set) var input: Input!
     private(set) var output: Output!
@@ -45,8 +45,7 @@ class AddDetailViewModel: BaseViewModel, ViewModelType {
     
     private var isEdit = false
     
-    override init() {
-        super.init()
+    init() {
         
         input = .init(billingSegment: billingSegment,
                       isShowCalcutor: isShowCalcutor)
@@ -210,6 +209,9 @@ extension AddDetailViewModel {
     }
     
     func setBillingType(_ billingType: BillingType) {
+        if self.billingType != billingType {
+            billingSegment.accept(billingType.rawValue)
+        }
         self.billingType = billingType
         detailGroupModels.accept(RealmManager.share.getDetailGroup(billType: billingType))
         
@@ -365,6 +367,7 @@ extension AddDetailViewModel {
     }
 }
 
+
 // MARK: Get Method
 extension AddDetailViewModel {
     func getGroupId() -> String {
@@ -379,7 +382,7 @@ extension AddDetailViewModel {
         return self.accountId
     }
     
-    func getToAccountId() -> String{
+    func getToAccountId() -> String {
         return self.toAccountId
     }
     

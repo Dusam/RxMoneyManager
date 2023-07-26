@@ -20,10 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = true
         IQKeyboardManager.shared.layoutIfNeededOnUpdate = true
-        
+                
         if UserDefaults.isFirstLaunch() {
             RealmManager.share.setUpPresetOptions()
         }
+        
+        DIContainer.shared.register()
+        
         return true
     }
 

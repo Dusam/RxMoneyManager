@@ -5,14 +5,14 @@ PODS:
   - DGCharts/Core (5.0.0)
   - Differentiator (5.0.0)
   - IQKeyboardManagerSwift (6.5.12)
-  - Nimble (12.0.1)
+  - Nimble (12.1.0)
   - Quick (7.1.0)
   - R.swift (7.3.2)
-  - Realm (10.41.0):
-    - Realm/Headers (= 10.41.0)
-  - Realm/Headers (10.41.0)
-  - RealmSwift (10.41.0):
-    - Realm (= 10.41.0)
+  - Realm (10.41.1):
+    - Realm/Headers (= 10.41.1)
+  - Realm/Headers (10.41.1)
+  - RealmSwift (10.41.1):
+    - Realm (= 10.41.1)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
@@ -73,6 +73,7 @@ PODS:
   - SwifterSwift/StoreKit (5.2.0)
   - SwifterSwift/SwiftStdlib (5.2.0)
   - SwifterSwift/UIKit (5.2.0)
+  - Swinject (2.8.3)
 
 DEPENDENCIES:
   - DGCharts
@@ -87,6 +88,7 @@ DEPENDENCIES:
   - RxTest
   - SamUtils (from `/Users/si1302/Desktop/iOS/SamUtils/`)
   - SnapKit
+  - Swinject
 
 SPEC REPOS:
   trunk:
@@ -107,6 +109,7 @@ SPEC REPOS:
     - RxTest
     - SnapKit
     - SwifterSwift
+    - Swinject
 
 EXTERNAL SOURCES:
   SamUtils:
@@ -117,11 +120,11 @@ SPEC CHECKSUMS:
   DGCharts: 6e0cf2644e8f81ad13f04caa8bc18502870a1c54
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   IQKeyboardManagerSwift: 371b08cb39664fb56030f5345c815a4ffc74bbc0
-  Nimble: b279b3ca9e094508778aab5c76417be158d3ad04
+  Nimble: 7badc051fbff5e14e3798e2392b9389de67f75ea
   Quick: bfee1bc96e9cdc4aeb89ecd5997aee7f4b394956
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
-  Realm: 669efee7dc1ce0aa9f6739a60f8c0df0a3835067
-  RealmSwift: 6b7b0e91b79dc66d5cfceeb3b319cacfc9b1a70e
+  Realm: 0cb0b0b24f9303543a1f0dc17de8dec2d5bbf3f0
+  RealmSwift: 00627521cd456626f4cb2f7a7b18e1b07f2812a9
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
   RxGesture: f3efb47ed2d26a8082f7b660d4a59970e275a7f8
@@ -131,7 +134,8 @@ SPEC CHECKSUMS:
   SamUtils: 52eb185e201cf442eb03d1079f7fcc1085e8a653
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwifterSwift: 334181863c416882d97b7a60c05054d9e4d799e2
+  Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
 
-PODFILE CHECKSUM: ee382a469cd6b76003238f3dd47563bc9e5ee2fd
+PODFILE CHECKSUM: f481d51257832284cefef7c89b91342e8e384e3f
 
 COCOAPODS: 1.12.1

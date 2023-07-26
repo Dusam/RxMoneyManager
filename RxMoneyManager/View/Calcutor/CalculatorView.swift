@@ -26,11 +26,17 @@ class CalculatorView: UIView {
         [.zero, .decimal]
     ]
     
-    required init(viewModel: BaseViewModel) {
+//    required init(viewModel: BaseViewModel) {
+//        super.init(frame: .zero)
+//
+//        backgroundColor = .white
+//        calcutorVM.setViewModel(viewModel)
+//        self.setUpCalcutor()
+//    }
+    required init() {
         super.init(frame: .zero)
 
         backgroundColor = .white
-        calcutorVM.setViewModel(viewModel)
         self.setUpCalcutor()
     }
     

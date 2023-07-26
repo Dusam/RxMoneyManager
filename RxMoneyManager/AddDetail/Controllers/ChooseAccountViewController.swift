@@ -19,15 +19,16 @@ class ChooseAccountViewController: BaseViewController {
         case transfer
     }
     
-    private var addDetailVM: AddDetailViewModel!
+    @Inject private var addDetailVM: AddDetailViewModelType
+//    private var addDetailVM: AddDetailViewModel!
     private var chooseAccountType: ChooseAccountType = .normal
     
     private var accountTableView: UITableView!
     private var addButton: UIButton!
     
-    init(_ chooseAccountType: ChooseAccountType, addDetailVM: AddDetailViewModel!) {
+    init(_ chooseAccountType: ChooseAccountType) {
         self.chooseAccountType = chooseAccountType
-        self.addDetailVM = addDetailVM
+//        self.addDetailVM = addDetailVM
         super.init(nibName: nil, bundle: nil)
     }
     

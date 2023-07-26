@@ -14,6 +14,7 @@ target 'RxMoneyManager' do
   pod 'RealmSwift'
   pod 'R.swift'
   pod 'DGCharts'
+  pod 'Swinject'
 
   # Pods for RxMoneyManager
   

@@ -13,7 +13,7 @@ import RxDataSources
 import SwifterSwift
 import DGCharts
 
-class DetailChartViewModel: BaseViewModel, ViewModelType {
+class DetailChartViewModel: DetailChartViewModelType {
     
     struct ChartListData: Hashable {
         var billingType: BillingType
@@ -46,15 +46,15 @@ class DetailChartViewModel: BaseViewModel, ViewModelType {
     private(set) var billingType: BillingType = .spend
     
     private let total = BehaviorRelay<Int>(value: 0)
-    private let pieChartData = BehaviorRelay<ChartData>(value: .init())
+    private let pieChartData = BehaviorRelay<PieChartData>(value: .init())
     private let chartDetail = BehaviorRelay<[ChartDetailModel]>(value: [])
     private let chartSectionDatas = BehaviorRelay<[ChartDetailSectionModel]>(value: [])
     
-    override init() {
+     init() {
         input = .init()
         output = .init(chartSegment: chartSegment.asDriver(),
                        currentDateString: currentDateString.asDriver(),
-                       pieChartData: pieChartData.asDriver(),
+                       pieChartData: pieChartData.map { $0 as ChartData }.asDriver(onErrorJustReturn: ChartData()),
                        total: total.map { "總計: $\($0)" }.asDriver(onErrorJustReturn: "總計: $0"),
                        chartDetail: chartDetail.asDriver(),
                        chartSectionDatas: chartSectionDatas.asDriver())
@@ -77,8 +77,12 @@ extension DetailChartViewModel {
 }
 
 extension DetailChartViewModel {
-    func setChart(with billingType: BillingType = .spend) {
-        self.billingType = billingType
+    func setChart() {
+        getChartData()
+    }
+    
+    func setChartDetailData(withBillingType: BillingType = .spend) {
+        self.billingType = withBillingType
         getChartData()
     }
     

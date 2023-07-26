@@ -15,24 +15,14 @@ class HeaderView: UIView {
     
     private let disposeBag = DisposeBag()
     
-    private var headerVM: HeaderViewModel!
-    private var detailVM: DetailViewModel!
+    @Inject private var detailVM: DetailViewModelType
+    @Inject private var headerVM: HeaderViewModelType
     private var headerType: HeaderType = .detail
-    
-    required init(detailVM: DetailViewModel, headerVM: HeaderViewModel, headerType: HeaderType) {
-        super.init(frame: CGRect.zero)
-        self.headerType = headerType
-        
-        self.detailVM = detailVM
-        self.headerVM = headerVM
-        setUpHeaderView()
-    }
     
     required init(headerType: HeaderType) {
         super.init(frame: CGRect.zero)
         self.headerType = headerType
         
-        self.headerVM = HeaderViewModel(headerType: headerType)
         setUpHeaderView()
     }
     

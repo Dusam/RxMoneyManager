@@ -9,7 +9,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class AccountViewModel: BaseViewModel, ViewModelType {
+class AccountViewModel: AccountViewModelType {
     
     private(set) var input: Input!
     private(set) var output: Output!
@@ -22,16 +22,15 @@ class AccountViewModel: BaseViewModel, ViewModelType {
     private var includeTotalAccounts: [AccountModel] = []
     private var notIncludeTotalAccounts: [AccountModel] = []
     
-    override init() {
-        super.init()
+    init() {
         
-        let totalAssetsColor = totalAssets.map {
-            $0 >= 0 ? R.color.incomeColor() : R.color.spendColor()
+        let totalAssetsColor = totalAssets.map { _ in
+            R.color.incomeColor()
         }.asDriver(onErrorJustReturn: R.color.incomeColor())
         
-        let totalLiabilityColor = totalLiability.map {
-            $0 >= 0 ? R.color.incomeColor() : R.color.spendColor()
-        }.asDriver(onErrorJustReturn: R.color.incomeColor())
+        let totalLiabilityColor = totalLiability.map {_ in
+            R.color.spendColor()
+        }.asDriver(onErrorJustReturn: R.color.spendColor())
         
         let balanceColor = balance.map {
             $0 >= 0 ? R.color.incomeColor() : R.color.spendColor()
