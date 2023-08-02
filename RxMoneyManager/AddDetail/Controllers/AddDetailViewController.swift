@@ -184,7 +184,6 @@ extension AddDetailViewController {
 // MARK: Calcutor
 extension AddDetailViewController {
     private func createCalcutorView() {
-//        calcutor = CalculatorView(viewModel: addDetailVM)
         calcutor = CalculatorView()
         self.calcutor.isHidden = true
         self.view.addSubview(calcutor)
@@ -214,14 +213,6 @@ extension AddDetailViewController {
             })
             .disposed(by: disposeBag)
     }
-    
-//    private func setShowCalcutor(_ show: Bool) {
-//        if !show {
-//            amountTextField.resignFirstResponder()
-//        }
-//        self.addDetailVM.setShowCalcutor(show)
-//
-//    }
 }
 
 

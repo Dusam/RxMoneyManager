@@ -20,7 +20,6 @@ class ChooseAccountViewController: BaseViewController {
     }
     
     @Inject private var addDetailVM: AddDetailViewModelType
-//    private var addDetailVM: AddDetailViewModel!
     private var chooseAccountType: ChooseAccountType = .normal
     
     private var accountTableView: UITableView!
@@ -28,7 +27,6 @@ class ChooseAccountViewController: BaseViewController {
     
     init(_ chooseAccountType: ChooseAccountType) {
         self.chooseAccountType = chooseAccountType
-//        self.addDetailVM = addDetailVM
         super.init(nibName: nil, bundle: nil)
     }
     

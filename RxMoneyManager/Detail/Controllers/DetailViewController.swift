@@ -16,10 +16,8 @@ class DetailViewController: BaseViewController {
     
     private var detailTableView: UITableView!
     private var tabView: UIView!
-//    private let detailVM = DetailViewModel()
     @Inject private var detailVM: DetailViewModelType
     @Inject private var headerVM: HeaderViewModelType
-//    private var headerVM: HeaderViewModel!
     private var headerView: HeaderView!
     
     private var accountButton: UIButton!
@@ -39,7 +37,6 @@ class DetailViewController: BaseViewController {
     
     override func setUpView() {
         setBackButton(title: R.string.localizable.spend_details())
-//        headerVM = HeaderViewModel(headerType: .detail, detailVM: detailVM)
         
         setUpHeaderView()
         setUpTableView()
@@ -59,7 +56,6 @@ class DetailViewController: BaseViewController {
 extension DetailViewController {
     // 設定標題列
     private func setUpHeaderView() {
-//        headerView = HeaderView(detailVM: detailVM, headerVM: headerVM, headerType: .detail)
         headerView = HeaderView(headerType: .detail)
         self.view.addSubview(headerView)
         

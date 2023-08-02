@@ -73,7 +73,7 @@ extension AccountViewModel {
             accountModels.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts)])
         } else {
             accountModels.accept([AccountSectionModel(sectionTitle: R.string.localizable.joinTotal(), items: includeTotalAccounts),
-                                       AccountSectionModel(sectionTitle: R.string.localizable.notJoinTotal(), items: notIncludeTotalAccounts)])
+                                  AccountSectionModel(sectionTitle: R.string.localizable.notJoinTotal(), items: notIncludeTotalAccounts)])
         }
     }
     

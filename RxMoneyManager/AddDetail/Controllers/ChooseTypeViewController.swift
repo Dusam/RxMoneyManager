@@ -16,7 +16,6 @@ import RxGesture
 class ChooseTypeViewController: BaseViewController {
     
     @Inject private var addDetailVM: AddDetailViewModelType
-//    private var addDetailVM: AddDetailViewModel!
     
     private var boardView: UIView!
     private var groupTableView: UITableView!
@@ -25,15 +24,6 @@ class ChooseTypeViewController: BaseViewController {
     private var addGroupButton: UIButton!
     private var addTypeButton: UIButton!
 
-//    init(addDetailVM: AddDetailViewModel!) {
-//        self.addDetailVM = addDetailVM
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
     deinit {
         #if DEBUG
         print("ChooseTypeViewController deinit")

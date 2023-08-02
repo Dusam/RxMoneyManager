@@ -193,10 +193,10 @@ class AccountViewModelTests: QuickSpec {
                     expect(balanceColorObserver.events.last?.value.element).to(equal(R.color.spendColor()))
                     
                     // 刪除剛剛新增的
-                    var details = RealmManager.share.readDetail("2023-07-26")
+                    var details = RealmManager.share.readDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
                     addDetailVM.setEditData(details.first!)
                     addDetailVM.delDetail()
-                    details = RealmManager.share.readDetail("2023-07-26")
+                    details = RealmManager.share.readDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
                     expect(details.count).to(equal(0))
                 }
                 

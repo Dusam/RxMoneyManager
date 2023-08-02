@@ -199,7 +199,6 @@ extension AddAccountViewController {
     }
     
     private func createCalcutorView() {
-//        calcutor = CalculatorView(viewModel: addAccountVM)
         calcutor = CalculatorView()
         self.calcutor.isHidden = true
         self.view.addSubview(calcutor)

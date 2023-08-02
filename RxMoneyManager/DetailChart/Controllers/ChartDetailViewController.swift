@@ -17,18 +17,8 @@ import SamUtils
 class ChartDetailViewController: BaseViewController {
     
     @Inject private var detailChartVM: DetailChartViewModelType
-//    private var detailChartVM: DetailChartViewModel!
     private var chartDetailTableView: UITableView!
     private var chartDetailDataSource: RxTableViewSectionedReloadDataSource<ChartDetailSectionModel>!
-    
-//    init(detailChartVM: DetailChartViewModel) {
-//        self.detailChartVM = detailChartVM
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
