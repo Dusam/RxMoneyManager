@@ -9,11 +9,11 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-enum HeaderType {
+enum HeaderType: String {
     case detail, addDetail
 }
 
-class HeaderViewModel: BaseViewModel, ViewModelType {
+class HeaderViewModel: HeaderViewModelType {
     
     private(set) var input: Input!
     private(set) var output: Output!
@@ -21,10 +21,9 @@ class HeaderViewModel: BaseViewModel, ViewModelType {
     private let currentDate = BehaviorRelay<String>(value: UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)"))
     
     private var headerType: HeaderType = .detail
-    private var detailVM: DetailViewModel?
+    private var detailVM: DetailViewModelType?
     
-    init(headerType: HeaderType, detailVM: DetailViewModel? = nil) {
-        super.init()
+    init(headerType: HeaderType, detailVM: DetailViewModelType? = nil) {
 
         self.headerType = headerType
         self.detailVM = detailVM

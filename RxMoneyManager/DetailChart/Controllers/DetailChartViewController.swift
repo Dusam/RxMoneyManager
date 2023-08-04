@@ -16,7 +16,7 @@ import SamUtils
 
 class DetailChartViewController: BaseViewController {
     
-    private let detailChartVM: DetailChartViewModel = DetailChartViewModel()
+    @Inject private var detailChartVM: DetailChartViewModelType
     
     private var typeSegment: UISegmentedControl!
     private var headerView: UIStackView!
@@ -258,8 +258,8 @@ extension DetailChartViewController {
         detailChartTableView.rx.modelSelected(ChartDetailModel.self)
             .subscribe(onNext: { [unowned self] data in
                 // 分日期的明細
-                self.detailChartVM.setChart(with: data.billingType)
-                self.push(vc: ChartDetailViewController(detailChartVM: self.detailChartVM))
+                self.detailChartVM.setChartDetailData(withBillingType: data.billingType)
+                self.push(vc: ChartDetailViewController())
             })
             .disposed(by: disposeBag)
     }

@@ -55,29 +55,17 @@ class HeaderViewModelTest: QuickSpec {
                   
                     scheduler.start()
                     
-                    scheduler.createColdObservable([.next(100, ())])
-                        .bind(to: viewModel.input.toPervious)
-                        .disposed(by: disposeBag)
-                    scheduler.start()
+                    viewModel.toPerviousDate()
                     expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
                     
-                    scheduler.createColdObservable([.next(200, ())])
-                        .bind(to: viewModel.input.toCurrent)
-                        .disposed(by: disposeBag)
-                    scheduler.start()
+                    viewModel.toCurrentDate()
                     expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
                     
-                    scheduler.createColdObservable([.next(300, ())])
-                        .bind(to: viewModel.input.toNext)
-                        .disposed(by: disposeBag)
-                    scheduler.start()
+                    viewModel.toNextDate()
                     expect(currentDateObserver.events.last?.value.element).to(equal(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd(EE)")))
                     
                     UserInfo.share.selectedDate = "2023-10-11".toDate()
-                    scheduler.createColdObservable([.next(400, ())])
-                        .bind(to: viewModel.input.toSelected)
-                        .disposed(by: disposeBag)
-                    scheduler.start()
+                    viewModel.toSelectedDate()
                     expect(currentDateObserver.events.last?.value.element).to(equal("2023-10-11(週三)"))
                 }
             }

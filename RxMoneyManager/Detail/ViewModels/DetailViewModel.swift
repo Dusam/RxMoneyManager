@@ -11,7 +11,7 @@ import RxCocoa
 import SamUtils
 import RealmSwift
 
-class DetailViewModel: ViewModelType {
+class DetailViewModel: DetailViewModelType {
     
     private(set) var input: Input!
     private(set) var output: Output!
@@ -23,6 +23,7 @@ class DetailViewModel: ViewModelType {
     private let themeColor = BehaviorRelay<UIColor>(value: UserInfo.share.themeColor)
     
     init() {
+        
         input = .init()
         output = .init(totalAmount: totalAmount.map{ "$TW \($0)" }.asDriver(onErrorJustReturn: ""),
                        details: details.asDriver(),

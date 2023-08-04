@@ -126,7 +126,7 @@ class AccountViewModelTests: QuickSpec {
                     expect(accounts.last?.includTotal).toNot(beFalse())
                 }
                 
-                xit("when not have detail data") {
+                it("when not have detail data") {
                     let accountModelsObserver = scheduler.createObserver([AccountSectionModel].self)
                     let totalAssetsObserver = scheduler.createObserver(String.self)
                     let totalLiabilityObserver = scheduler.createObserver(String.self)
@@ -149,16 +149,57 @@ class AccountViewModelTests: QuickSpec {
                         .disposed(by: disposeBag)
                     
                     scheduler.start()
-                    
-                    viewModel.getAccounts()
-                    
+                                        
 //                    debugPrint(self, "accountModelsObserver: \(accountModelsObserver.events)")
                     expect(accountModelsObserver.events.last?.value.element).notTo(beNil())
-                    expect(accountModelsObserver.events.last?.value.element?.isEmpty).to(beFalse())
+                    expect(accountModelsObserver.events.last?.value.element?.isEmpty).to(beTrue())
                     expect(totalAssetsObserver.events.last?.value.element).to(equal("$0"))
                     expect(totalLiabilityObserver.events.last?.value.element).to(equal("$0"))
                     expect(balanceObserver.events.last?.value.element).to(equal("$0"))
                 }
+                
+                it("should have correct text color") {
+                    let totalAssetsColorObserver = scheduler.createObserver(UIColor?.self)
+                    let totalLiabilityColorObserver = scheduler.createObserver(UIColor?.self)
+                    let balanceColorObserver = scheduler.createObserver(UIColor?.self)
+                    
+                    viewModel.output.totalAssetsColor
+                        .drive(totalAssetsColorObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.output.totalLiabilityColor
+                        .drive(totalLiabilityColorObserver)
+                        .disposed(by: disposeBag)
+                    
+                    viewModel.output.balanceColor
+                        .drive(balanceColorObserver)
+                        .disposed(by: disposeBag)
+                    
+                    scheduler.start()
+                    
+                    expect(totalAssetsColorObserver.events.last?.value.element).to(equal(R.color.incomeColor()))
+                    expect(totalLiabilityColorObserver.events.last?.value.element).to(equal(R.color.spendColor()))
+                    expect(balanceColorObserver.events.last?.value.element).to(equal(R.color.incomeColor()))
+                    
+                    viewModel.getAccounts()
+                    let addDetailVM = AddDetailViewModel()
+                    
+                    addDetailVM.setAmount("100000")
+                    addDetailVM.saveDetail()
+                    viewModel.getAccounts()
+                    
+                    expect(totalAssetsColorObserver.events.last?.value.element).to(equal(R.color.incomeColor()))
+                    expect(totalLiabilityColorObserver.events.last?.value.element).to(equal(R.color.spendColor()))
+                    expect(balanceColorObserver.events.last?.value.element).to(equal(R.color.spendColor()))
+                    
+                    // 刪除剛剛新增的
+                    var details = RealmManager.share.readDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
+                    addDetailVM.setEditData(details.first!)
+                    addDetailVM.delDetail()
+                    details = RealmManager.share.readDetail(UserInfo.share.selectedDate.string(withFormat: "yyyy-MM-dd"))
+                    expect(details.count).to(equal(0))
+                }
+                
             }
         }
     }

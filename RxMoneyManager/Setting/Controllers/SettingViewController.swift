@@ -13,17 +13,8 @@ import RxSwift
 
 class SettingViewController: BaseViewController {
     
-    private var detailVM: DetailViewModel!
+    @Inject private var detailVM: DetailViewModelType
     private var colorPickerButton: UIButton!
-    
-    init(detailVM: DetailViewModel) {
-        self.detailVM = detailVM
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func setUpView() {
         setBackButton(title: R.string.localizable.setting())
@@ -38,6 +29,12 @@ class SettingViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.colorPickerButton.cornerRadius = self.colorPickerButton.width / 2
         }
+    }
+    
+    deinit {
+        #if DEBUG
+        print("SettingViewController deinit")
+        #endif
     }
 }
 
@@ -74,7 +71,7 @@ extension SettingViewController {
 extension SettingViewController {
     private func bindColorPickerButton() {
         colorPickerButton.rx.tap
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] _ in
                 let colorPicker = UIColorPickerViewController()
                 colorPicker.delegate = self
                 colorPicker.selectedColor = UserInfo.share.themeColor

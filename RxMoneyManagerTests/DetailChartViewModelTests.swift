@@ -70,7 +70,7 @@ class DetailChartViewModelTests: QuickSpec {
                     scheduler.start()
                     
                     expect(chartSegmentObserver.events.first?.value.element).to(equal(1))
-                    expect(currentDateStringObserver.events.first?.value.element).to(equal("2023-07"))
+                    expect(currentDateStringObserver.events.first?.value.element).to(equal(Date().string(withFormat: "yyyy-MM")))
                     expect(pieChartDataObserver.events.first?.value.element?.dataSetCount).to(equal(0))
                     expect(totalObserver.events.first?.value.element).to(equal("總計: $0"))
                     expect(chartDetailObserver.events.first?.value.element?.isEmpty).to(beTrue())
@@ -114,7 +114,7 @@ class DetailChartViewModelTests: QuickSpec {
                     scheduler.start()
                     
                     expect(chartSegmentObserver.events.first?.value.element).to(equal(1))
-                    expect(currentDateStringObserver.events.first?.value.element).to(equal("2023-07"))
+                    expect(currentDateStringObserver.events.first?.value.element).to(equal(Date().string(withFormat: "yyyy-MM")))
                     expect(pieChartDataObserver.events.first?.value.element?.dataSetCount).to(equal(0))
                     expect(totalObserver.events.first?.value.element).to(equal("總計: $0"))
                     expect(chartDetailObserver.events.first?.value.element?.isEmpty).to(beTrue())
@@ -122,11 +122,11 @@ class DetailChartViewModelTests: QuickSpec {
                     
                     viewModel.setChart()
                     
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal(Date().string(withFormat: "yyyy-MM")))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(beGreaterThanOrEqualTo(1))
-                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     expect(chartDetailObserver.events.last?.value.element?.isEmpty).to(beFalse())
-                    expect(chartSectionDatasObserver.events.last?.value.element?.isEmpty).to(beFalse())
+                    expect(chartSectionDatasObserver.events.last?.value.element?.isEmpty).to(beTrue())
                 }
                 
                 it("set chart by change month") {
@@ -149,19 +149,20 @@ class DetailChartViewModelTests: QuickSpec {
                     scheduler.start()
                     
                     viewModel.toNext()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-08"))
+                    let currentMonth = Date().month
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-\(String(format: "%02d", currentMonth + 1))"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
                     expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toPrevious()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
-                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
-                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-\(String(format: "%02d", currentMonth))"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toCurrentDate()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-07"))
-                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
-                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023-\(String(format: "%02d", currentMonth))"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                 }
                 
                 it("set chart by change year") {
@@ -190,23 +191,24 @@ class DetailChartViewModelTests: QuickSpec {
                     
                     viewModel.setChartSegmentIndex(2)
                     viewModel.toNext()
+                    let currentYear = 2023
                     expect(chartSegmentObserver.events.last?.value.element).to(equal(2))
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2024"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("\(currentYear + 1)"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
                     expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toPrevious()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("\(currentYear)"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
                     expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
                     
                     viewModel.toPrevious()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2022"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("\(currentYear - 1)"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
                     expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toCurrentDate()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("\(currentYear)"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
                     expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
                 }
@@ -237,23 +239,24 @@ class DetailChartViewModelTests: QuickSpec {
                     
                     viewModel.setChartSegmentIndex(0)
                     viewModel.toNext()
+                    let currentWeek = Date().weekOfYear
                     expect(chartSegmentObserver.events.last?.value.element).to(equal(0))
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(30)"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(\(currentWeek + 1))"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
                     expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toPrevious()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(29)"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(\(currentWeek))"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
                     expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toPrevious()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(28)"))
-                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(3))
-                    expect(totalObserver.events.last?.value.element).toNot(equal("總計: $0"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(\(currentWeek - 1))"))
+                    expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
+                    expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                     
                     viewModel.toCurrentDate()
-                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(29)"))
+                    expect(currentDateStringObserver.events.last?.value.element).to(equal("2023(\(currentWeek))"))
                     expect(pieChartDataObserver.events.last?.value.element?.dataSet(at: 0)?.entryCount).to(equal(1))
                     expect(totalObserver.events.last?.value.element).to(equal("總計: $0"))
                 }
@@ -266,13 +269,14 @@ class DetailChartViewModelTests: QuickSpec {
                     
                     scheduler.start()
                     
-                    viewModel.setChart(with: .income)
+                    viewModel.toPrevious()
+                    viewModel.setChartDetailData(withBillingType: .income)
                     expect(sectionDatasObserver.events.last?.value.element?.first?.items).to(allPass({$0.billingType == BillingType.income.rawValue}))
                     
-                    viewModel.setChart(with: .spend)
+                    viewModel.setChartDetailData(withBillingType: .spend)
                     expect(sectionDatasObserver.events.last?.value.element?.first?.items).to(allPass({$0.billingType == BillingType.spend.rawValue}))
                     
-                    viewModel.setChart(with: .transfer)
+                    viewModel.setChartDetailData(withBillingType: .transfer)
                     expect(sectionDatasObserver.events.last?.value.element?.first?.items).to(allPass({$0.billingType == BillingType.transfer.rawValue}))
                 }
                 

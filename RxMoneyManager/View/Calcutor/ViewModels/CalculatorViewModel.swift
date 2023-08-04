@@ -10,10 +10,16 @@ import RxCocoa
 import RxSwift
 import SamUtils
 
+@objc protocol CalculatorViewModelType {
+    func setShowCalcutor(_ show: Bool)
+    func setAmount(_ amountValue: String)
+    @objc optional func setTransferFee(_ transferFeeValue: String)
+}
+
 class CalculatorViewModel {
     
-    private(set) var addDetailVM: AddDetailViewModel?
-    private(set) var addAccountVM: AddAccountViewModel?
+    @Inject(name: "AddDetailViewModel") private var addDetailVM: CalculatorViewModelType
+    @Inject(name: "AddAccountViewModel") private var addAccountVM: CalculatorViewModelType
     
     private(set) var amountString = "0"
     private(set) var amountValue = 0.0
@@ -21,14 +27,6 @@ class CalculatorViewModel {
     private(set) var transferValue = 0.0
     private(set) var currentOperation: Operation = .none
     private(set) var isEditAmount = true
-    
-    func setViewModel(_ viewModel: BaseViewModel) {
-        if let addDetailViewModel = viewModel as? AddDetailViewModel {
-            self.addDetailVM = addDetailViewModel
-        } else if let addAccountViewModel = viewModel as? AddAccountViewModel {
-            self.addAccountVM = addAccountViewModel
-        }
-    }
     
     func buttonTap(_ button: CalcButton) {
         switch button {
@@ -53,8 +51,8 @@ class CalculatorViewModel {
             currentOperation = .none
             amountValue = 0.0
             transferValue = 0.0
-            addDetailVM?.setShowCalcutor(false)
-            addAccountVM?.setShowCalcutor(false)
+            addDetailVM.setShowCalcutor(false)
+            addAccountVM.setShowCalcutor(false)
             
         case .clear:
             if isEditAmount {
@@ -102,10 +100,10 @@ class CalculatorViewModel {
         }
         
         if isEditAmount {
-            addDetailVM?.setAmount(amountString)
-            addAccountVM?.setAmount(amountString)
+            addDetailVM.setAmount(amountString)
+            addAccountVM.setAmount(amountString)
         } else {
-            addDetailVM?.setTransferFee(transferString)
+            addDetailVM.setTransferFee!(transferString)
         }
     }
     

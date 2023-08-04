@@ -13,18 +13,9 @@ import RxCocoa
 
 class MemoViewController: BaseViewController {
     
-    private var addDetailVM: AddDetailViewModel!
+    @Inject private var addDetailVM: AddDetailViewModelType
     private var memoTextView: UITextView!
     private var memoTableView: UITableView!
-    
-    init(addDetailVM: AddDetailViewModel!) {
-        self.addDetailVM = addDetailVM
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func setUpView() {
         setBackButton(title: R.string.localizable.memo())

@@ -14,7 +14,7 @@ import RxGesture
 
 class AddAccountViewController: BaseViewController {
     
-    private var addAccountVM = AddAccountViewModel()
+    @Inject private var addAccountVM: AddAccountViewModelType
     
     private var accountTypeView: UIStackView!
     private var accountNameView: UIView!
@@ -40,6 +40,8 @@ class AddAccountViewController: BaseViewController {
         bindTextField()
         bindSwitch()
         bindCalcutorView()
+        
+        addAccountVM.setAmount("0")
     }
     
     override func viewWillLayoutSubviews() {
@@ -197,7 +199,7 @@ extension AddAccountViewController {
     }
     
     private func createCalcutorView() {
-        calcutor = CalculatorView(viewModel: addAccountVM)
+        calcutor = CalculatorView()
         self.calcutor.isHidden = true
         self.view.addSubview(calcutor)
         
