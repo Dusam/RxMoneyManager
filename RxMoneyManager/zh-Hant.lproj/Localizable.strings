@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings
+  RxMoneyManager
+
+  Created by 杜千煜 on 2022/10/26.
+  
+*/
+"delete"="刪除";
+"confirmDelete"="確定要刪除%@嗎?";
+"cancel"="取消";
+"userList"="用戶清單";
+"name"="名稱";
+"add"="新增";
+"addUser"="新增用戶";
+"addNew"="新增一筆...";
+"account"="帳戶";
+"chart"="圖表";
+"setting"="設定";
+"save"="儲存";
+"enterName"="請輸入名稱";
+"chooseType"="選擇類型";
+"account"="帳戶";
+"type_title"="類別:";
+"account_title"="帳戶:";
+"memo_title"="備註:";
+"from_title"="從:";
+"to_title"="到:";
+"handlingfee_title"="手續費:";
+"memo"="備註";
+"compelete"="完成";
+"chartTotal"="總計 - $%@";
+"spend"="支出";
+"income"="收入";
+"transfer"="轉帳";
+"joinTotal"="計入總計";
+"accountType"="帳戶類型";
+"addAccount"="新增帳戶";
+"cash"="現金";
+"creditCard"="信用卡";
+"bank"="銀行";
+"accountName"="帳戶名稱";
+"initialAmount"="初始金額";
+"notJoinTotal"="未計入總計";
+"theBalance"="結餘";
+"totalAssets"="總資產";
+"totalLiability"="總負債";
+"transferFee"="轉帳手續費";
+"yes"="是";
+"no"="否";
+"week"="週";
+"month"="月";
+"year"="年";
+"spend_details"="支出明細";
+"theme_color"="主題顏色";
