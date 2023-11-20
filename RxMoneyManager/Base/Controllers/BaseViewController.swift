@@ -34,11 +34,11 @@ class BaseViewController: UIViewController {
     }
     
     func setUpView() {
-        
+        fatalError("Subclasses must implement setUpView")
     }
     
     func bindUI() {
-        
+        fatalError("Subclasses must implement bindUI")
     }
 
 }
