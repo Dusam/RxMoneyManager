@@ -56,7 +56,7 @@ class DetailChartCell: UITableViewCell {
         percentLabel.textAlignment = .right
         
         progressView = UIProgressView()
-        progressView.cornerRadius = 5
+        progressView.layerCornerRadius = 5
         
         hStackView.addArrangedSubviews([totalLabel, percentLabel])
         vStackView.addArrangedSubviews([hStackView, progressView])

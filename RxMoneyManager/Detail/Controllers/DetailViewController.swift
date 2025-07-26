@@ -230,7 +230,7 @@ extension DetailViewController {
             .swipeGesture(.right)
             .when(.recognized)
             .subscribe(onNext: { [unowned self] _ in
-                self.headerVM.toNextDate()
+                self.headerVM.toPerviousDate()
             })
             .disposed(by: disposeBag)
     }

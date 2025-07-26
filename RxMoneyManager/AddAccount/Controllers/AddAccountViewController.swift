@@ -45,10 +45,10 @@ class AddAccountViewController: BaseViewController {
     }
     
     override func viewWillLayoutSubviews() {
-        accountTypeView.cornerRadius = 15
-        accountNameView.cornerRadius = 15
-        joinTotalView.cornerRadius = 15
-        saveButton.cornerRadius = saveButton.width / 2
+        accountTypeView.layerCornerRadius = 15
+        accountNameView.layerCornerRadius = 15
+        joinTotalView.layerCornerRadius = 15
+        saveButton.layerCornerRadius = saveButton.width / 2
     }
     
     deinit {
@@ -94,8 +94,8 @@ extension AddAccountViewController {
         accountTypeView.distribution = .fill
         accountTypeView.spacing = 10
         accountTypeView.backgroundColor = .white
-        accountTypeView.borderColor = .lightGray
-        accountTypeView.borderWidth = 1
+        accountTypeView.layerBorderColor = .lightGray
+        accountTypeView.layerBorderWidth = 1
         
         let titleLabel = PaddingLabel()
         titleLabel.text = "帳戶類型:"
@@ -119,8 +119,8 @@ extension AddAccountViewController {
     private func setUpAccountName() {
         accountNameView = UIView()
         accountNameView.backgroundColor = .white
-        accountNameView.borderColor = .lightGray
-        accountNameView.borderWidth = 1
+        accountNameView.layerBorderColor = .lightGray
+        accountNameView.layerBorderWidth = 1
         
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -158,8 +158,8 @@ extension AddAccountViewController {
         joinTotalView.distribution = .fill
         joinTotalView.spacing = 10
         joinTotalView.backgroundColor = .white
-        joinTotalView.borderColor = .lightGray
-        joinTotalView.borderWidth = 1
+        joinTotalView.layerBorderColor = .lightGray
+        joinTotalView.layerBorderWidth = 1
         
         let includeTitle = PaddingLabel()
         includeTitle.text = R.string.localizable.joinTotal()

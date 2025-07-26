@@ -10,7 +10,7 @@ target 'RxMoneyManager' do
   pod 'RxDataSources'
   pod 'RxGesture'
   pod 'SnapKit'
-  pod 'SamUtils', :path => '/Users/si1302/Desktop/iOS/SamUtils/'
+  pod 'SamUtils', :path => '/Users/qian-yudu/Desktop/iOS/SamUtils'
   pod 'RealmSwift'
   pod 'R.swift'
   pod 'DGCharts'

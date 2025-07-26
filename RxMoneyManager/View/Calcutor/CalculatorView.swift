@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import SnapKit
+import SwifterSwift
 
 class CalculatorView: UIView {
     
@@ -74,7 +75,7 @@ class CalculatorView: UIView {
             buttons.forEach { button in
                 let calcutorButton = CalculatorButton(button)
                 stackView.addArrangedSubview(calcutorButton)
-                calcutorButton.cornerRadius = buttonCornerRadius(item: button)
+                calcutorButton.layerCornerRadius = buttonCornerRadius(item: button)
                 
                 calcutorButton.rx.tap.subscribe(onNext: { [weak self] _ in
                     self?.calcutorVM.buttonTap(button)
@@ -111,7 +112,7 @@ class CalculatorView: UIView {
                 }
                 let calcutorButton = CalculatorButton(button)
                 stackView.addArrangedSubview(calcutorButton)
-                calcutorButton.cornerRadius = buttonCornerRadius(item: button)
+                calcutorButton.layerCornerRadius = buttonCornerRadius(item: button)
                 
                 if button == .zero {
                     calcutorButton.snp.makeConstraints { make in
@@ -133,7 +134,7 @@ class CalculatorView: UIView {
         
         // OK 按鈕
         let okButton = CalculatorButton(.ok)
-        okButton.cornerRadius = buttonCornerRadius(item: .ok)
+        okButton.layerCornerRadius = buttonCornerRadius(item: .ok)
         bottomStackView.addArrangedSubview(okButton)
         okButton.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.22)

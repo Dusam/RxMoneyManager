@@ -43,9 +43,9 @@ extension MemoViewController {
     private func setUpTextView() {
         memoTextView = UITextView()
         memoTextView.font = .systemFont(ofSize: 20)
-        memoTextView.borderColor = .lightGray
-        memoTextView.borderWidth = 1
-        memoTextView.cornerRadius = 15
+        memoTextView.layerBorderColor = .lightGray
+        memoTextView.layerBorderWidth = 1
+        memoTextView.layerCornerRadius = 15
         memoTextView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         view.addSubview(memoTextView)
         

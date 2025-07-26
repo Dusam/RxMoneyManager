@@ -27,7 +27,7 @@ class SettingViewController: BaseViewController {
     
     override func viewWillLayoutSubviews() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.colorPickerButton.cornerRadius = self.colorPickerButton.width / 2
+            self.colorPickerButton.layerCornerRadius = self.colorPickerButton.width / 2
         }
     }
     

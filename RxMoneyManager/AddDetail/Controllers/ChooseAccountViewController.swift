@@ -57,7 +57,7 @@ class ChooseAccountViewController: BaseViewController {
     }
     
     override func viewWillLayoutSubviews() {
-        addButton.cornerRadius = addButton.width / 2
+        addButton.layerCornerRadius = addButton.width / 2
     }
 
 }
