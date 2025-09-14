@@ -197,7 +197,7 @@ extension DetailChartViewModel {
             }
         }
 
-        return sectionDatas
+        return sectionDatas.sorted { $0.sectionTitle > $1.sectionTitle }
     }
 }
 

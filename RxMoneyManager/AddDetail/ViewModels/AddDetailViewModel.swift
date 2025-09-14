@@ -122,6 +122,8 @@ extension AddDetailViewModel {
         if isEdit {
             resetDetailStatus()
             RealmManager.share.realm.beginWrite()
+        } else {
+            detail = DetailModel()
         }
         
         detail.billingType    = billingType.rawValue
@@ -144,7 +146,11 @@ extension AddDetailViewModel {
         }
         
         if isEdit {
-            try! RealmManager.share.realm.commitWrite()
+            do {
+                try RealmManager.share.realm.commitWrite()
+            } catch {
+                print(error.localizedDescription)
+            }
         } else {
             
             switch billingType {
@@ -200,10 +206,11 @@ extension AddDetailViewModel {
                 RealmManager.share.saveData(memoModel)
             }
         }
-        
+        isEdit = false
     }
     
     func delDetail() {
+        isEdit = false
         resetDetailStatus()
         RealmManager.share.delete(detail)
     }
